@@ -1,0 +1,6 @@
+{
+  "name": "MIM Tanjung Qencono",
+  "description": "Aplikasi Resmi MI Muhammadiyah Tanjung Qencono - Sistem Informasi Madrasah, PPDB, Akademik & Dashboard Admin",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
