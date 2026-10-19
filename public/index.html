@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MI Muhammadiyah Tanjung Qencono - Portal Resmi & PPDB Online</title>
+  <meta name="description" content="Portal Resmi MI Muhammadiyah Tanjung Qencono, Way Bungur, Lampung Timur. Pendaftaran PPDB Online, Profil Madrasah, Jadwal Masuk, dan Unduh Aplikasi Android.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2224%22>🕌</text></svg>">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            islamic: {
+              DEFAULT: '#0F766E',
+              dark: '#0B5751',
+              light: '#E6F4F1'
+            },
+            navy: {
+              DEFAULT: '#0A192F',
+              light: '#172A45',
+              soft: '#233554'
+            },
+            gold: {
+              DEFAULT: '#D97706',
+              light: '#F59E0B',
+              bg: '#FFFBEB'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-arabic { font-family: 'Amiri', serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-islamic selection:text-white">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-navy text-white text-xs py-2 px-4 border-b border-navy-soft">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-2 text-center md:text-left">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>PPDB Tahun Ajaran 2025/2026 Telah Dibuka! Segera Daftarkan Putra-Putri Anda.</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-300">
+        <span>📍 Way Bungur, Lampung Timur</span>
+        <span>📞 0812-7890-1234</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- Brand -->
+        <a href="#" class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-islamic to-emerald-600 flex items-center justify-center text-white shadow-md shadow-islamic/20">
+            <span class="text-2xl">🕌</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-islamic">Madrasah Ibtidaiyah</span>
+            <h1 class="text-base sm:text-lg font-extrabold text-navy leading-tight">MIM Tanjung Qencono</h1>
+          </div>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+          <a href="#beranda" class="hover:text-islamic transition">Beranda</a>
+          <a href="#sambutan" class="hover:text-islamic transition">Profil</a>
+          <a href="#ppdb" class="hover:text-islamic transition">PPDB Online</a>
+          <a href="#fasilitas" class="hover:text-islamic transition">Fasilitas</a>
+          <a href="#jadwal" class="hover:text-islamic transition">Jadwal Masuk</a>
+          <a href="#kontak" class="hover:text-islamic transition">Kontak</a>
+        </nav>
+
+        <!-- CTA Download App -->
+        <div class="hidden sm:flex items-center gap-3">
+          <a href="/app-debug.apk" download class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-sm shadow-lg shadow-islamic/25 transition transform hover:-translate-y-0.5">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8532 8.082 12 8.082s-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+            <span>Unduh APK</span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 py-4 space-y-3">
+      <a href="#beranda" class="block font-semibold text-slate-700 py-2">Beranda</a>
+      <a href="#sambutan" class="block font-semibold text-slate-700 py-2">Profil</a>
+      <a href="#ppdb" class="block font-semibold text-slate-700 py-2">PPDB Online</a>
+      <a href="#fasilitas" class="block font-semibold text-slate-700 py-2">Fasilitas</a>
+      <a href="#jadwal" class="block font-semibold text-slate-700 py-2">Jadwal Masuk</a>
+      <a href="#kontak" class="block font-semibold text-slate-700 py-2">Kontak</a>
+      <a href="/app-debug.apk" download class="block text-center py-2.5 rounded-xl bg-islamic text-white font-bold text-sm">Unduh Aplikasi Android (APK)</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="beranda" class="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-white via-islamic-light/30 to-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <!-- Badges -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-islamic-light text-islamic border border-islamic/20">Swasta (Diakui Dikdasmen)</span>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">★ Akreditasi B</span>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">Sejak 1988</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-navy tracking-tight leading-tight">
+            Mewujudkan Generasi Muslim <span class="text-islamic">Cerdas & Berkarakter</span> Qur'ani
+          </h2>
+
+          <p class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            Selamat datang di portal resmi <strong>MI Muhammadiyah Tanjung Qencono</strong>, Kecamatan Way Bungur, Lampung Timur. Memadukan kurikulum nasional dan nilai-nilai Al-Qur'an serta Sunnah untuk masa depan generasi berakhlakul karimah.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="#ppdb" class="w-full sm:w-auto text-center px-8 py-3.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-base shadow-xl shadow-islamic/25 transition transform hover:-translate-y-0.5">
+              Daftar PPDB Online 2025/2026
+            </a>
+            <a href="/app-debug.apk" download class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-navy font-bold text-base border-2 border-slate-200 hover:border-islamic transition">
+              <svg class="w-5 h-5 text-islamic fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8532 8.082 12 8.082s-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+              <span>Download APK Android</span>
+            </a>
+          </div>
+
+          <!-- Quick Metrics -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200">
+            <div>
+              <p class="text-2xl font-black text-navy">1988</p>
+              <p class="text-xs text-slate-500 font-semibold uppercase">Tahun Berdiri</p>
+            </div>
+            <div>
+              <p class="text-2xl font-black text-islamic">60721234</p>
+              <p class="text-xs text-slate-500 font-semibold uppercase">NPSN Resmi</p>
+            </div>
+            <div>
+              <p class="text-2xl font-black text-amber-600">A / B</p>
+              <p class="text-xs text-slate-500 font-semibold uppercase">Akreditasi</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Card / Illustration -->
+        <div class="lg:col-span-5">
+          <div class="relative mx-auto max-w-md">
+            <div class="absolute -top-4 -left-4 w-72 h-72 bg-emerald-200/50 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-amber-200/50 rounded-full blur-3xl"></div>
+            
+            <div class="relative bg-white rounded-3xl shadow-2xl p-6 sm:p-8 border border-slate-100 space-y-6">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-islamic flex items-center justify-center text-white text-3xl shadow-lg">
+                  📖
+                </div>
+                <div>
+                  <h3 class="font-extrabold text-navy text-lg">Penerimaan Siswa Baru</h3>
+                  <p class="text-xs text-slate-500">Gelombang 1 Tahun 2025/2026</p>
+                </div>
+              </div>
+
+              <div class="space-y-3 bg-slate-50 rounded-2xl p-4 text-xs text-slate-600">
+                <div class="flex items-center justify-between">
+                  <span>📅 Pendaftaran:</span>
+                  <span class="font-bold text-navy">Setiap Hari Kerja</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span>⏰ Jam Layanan:</span>
+                  <span class="font-bold text-navy">07.30 - 13.00 WIB</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span>✨ Program Unggulan:</span>
+                  <span class="font-bold text-islamic">Tahfidz Juz 30</span>
+                </div>
+              </div>
+
+              <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-center gap-3">
+                <span class="text-2xl">📱</span>
+                <div>
+                  <p class="text-xs font-bold text-emerald-900">Aplikasi Android Tersedia</p>
+                  <p class="text-[11px] text-emerald-700">Dapatkan pengumuman dan jadwal sekolah di HP Anda.</p>
+                </div>
+              </div>
+
+              <a href="/app-debug.apk" download class="block text-center w-full py-3 rounded-xl bg-navy hover:bg-navy-light text-white font-bold text-sm transition">
+                Unduh Aplikasi (.APK Langsung)
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SAMBUTAN KEPALA MADRASAH -->
+  <section id="sambutan" class="py-16 bg-white border-y border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-br from-navy to-navy-light rounded-3xl text-white p-8 sm:p-12 shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div class="md:col-span-4 text-center">
+            <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto rounded-3xl bg-white/10 p-2 border-2 border-gold/40 shadow-inner flex items-center justify-center">
+              <span class="text-6xl sm:text-7xl">👨‍🏫</span>
+            </div>
+            <h3 class="mt-4 font-bold text-lg text-gold">Ahmad Syaifuddin, S.Pd.I</h3>
+            <p class="text-xs text-slate-300">Kepala Madrasah MI Muhammadiyah Tanjung Qencono</p>
+          </div>
+          <div class="md:col-span-8 space-y-4">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-gold/20 text-gold-light border border-gold/30">Sambutan Kepala Madrasah</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+              Selamat datang di portal resmi MI Muhammadiyah Tanjung Qencono. Kami berkomitmen menyelenggarakan pendidikan dasar Islam terpadu yang memadukan keimanan, kecerdasan intelektual, serta keterampilan hidup untuk mewujudkan generasi qur'ani yang mandiri dan berakhlak mulia.
+            </p>
+            <div class="pt-2 flex items-center gap-3 text-xs text-slate-400">
+              <span>📍 Desa Tanjung Qencono, Kec. Way Bungur, Kab. Lampung Timur</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM PPDB ONLINE -->
+  <section id="ppdb" class="py-20 bg-slate-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-3 mb-10">
+        <span class="px-3.5 py-1 rounded-full text-xs font-bold bg-islamic-light text-islamic border border-islamic/20">Formulir Pendaftaran Online</span>
+        <h2 class="text-3xl font-extrabold text-navy">PPDB Santri Baru 2025/2026</h2>
+        <p class="text-sm text-slate-600 max-w-xl mx-auto">Isi formulir di bawah ini dengan benar. Data otomatis tersimpan ke sistem database madrasah.</p>
+      </div>
+
+      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-slate-100">
+        <form id="ppdbForm" onsubmit="handlePpdbSubmit(event)" class="space-y-6">
+          
+          <!-- Bagian 1: Data Siswa -->
+          <div>
+            <h4 class="text-sm font-bold uppercase tracking-wider text-islamic border-b pb-2 mb-4">1. Data Calon Siswa</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa *</label>
+                <input type="text" id="studentName" required placeholder="Contoh: Muhammad Fatih" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">NISN (Jika Ada)</label>
+                <input type="text" id="nisn" placeholder="10 Digit NISN" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">NIK (Nomor KK) *</label>
+                <input type="text" id="nik" required placeholder="16 Digit NIK" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tempat Lahir *</label>
+                <input type="text" id="birthPlace" required placeholder="Contoh: Lampung Timur" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Lahir *</label>
+                <input type="date" id="birthDate" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Jenis Kelamin *</label>
+                <select id="gender" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm bg-white">
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif *</label>
+                <input type="tel" id="whatsapp" required placeholder="08xxxxxxxxxx" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Tempat Tinggal *</label>
+                <textarea id="address" required rows="2" placeholder="Dusun, Desa Tanjung Qencono, Kec. Way Bungur" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bagian 2: Data Orang Tua -->
+          <div>
+            <h4 class="text-sm font-bold uppercase tracking-wider text-islamic border-b pb-2 mb-4">2. Data Orang Tua / Wali</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Ayah Kandung *</label>
+                <input type="text" id="fatherName" required placeholder="Nama Lengkap Ayah" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Ibu Kandung *</label>
+                <input type="text" id="motherName" required placeholder="Nama Lengkap Ibu" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Pekerjaan Ayah / Wali</label>
+                <input type="text" id="fatherJob" placeholder="Pekerjaan" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Asal Sekolah Sebelumnya (TK/RA)</label>
+                <input type="text" id="prevSchool" placeholder="Contoh: RA Al-Ikhlas" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" id="submitPpdbBtn" class="w-full py-4 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-extrabold text-base shadow-lg shadow-islamic/25 transition">
+            Kirim Formulir Pendaftaran PPDB
+          </button>
+        </form>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto">
+              ✓
+            </div>
+            <h3 class="text-xl font-extrabold text-navy">Pendaftaran Berhasil!</h3>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <p class="text-xs text-slate-500 font-semibold">Nomor Registrasi PPDB:</p>
+              <p id="regNumberDisplay" class="text-2xl font-black text-islamic">PPDB-2026-001</p>
+            </div>
+            <p class="text-xs text-slate-600">Simpan nomor registrasi di atas. Panitia PPDB madrasah akan menghubungi Anda untuk konfirmasi berkas fisik.</p>
+            <div class="space-y-2 pt-2">
+              <a id="waShareBtn" href="#" target="_blank" class="block w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm">
+                Konfirmasi via WhatsApp Panitia
+              </a>
+              <button onclick="closeSuccessModal()" class="w-full py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm">
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FASILITAS MADRASAH -->
+  <section id="fasilitas" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-3 mb-12">
+        <span class="px-3.5 py-1 rounded-full text-xs font-bold bg-islamic-light text-islamic border border-islamic/20">Sarana & Prasarana</span>
+        <h2 class="text-3xl font-extrabold text-navy">Fasilitas Lengkap Madrasah</h2>
+        <p class="text-sm text-slate-600 max-w-xl mx-auto">Menunjang proses belajar mengajar santri dengan fasilitas yang bersih, nyaman, dan modern.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
+          <span class="text-3xl">🏫</span>
+          <h4 class="font-extrabold text-navy mt-3 text-base">Ruang Kelas Nyaman</h4>
+          <p class="text-xs text-slate-600 mt-1">Dilengkapi papan tulis modern, kipas angin, ventilasi alami, dan tempat duduk ergonomis.</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
+          <span class="text-3xl">🕌</span>
+          <h4 class="font-extrabold text-navy mt-3 text-base">Masjid Baitul Ilmi</h4>
+          <p class="text-xs text-slate-600 mt-1">Pusat ibadah harian santri, sholat dhuha berjamaah, pembinaan akhlak, dan hafalan Al-Qur'an.</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
+          <span class="text-3xl">💻</span>
+          <h4 class="font-extrabold text-navy mt-3 text-base">Lab Komputer Digital</h4>
+          <p class="text-xs text-slate-600 mt-1">Fasilitas literasi digital, pengenalan komputer dasar, serta pelaksanaan Asesmen Nasional (ANBK).</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
+          <span class="text-3xl">📚</span>
+          <h4 class="font-extrabold text-navy mt-3 text-base">Perpustakaan Lengkap</h4>
+          <p class="text-xs text-slate-600 mt-1">Koleksi buku pelajaran tematik, ensiklopedia Islam, kisah nabi, dan pojok baca interaktif.</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
+          <span class="text-3xl">⚽</span>
+          <h4 class="font-extrabold text-navy mt-3 text-base">Lapangan Olahraga</h4>
+          <p class="text-xs text-slate-600 mt-1">Area upacara apel pagi, senam sehat, latihan tapak suci, bola voli, dan kegiatan kepanduan HW.</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
+          <span class="text-3xl">🏥</span>
+          <h4 class="font-extrabold text-navy mt-3 text-base">Unit Kesehatan (UKS)</h4>
+          <p class="text-xs text-slate-600 mt-1">Layanan pertolongan pertama pada santri, obat-obatan standar, dan pemeriksaan kesehatan berkala.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JADWAL MASUK & WAKTU SHOLAT -->
+  <section id="jadwal" class="py-16 bg-slate-50 border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Jam Masuk & Pulang -->
+        <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">⏰</span>
+            <div>
+              <h3 class="font-extrabold text-navy text-xl">Jadwal Masuk & Pulang</h3>
+              <p class="text-xs text-slate-500">Ketentuan Waktu Belajar Santri</p>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+              <p class="text-xs font-bold text-amber-900 uppercase">Waktu Hadir Siswa:</p>
+              <p class="text-lg font-extrabold text-amber-800">06.45 - 07.00 WIB</p>
+              <p class="text-xs text-amber-700 mt-1">Pukul 07.00 WIB gerbang ditutup untuk Apel Pagi & Sholat Dhuha Berjamaah.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-slate-50 rounded-xl">
+                <span class="text-slate-500">Mulai Pelajaran:</span>
+                <p class="font-bold text-navy text-sm">07.15 WIB</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl">
+                <span class="text-slate-500">Pulang Senin - Kamis:</span>
+                <p class="font-bold text-navy text-sm">12.30 WIB</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl">
+                <span class="text-slate-500">Pulang Hari Jumat:</span>
+                <p class="font-bold text-navy text-sm">11.00 WIB</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl">
+                <span class="text-slate-500">Pulang Hari Sabtu:</span>
+                <p class="font-bold text-navy text-sm">12.00 WIB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jadwal Sholat Lampung Timur -->
+        <div class="bg-navy rounded-3xl p-8 text-white shadow-xl space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">🕌</span>
+            <div>
+              <h3 class="font-extrabold text-white text-xl">Waktu Sholat Hari Ini</h3>
+              <p class="text-xs text-slate-300">Wilayah Way Bungur & Lampung Timur (WIB)</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
+              <p class="text-xs text-slate-300">Subuh</p>
+              <p class="font-black text-lg text-emerald-300 mt-1">04.38</p>
+            </div>
+            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
+              <p class="text-xs text-slate-300">Dhuha</p>
+              <p class="font-black text-lg text-amber-300 mt-1">06.15</p>
+            </div>
+            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
+              <p class="text-xs text-slate-300">Dzuhur</p>
+              <p class="font-black text-lg text-emerald-300 mt-1">11.58</p>
+            </div>
+            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
+              <p class="text-xs text-slate-300">Ashar</p>
+              <p class="font-black text-lg text-emerald-300 mt-1">15.12</p>
+            </div>
+            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
+              <p class="text-xs text-slate-300">Maghrib</p>
+              <p class="font-black text-lg text-amber-300 mt-1">18.04</p>
+            </div>
+            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
+              <p class="text-xs text-slate-300">Isya</p>
+              <p class="font-black text-lg text-emerald-300 mt-1">19.14</p>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-400 text-center italic">"Sholatlah kamu sebelum kamu disholatkan."</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD BANNER -->
+  <section class="py-16 bg-gradient-to-r from-islamic to-emerald-700 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+      <span class="px-4 py-1.5 rounded-full text-xs font-extrabold bg-white/20 border border-white/30 tracking-wider uppercase">Aplikasi Android Resmi</span>
+      <h2 class="text-3xl sm:text-4xl font-black">Unduh Aplikasi MI Muhammadiyah Tanjung Qencono</h2>
+      <p class="text-sm sm:text-base text-emerald-100 max-w-2xl mx-auto">
+        Pantau pengumuman, jadwal pelajaran, kegiatan ekstrakurikuler, dan notifikasi berbunyi langsung di smartphone Android Anda.
+      </p>
+      <div class="pt-2">
+        <a href="/app-debug.apk" download class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white text-navy font-black text-base shadow-2xl hover:bg-slate-100 transition transform hover:-translate-y-1">
+          <svg class="w-6 h-6 text-islamic fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8532 8.082 12 8.082s-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+          <span>Download File APK (Gratis)</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAK & FOOTER -->
+  <footer id="kontak" class="bg-navy text-slate-400 text-xs py-14 border-t border-navy-soft">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+        <div class="space-y-3 md:col-span-2">
+          <div class="flex items-center gap-3 text-white">
+            <span class="text-2xl">🕌</span>
+            <span class="font-extrabold text-base">MI Muhammadiyah Tanjung Qencono</span>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
+            Mendidik dengan hati, mencerdaskan dengan Al-Qur'an dan ilmu pengetahuan. Berdiri sejak tahun 1988 di Desa Tanjung Qencono, Kec. Way Bungur, Kab. Lampung Timur.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Tautan Cepat</h4>
+          <ul class="space-y-2">
+            <li><a href="#ppdb" class="hover:text-white transition">PPDB Online</a></li>
+            <li><a href="#fasilitas" class="hover:text-white transition">Fasilitas Madrasah</a></li>
+            <li><a href="#jadwal" class="hover:text-white transition">Jadwal Masuk</a></li>
+            <li><a href="/app-debug.apk" download class="hover:text-white transition">Unduh APK Android</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Kontak & Lokasi</h4>
+          <p>Desa Tanjung Qencono, Way Bungur</p>
+          <p>Kabupaten Lampung Timur, Lampung</p>
+          <p class="mt-2 text-white font-semibold">WhatsApp: 0812-7890-1234</p>
+          <p>Email: mimtaqecy@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="border-t border-navy-soft pt-6 text-center text-slate-500 text-[11px]">
+        &copy; 2026 MI Muhammadiyah Tanjung Qencono. Daring di Vercel.app & Aplikasi Android.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    let count = 1;
+    function handlePpdbSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('studentName').value;
+      const wa = document.getElementById('whatsapp').value;
+      const reg = `PPDB-2026-${String(count).padStart(3, '0')}`;
+      count++;
+
+      document.getElementById('regNumberDisplay').innerText = reg;
+      const waText = encodeURIComponent(`Assalamu'alaikum Panitia PPDB MIM Tanjung Qencono,%0ASaya telah mendaftar online melalui website dengan data:%0ANo. Pendaftaran: ${reg}%0ANama Calon Siswa: ${name}%0AMohon konfirmasi berkas fisik selanjutnya. Terima kasih.`);
+      document.getElementById('waShareBtn').href = `https://wa.me/6281278901234?text=${waText}`;
+
+      document.getElementById('successModal').classList.remove('hidden');
+      document.getElementById('ppdbForm').reset();
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('successModal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

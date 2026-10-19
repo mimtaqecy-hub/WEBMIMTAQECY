@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
         FacilityEntity::class,
         AppNotificationEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

@@ -26,6 +26,7 @@ data class SchoolSettingsEntity(
     val googleSpreadsheetId: String = "",
     val autoSyncPpdbToSheet: Boolean = true,
     val lastSheetSyncTime: String = "",
+    val vercelWebUrl: String = "https://mim-tanjung-qencono.vercel.app",
     val adminPassword: String = "MIMTAQECY",
     val isMusicPlaying: Boolean = false,
     val musicVolume: Float = 0.5f,

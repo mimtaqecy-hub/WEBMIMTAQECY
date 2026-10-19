@@ -55,7 +55,8 @@ enum class AdminTab(val title: String) {
     SCHEDULES("Jadwal Pelajaran"),
     MUSIC("Musik Latar"),
     LOGS("Aktivitas Admin"),
-    GAS_INTEGRATION("Integrasi Google Sheets")
+    GAS_INTEGRATION("Integrasi Google Sheets"),
+    VERCEL_WEB("Website Vercel.app")
 }
 
 class MadrasahViewModel(application: Application) : AndroidViewModel(application) {
@@ -1021,6 +1022,15 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
                     _snackbarMessage.emit(res.message)
                 }
             }
+        }
+    }
+
+    fun updateVercelUrl(url: String) {
+        viewModelScope.launch {
+            val current = settings.value ?: SchoolSettingsEntity()
+            val updated = current.copy(vercelWebUrl = url.trim())
+            repository.updateSettings(updated)
+            _snackbarMessage.emit("Tautan website Vercel berhasil disimpan!")
         }
     }
 }

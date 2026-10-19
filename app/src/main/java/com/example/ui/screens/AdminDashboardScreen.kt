@@ -147,6 +147,7 @@ fun AdminDashboardScreen(viewModel: MadrasahViewModel) {
                 AdminTab.MUSIC -> AdminMusicSection(viewModel)
                 AdminTab.LOGS -> AdminLogsSection(viewModel)
                 AdminTab.GAS_INTEGRATION -> AdminGasIntegrationSection(viewModel)
+                AdminTab.VERCEL_WEB -> AdminVercelSection(viewModel)
             }
         }
     }
@@ -3253,4 +3254,260 @@ fun AdminSchoolScheduleSection(viewModel: MadrasahViewModel) {
         }
     }
 }
+
+// 22. VERCEL WEB DEPLOYMENT SECTION
+@Composable
+fun AdminVercelSection(viewModel: MadrasahViewModel) {
+    val context = LocalContext.current
+    val clipboard = LocalClipboardManager.current
+    val settings by viewModel.settings.collectAsState()
+
+    var vercelUrl by remember(settings) {
+        mutableStateOf(settings?.vercelWebUrl.takeIf { !it.isNullOrBlank() } ?: "https://mim-tanjung-qencono.vercel.app")
+    }
+
+    val vercelJsonContent = """{
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/download", "destination": "/app-debug.apk" },
+    { "source": "/apk", "destination": "/app-debug.apk" },
+    { "source": "/ppdb", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/app-debug.apk",
+      "headers": [
+        { "key": "Content-Type", "value": "application/vnd.android.package-archive" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"MIM_Tanjung_Qencono.apk\"" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    }
+  ]
+}"""
+
+    val instructions = """PANDUAN MENG-ONLINEKAN KE VERCEL (VERCEL.APP):
+
+CARA 1: LEWAT GITHUB & VERCEL.COM (GRATIS 100% & OTOMATIS)
+1. Buka https://vercel.com dan masuk dengan akun GitHub atau Google Anda (mimtaqecy@gmail.com).
+2. Klik tombol "Add New..." lalu pilih "Project".
+3. Pilih repositori proyek madrasah Anda, lalu klik "Import".
+4. Pada form pengaturan:
+   - Framework Preset: Other
+   - Root Directory: ./
+   - File vercel.json & index.html sudah otomatis terdeteksi!
+5. Klik tombol "Deploy".
+6. Tunggu sekitar 20-30 detik hingga status menjadi Ready. Website dan link download APK Anda langsung online dengan domain:
+   👉 https://mim-tanjung-qencono.vercel.app
+
+CARA 2: MENGGUNAKAN VERCEL CLI DARI LAPTOP/KOMPUTER
+1. Buka folder proyek di komputer melalui Terminal/CMD.
+2. Ketik perintah: npx vercel
+3. Tekan 'y' untuk konfirmasi, pilih akun Anda.
+4. Setelah selesai, jalankan: npx vercel --prod
+5. Website dan file APK langsung terbit online!"""
+
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        item {
+            SectionHeader(
+                title = "Publikasi Web & Vercel.app",
+                subtitle = "Website resmi madrasah, formulir PPDB online publik, dan portal download APK di vercel.app",
+                icon = Icons.Default.Language
+            )
+
+            // STATUS CARD
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = NavyDeep)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.CloudDone, contentDescription = null, tint = GoldAccent, modifier = Modifier.size(24.dp))
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text("Konfigurasi Vercel Siap", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 15.sp)
+                                Text("vercel.json & index.html telah dibuat", color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .background(GoldAccent, RoundedCornerShape(6.dp))
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Text("READY", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = NavyDeep)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "Tautan Website Madrasah Anda:",
+                        color = Color.White.copy(alpha = 0.7f),
+                        fontSize = 11.sp
+                    )
+                    Text(
+                        text = vercelUrl,
+                        color = GoldAccent,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // DOMAIN INPUT & ACTIONS
+            Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), shape = RoundedCornerShape(12.dp)) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Text("Domain / URL Website Vercel:", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                    OutlinedTextField(
+                        value = vercelUrl,
+                        onValueChange = { vercelUrl = it },
+                        placeholder = { Text("https://mim-tanjung-qencono.vercel.app") },
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        singleLine = true
+                    )
+                    Button(
+                        onClick = { viewModel.updateVercelUrl(vercelUrl) },
+                        colors = ButtonDefaults.buttonColors(containerColor = NavyPrimary),
+                        modifier = Modifier.fillMaxWidth().testTag("save_vercel_url_btn")
+                    ) {
+                        Icon(Icons.Default.Save, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("Simpan URL Website Vercel")
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = {
+                                try {
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(vercelUrl))
+                                    context.startActivity(intent)
+                                } catch (_: Exception) {}
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = IslamicGreen),
+                            modifier = Modifier.weight(1f).testTag("open_vercel_web_btn")
+                        ) {
+                            Icon(Icons.Default.OpenInBrowser, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Buka Web", fontSize = 11.sp)
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                val shareText = "Kunjungi Website Resmi & Pendaftaran PPDB Online MI Muhammadiyah Tanjung Qencono:\n$vercelUrl\n\nUnduh Aplikasi Android:\n$vercelUrl/download"
+                                val sendIntent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    putExtra(Intent.EXTRA_TEXT, shareText)
+                                    type = "text/plain"
+                                }
+                                context.startActivity(Intent.createChooser(sendIntent, "Bagikan Website Vercel"))
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Bagikan", fontSize = 11.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedButton(
+                        onClick = {
+                            val apkUrl = if (vercelUrl.endsWith("/")) "${vercelUrl}app-debug.apk" else "$vercelUrl/app-debug.apk"
+                            clipboard.setText(AnnotatedString(apkUrl))
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Download, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("Salin Tautan Download APK Android", fontSize = 11.sp)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            // PANDUAN DEPLOY CARD
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Langkah Deploy ke Vercel:", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        TextButton(onClick = {
+                            clipboard.setText(AnnotatedString(instructions))
+                        }) {
+                            Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(14.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Salin Panduan", fontSize = 11.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = instructions,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(12.dp),
+                            lineHeight = 18.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Isi File vercel.json:", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                        TextButton(onClick = {
+                            clipboard.setText(AnnotatedString(vercelJsonContent))
+                        }) {
+                            Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(14.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Salin vercel.json", fontSize = 11.sp)
+                        }
+                    }
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = vercelJsonContent,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color(0xFFE2E8F0),
+                            fontSize = 11.sp,
+                            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                            modifier = Modifier.padding(12.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 
