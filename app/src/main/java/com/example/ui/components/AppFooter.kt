@@ -110,7 +110,49 @@ fun AppFooter(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            Text("Media Sosial Resmi:", style = MaterialTheme.typography.labelSmall, color = GoldAccent)
+            Spacer(modifier = Modifier.height(6.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        val fbIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/share/1DxkoYBNkL/"))
+                        context.startActivity(fbIntent)
+                    },
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+                ) {
+                    Text("Facebook", fontSize = 10.sp)
+                }
+                OutlinedButton(
+                    onClick = {
+                        val igIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/mim_taqecy?rpxt=MXg5NG1saWZ2Z2l4MQ=="))
+                        context.startActivity(igIntent)
+                    },
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+                ) {
+                    Text("Instagram", fontSize = 10.sp)
+                }
+                OutlinedButton(
+                    onClick = {
+                        val ttIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@mim_tanjung.qencono?_r=1&_t=ZS-9AiTueWtGGj"))
+                        context.startActivity(ttIntent)
+                    },
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+                ) {
+                    Text("TikTok", fontSize = 10.sp)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
             HorizontalDivider(color = Color.White.copy(alpha = 0.15f))
             Spacer(modifier = Modifier.height(12.dp))
 

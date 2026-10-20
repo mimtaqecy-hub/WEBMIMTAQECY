@@ -56,6 +56,7 @@ enum class AdminTab(val title: String) {
     MUSIC("Musik Latar"),
     LOGS("Aktivitas Admin"),
     GAS_INTEGRATION("Integrasi Google Sheets"),
+    VISION_MISSION("Visi, Misi & Sejarah"),
     VERCEL_WEB("Website Vercel.app")
 }
 
@@ -552,6 +553,27 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             repository.deleteStudent(student)
             _snackbarMessage.emit("Data siswa ${student.fullName} berhasil dihapus.")
+        }
+    }
+
+    fun deleteAllStudents() {
+        viewModelScope.launch {
+            repository.clearAllStudents()
+            _snackbarMessage.emit("Seluruh data siswa berhasil dihapus dari database.")
+        }
+    }
+
+    fun updateVisionMissionHistory(vision: String, mission: String, history: String) {
+        viewModelScope.launch {
+            settings.value?.let { current ->
+                val updated = current.copy(
+                    visionText = vision,
+                    missionText = mission,
+                    historyText = history
+                )
+                repository.updateSettings(updated)
+                _snackbarMessage.emit("Visi, Misi, dan Sejarah Madrasah berhasil diperbarui!")
+            }
         }
     }
 

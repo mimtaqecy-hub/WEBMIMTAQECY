@@ -811,6 +811,171 @@ fun HomeScreen(viewModel: MadrasahViewModel) {
             }
         }
 
+        // MEDIA SOSIAL RESMI MADRASAH (BAGIAN BAWAH HALAMAN DEPAN)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            SectionHeader(
+                title = "Media Sosial Resmi",
+                subtitle = "Ikuti publikasi kegiatan, siaran langsung, dan dokumentasi santri"
+            )
+
+            // Facebook Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .clickable {
+                        val fbIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/share/1DxkoYBNkL/"))
+                        context.startActivity(fbIntent)
+                    }
+                    .testTag("btn_social_facebook"),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF1877F2).copy(alpha = 0.1f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(Color(0xFF1877F2), RoundedCornerShape(12.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("f", color = Color.White, fontWeight = FontWeight.Black, fontSize = 26.sp)
+                    }
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Facebook Resmi",
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                            color = Color(0xFF1877F2)
+                        )
+                        Text(
+                            text = "MI Muhammadiyah Tanjung Qencono",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.Default.OpenInNew,
+                        contentDescription = "Buka Facebook",
+                        tint = Color(0xFF1877F2),
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            // Instagram Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .clickable {
+                        val igIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/mim_taqecy?rpxt=MXg5NG1saWZ2Z2l4MQ=="))
+                        context.startActivity(igIntent)
+                    }
+                    .testTag("btn_social_instagram"),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFE1306C).copy(alpha = 0.1f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(
+                                Brush.linearGradient(
+                                    listOf(Color(0xFF833AB4), Color(0xFFFD1D1D), Color(0xFFF77737))
+                                ),
+                                RoundedCornerShape(12.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CameraAlt,
+                            contentDescription = "Instagram",
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Instagram Resmi",
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                            color = Color(0xFFE1306C)
+                        )
+                        Text(
+                            text = "@mim_taqecy",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.Default.OpenInNew,
+                        contentDescription = "Buka Instagram",
+                        tint = Color(0xFFE1306C),
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            // TikTok Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .clickable {
+                        val ttIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@mim_tanjung.qencono?_r=1&_t=ZS-9AiTueWtGGj"))
+                        context.startActivity(ttIntent)
+                    }
+                    .testTag("btn_social_tiktok"),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A).copy(alpha = 0.08f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(Color(0xFF010101), RoundedCornerShape(12.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("♪", color = Color(0xFF25F4EE), fontWeight = FontWeight.Black, fontSize = 24.sp)
+                    }
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "TikTok Resmi",
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                            color = NavyDeep
+                        )
+                        Text(
+                            text = "@mim_tanjung.qencono",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.Default.OpenInNew,
+                        contentDescription = "Buka TikTok",
+                        tint = NavyDeep,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
         // FOOTER
         AppFooter(viewModel = viewModel)
     }

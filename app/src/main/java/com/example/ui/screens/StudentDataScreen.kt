@@ -33,6 +33,8 @@ fun StudentDataScreen(viewModel: MadrasahViewModel) {
     var searchQuery by remember { mutableStateOf("") }
 
     val allStudents by viewModel.publishedStudents.collectAsState()
+    val isAdminLoggedIn by viewModel.isAdminLoggedIn.collectAsState()
+    var showDeleteAllDialog by remember { mutableStateOf(false) }
 
     val rombelList = listOf(
         "Semua Rombel",
@@ -45,6 +47,30 @@ fun StudentDataScreen(viewModel: MadrasahViewModel) {
         (selectedClass == 0 || s.classLevel == selectedClass) &&
         (selectedRombel == "Semua Rombel" || s.rombel.equals(selectedRombel, ignoreCase = true)) &&
         (searchQuery.isBlank() || s.fullName.contains(searchQuery, ignoreCase = true) || s.nisn.contains(searchQuery))
+    }
+
+    if (showDeleteAllDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteAllDialog = false },
+            title = { Text("Hapus Semua Data Siswa?") },
+            text = { Text("Apakah Anda yakin ingin menghapus seluruh ${allStudents.size} data siswa dari database? Tindakan ini tidak dapat dibatalkan.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.deleteAllStudents()
+                        showDeleteAllDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Ya, Hapus Semua")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { showDeleteAllDialog = false }) {
+                    Text("Batal")
+                }
+            }
+        )
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -81,6 +107,39 @@ fun StudentDataScreen(viewModel: MadrasahViewModel) {
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .testTag("student_search_input")
             )
+
+            if (isAdminLoggedIn && allStudents.isNotEmpty()) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.25f)),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Opsi Admin: Kelola Siswa",
+                            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        OutlinedButton(
+                            onClick = { showDeleteAllDialog = true },
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                        ) {
+                            Icon(Icons.Default.DeleteSweep, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.error)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Hapus Semua Siswa", fontSize = 11.sp, color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
 
             // Filter Kelas 1-6
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {

@@ -62,6 +62,11 @@ class MadrasahRepository(private val db: AppDatabase) {
         logAction("Hapus Siswa", "Menghapus data siswa: ${student.fullName}")
     }
 
+    suspend fun clearAllStudents() {
+        db.studentDao().clearAllStudents()
+        logAction("Hapus Semua Siswa", "Menghapus seluruh data siswa dari database")
+    }
+
     // Teachers (Offline Cached via Room)
     val teachers: Flow<List<TeacherEntity>> = db.teacherDao().getAllTeachers()
     val teacherCount: Flow<Int> = db.teacherDao().getCount()

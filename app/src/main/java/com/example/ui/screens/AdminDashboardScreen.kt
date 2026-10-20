@@ -147,6 +147,7 @@ fun AdminDashboardScreen(viewModel: MadrasahViewModel) {
                 AdminTab.MUSIC -> AdminMusicSection(viewModel)
                 AdminTab.LOGS -> AdminLogsSection(viewModel)
                 AdminTab.GAS_INTEGRATION -> AdminGasIntegrationSection(viewModel)
+                AdminTab.VISION_MISSION -> AdminVisionMissionSection(viewModel)
                 AdminTab.VERCEL_WEB -> AdminVercelSection(viewModel)
             }
         }
@@ -637,6 +638,16 @@ fun AdminSettingsSection(viewModel: MadrasahViewModel) {
 
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedButton(
+                onClick = { viewModel.navigateAdminTab(AdminTab.VISION_MISSION) },
+                modifier = Modifier.fillMaxWidth().testTag("goto_vision_mission_btn")
+            ) {
+                Icon(Icons.Default.School, contentDescription = null, tint = NavyPrimary, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Kelola Visi, Misi & Sejarah Singkat", color = NavyPrimary)
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            OutlinedButton(
                 onClick = { viewModel.navigateAdminTab(AdminTab.GAS_INTEGRATION) },
                 modifier = Modifier.fillMaxWidth().testTag("goto_sheets_integration_btn")
             ) {
@@ -677,6 +688,7 @@ fun AdminStudentsSection(viewModel: MadrasahViewModel) {
     var showAddDialog by remember { mutableStateOf(false) }
     var showImportDialog by remember { mutableStateOf(false) }
     var itemToDelete by remember { mutableStateOf<StudentEntity?>(null) }
+    var showDeleteAllDialog by remember { mutableStateOf(false) }
 
     val excelPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -699,6 +711,17 @@ fun AdminStudentsSection(viewModel: MadrasahViewModel) {
         ) {
             SectionHeader(title = "Data Siswa (${students.size})", icon = Icons.Default.People, modifier = Modifier.weight(1f))
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
+                if (students.isNotEmpty()) {
+                    OutlinedButton(
+                        onClick = { showDeleteAllDialog = true },
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
+                    ) {
+                        Icon(Icons.Default.DeleteSweep, contentDescription = "Hapus Semua", modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.error)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Hapus Semua", fontSize = 11.sp, color = MaterialTheme.colorScheme.error)
+                    }
+                }
                 OutlinedButton(
                     onClick = { viewModel.syncAllStudentsToSheet() },
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
@@ -764,6 +787,30 @@ fun AdminStudentsSection(viewModel: MadrasahViewModel) {
             itemTitle = itemToDelete!!.fullName,
             onConfirm = { viewModel.deleteStudent(itemToDelete!!) },
             onDismiss = { itemToDelete = null }
+        )
+    }
+
+    if (showDeleteAllDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteAllDialog = false },
+            title = { Text("Hapus Seluruh Data Siswa?") },
+            text = { Text("Tindakan ini akan menghapus seluruh ${students.size} data siswa dari database secara permanen. Apakah Anda yakin?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.deleteAllStudents()
+                        showDeleteAllDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Ya, Hapus Semua")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { showDeleteAllDialog = false }) {
+                    Text("Batal")
+                }
+            }
         )
     }
 
@@ -3505,6 +3552,110 @@ CARA 2: MENGGUNAKAN VERCEL CLI DARI LAPTOP/KOMPUTER
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+// 21. VISI, MISI & SEJARAH SINGKAT ADMIN
+@Composable
+fun AdminVisionMissionSection(viewModel: MadrasahViewModel) {
+    val currentSettings by viewModel.settings.collectAsState()
+
+    var vision by remember(currentSettings) { mutableStateOf(currentSettings?.visionText ?: "") }
+    var mission by remember(currentSettings) { mutableStateOf(currentSettings?.missionText ?: "") }
+    var history by remember(currentSettings) { mutableStateOf(currentSettings?.historyText ?: "") }
+
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        item {
+            SectionHeader(title = "Visi, Misi & Sejarah Singkat Madrasah", icon = Icons.Default.School)
+            Text(
+                "Kelola teks visi, misi, dan sejarah singkat madrasah yang tampil di halaman profil dan beranda.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+
+            // Visi Card
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f))
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Visibility, contentDescription = null, tint = NavyPrimary, modifier = Modifier.size(20.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Visi Madrasah", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = NavyPrimary)
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    OutlinedTextField(
+                        value = vision,
+                        onValueChange = { vision = it },
+                        placeholder = { Text("Contoh: Terwujudnya Generasi Muslim yang Taqwa, Cerdas, Berakhlakul Karimah, Mandiri, dan Berprestasi Unggul.") },
+                        modifier = Modifier.fillMaxWidth(),
+                        minLines = 3
+                    )
+                }
+            }
+
+            // Misi Card
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.FormatListNumbered, contentDescription = null, tint = NavyPrimary, modifier = Modifier.size(20.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Misi Madrasah", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = NavyPrimary)
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    OutlinedTextField(
+                        value = mission,
+                        onValueChange = { mission = it },
+                        placeholder = { Text("Tuliskan butir-butir misi madrasah (gunakan nomor 1, 2, 3...)") },
+                        modifier = Modifier.fillMaxWidth(),
+                        minLines = 5
+                    )
+                }
+            }
+
+            // Sejarah Singkat Card
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.History, contentDescription = null, tint = NavyPrimary, modifier = Modifier.size(20.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Sejarah Singkat Madrasah", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = NavyPrimary)
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    OutlinedTextField(
+                        value = history,
+                        onValueChange = { history = it },
+                        placeholder = { Text("Tuliskan sejarah berdirinya MI Muhammadiyah Tanjung Qencono...") },
+                        modifier = Modifier.fillMaxWidth(),
+                        minLines = 5
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    viewModel.updateVisionMissionHistory(vision, mission, history)
+                },
+                modifier = Modifier.fillMaxWidth().testTag("save_vision_mission_btn")
+            ) {
+                Icon(Icons.Default.Save, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Simpan Visi, Misi & Sejarah Singkat")
             }
         }
     }

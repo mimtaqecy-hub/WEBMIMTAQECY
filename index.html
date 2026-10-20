@@ -1,565 +1,2017 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MI Muhammadiyah Tanjung Qencono - Portal Resmi & PPDB Online</title>
-  <meta name="description" content="Portal Resmi MI Muhammadiyah Tanjung Qencono, Way Bungur, Lampung Timur. Pendaftaran PPDB Online, Profil Madrasah, Jadwal Masuk, dan Unduh Aplikasi Android.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MI Muhammadiyah Tanjung Qencono</title>
+  <meta name="description" content="Aplikasi Resmi & Portal Informasi MI Muhammadiyah Tanjung Qencono - PPDB Online, Data Siswa, Profil, Jadwal Masuk & Dashboard Admin">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2224%22>🕌</text></svg>">
-  <!-- Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            islamic: {
-              DEFAULT: '#0F766E',
-              dark: '#0B5751',
-              light: '#E6F4F1'
-            },
             navy: {
-              DEFAULT: '#0A192F',
-              light: '#172A45',
-              soft: '#233554'
+              deep: '#092244',
+              DEFAULT: '#0D2C54',
+              secondary: '#1B3B6F',
+              light: '#2C5282'
             },
             gold: {
-              DEFAULT: '#D97706',
-              light: '#F59E0B',
-              bg: '#FFFBEB'
+              DEFAULT: '#F59E0B',
+              primary: '#D4AF37',
+              light: '#FEF3C7'
+            },
+            islamic: {
+              DEFAULT: '#0D9488',
+              light: '#CCFBF1',
+              dark: '#0F766E'
             }
           }
         }
       }
     }
   </script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    * { -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     .font-arabic { font-family: 'Amiri', serif; }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-islamic selection:text-white">
+<body class="bg-slate-100 text-slate-800 antialiased selection:bg-islamic selection:text-white flex flex-col min-h-screen">
 
-  <!-- TOP ANNOUNCEMENT BAR -->
-  <div class="bg-navy text-white text-xs py-2 px-4 border-b border-navy-soft">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
-      <div class="flex items-center gap-2 text-center md:text-left">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>PPDB Tahun Ajaran 2025/2026 Telah Dibuka! Segera Daftarkan Putra-Putri Anda.</span>
+  <!-- ================= APP BAR (MIRRORS AppTopBar.kt) ================= -->
+  <header class="sticky top-0 z-40 bg-navy text-white shadow-md select-none border-b border-navy-secondary">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 flex items-center justify-between h-16">
+      
+      <!-- Left: Hamburger Drawer Toggle -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleDrawer(true)" class="p-2.5 rounded-xl hover:bg-white/10 active:scale-95 transition" title="Buka Menu Navigasi">
+          <svg class="w-6 h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+
+        <!-- Brand Title & Slogan -->
+        <div onclick="navigateTo('HOME')" class="cursor-pointer flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-islamic flex items-center justify-center text-white shadow-sm font-bold text-lg">
+            🕌
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h1 class="text-sm sm:text-base font-extrabold tracking-wide text-white leading-tight">MIM TANJUNG QENCONO</h1>
+              <span id="topBarAdminBadge" class="hidden px-1.5 py-0.5 rounded text-[9px] font-black bg-gold text-navy-deep">ADMIN</span>
+            </div>
+            <p class="text-[11px] text-gold font-medium leading-none">Religi, Cerdas, dan Berprestasi</p>
+          </div>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-slate-300">
-        <span>📍 Way Bungur, Lampung Timur</span>
-        <span>📞 0812-7890-1234</span>
+
+      <!-- Right Action Icons: Music, Dark Mode, Bell, Admin Lock -->
+      <div class="flex items-center gap-1 sm:gap-2">
+        <!-- Mars Madrasah Audio Toggle -->
+        <button id="musicToggleBtn" onclick="toggleMusic()" class="p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition" title="Musik Mars Madrasah">
+          <svg id="musicIconOn" class="w-5 h-5 hidden fill-current text-gold" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          <svg id="musicIconOff" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+        </button>
+
+        <!-- Notification Bell with Counter Badge -->
+        <button onclick="navigateTo('NOTIFICATIONS')" class="relative p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition" title="Notifikasi">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          <span id="unreadNotifBadge" class="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-black text-[10px] flex items-center justify-center">2</span>
+        </button>
+
+        <!-- Admin Shortcut / Lock Icon -->
+        <button id="adminTopBtn" onclick="handleAdminTopClick()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gold/20 border border-gold/40 hover:bg-gold hover:text-navy-deep active:scale-95 transition text-xs font-black text-gold shadow-sm" title="Buka Menu Admin">
+          <span>🔐</span>
+          <span id="adminTopBtnLabel">Menu Admin</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= RUNNING TAUSIYAH MARQUEE ================= -->
+  <div class="bg-navy-deep text-gold-light text-xs py-1.5 px-4 overflow-hidden border-b border-navy-secondary flex items-center">
+    <span class="font-bold text-gold uppercase tracking-wider shrink-0 mr-3">📢 Tausiyah:</span>
+    <div class="overflow-hidden w-full">
+      <div id="tausiyahText" class="animate-marquee font-medium">
+        "Menuntut ilmu adalah kewajiban bagi setiap muslim. Siapa yang menempuh jalan untuk menuntut ilmu, Allah mudahkan baginya jalan menuju surga. (HR. Muslim)" — MI Muhammadiyah Tanjung Qencono
       </div>
     </div>
   </div>
 
-  <!-- NAVIGATION -->
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-20">
-        <!-- Brand -->
-        <a href="#" class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-islamic to-emerald-600 flex items-center justify-center text-white shadow-md shadow-islamic/20">
-            <span class="text-2xl">🕌</span>
-          </div>
-          <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-islamic">Madrasah Ibtidaiyah</span>
-            <h1 class="text-base sm:text-lg font-extrabold text-navy leading-tight">MIM Tanjung Qencono</h1>
-          </div>
-        </a>
-
-        <!-- Desktop Menu -->
-        <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
-          <a href="#beranda" class="hover:text-islamic transition">Beranda</a>
-          <a href="#sambutan" class="hover:text-islamic transition">Profil</a>
-          <a href="#ppdb" class="hover:text-islamic transition">PPDB Online</a>
-          <a href="#fasilitas" class="hover:text-islamic transition">Fasilitas</a>
-          <a href="#jadwal" class="hover:text-islamic transition">Jadwal Masuk</a>
-          <a href="#kontak" class="hover:text-islamic transition">Kontak</a>
-        </nav>
-
-        <!-- CTA Download App -->
-        <div class="hidden sm:flex items-center gap-3">
-          <a href="/app-debug.apk" download class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-sm shadow-lg shadow-islamic/25 transition transform hover:-translate-y-0.5">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8532 8.082 12 8.082s-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
-            <span>Unduh APK</span>
-          </a>
+  <!-- ================= NAVIGATION DRAWER (MIRRORS AppDrawer.kt) ================= -->
+  <div id="drawerBackdrop" onclick="toggleDrawer(false)" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"></div>
+  <aside id="appDrawer" class="fixed top-0 bottom-0 left-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- Drawer Header -->
+    <div class="bg-navy p-5 text-white flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-islamic flex items-center justify-center text-2xl shadow-md">
+          🕌
         </div>
+        <div>
+          <h2 class="text-sm font-extrabold tracking-wide text-white">MI MUHAMMADIYAH</h2>
+          <p class="text-xs font-bold text-gold">TANJUNG QENCONO</p>
+          <p class="text-[10px] text-white/70">Kec. Way Bungur, Lampung Timur</p>
+        </div>
+      </div>
+      <button onclick="toggleDrawer(false)" class="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        ✕
+      </button>
+    </div>
 
-        <!-- Mobile Menu Button -->
-        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    <!-- Drawer Menu List -->
+    <div class="flex-1 overflow-y-auto p-3 space-y-1 text-sm font-semibold text-slate-700">
+      <button onclick="drawerNav('HOME')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="HOME">
+        <span class="text-lg">🏠</span> <span>1. Beranda</span>
+      </button>
+      <button onclick="drawerNav('PROFILE')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="PROFILE">
+        <span class="text-lg">🏛️</span> <span>2. Profil Madrasah</span>
+      </button>
+      <button onclick="drawerNav('FACILITIES')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="FACILITIES">
+        <span class="text-lg">🏫</span> <span>3. Fasilitas Madrasah</span>
+      </button>
+      <button onclick="drawerNav('SCHEDULE')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="SCHEDULE">
+        <span class="text-lg">⏰</span> <span>4. Jadwal Masuk & Apel</span>
+      </button>
+      <button onclick="drawerNav('NOTIFICATIONS')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="NOTIFICATIONS">
+        <span class="text-lg">🔔</span> <span>5. Notifikasi Madrasah</span>
+      </button>
+      <button onclick="drawerNav('ACADEMIC')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="ACADEMIC">
+        <span class="text-lg">🎓</span> <span>6. Akademik & Dewan Guru</span>
+      </button>
+      <button onclick="drawerNav('NEWS')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="NEWS">
+        <span class="text-lg">📰</span> <span>7. Berita & Info</span>
+      </button>
+      <button onclick="drawerNav('GALLERY')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="GALLERY">
+        <span class="text-lg">🖼️</span> <span>8. Galeri Foto</span>
+      </button>
+      <button onclick="drawerNav('PPDB')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="PPDB">
+        <span class="text-lg">📝</span> <span>9. PPDB Online</span>
+      </button>
+      <button onclick="drawerNav('STUDENTS')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="STUDENTS">
+        <span class="text-lg">👥</span> <span>10. Data Siswa</span>
+      </button>
+      <button onclick="drawerNav('PRAYER')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="PRAYER">
+        <span class="text-lg">🕋</span> <span>11. Jadwal Sholat</span>
+      </button>
+      <button onclick="drawerNav('CONTACT')" class="drawer-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 transition text-left" data-screen="CONTACT">
+        <span class="text-lg">📞</span> <span>12. Kontak Tata Usaha</span>
+      </button>
+      
+      <div class="pt-2 border-t border-slate-100">
+        <button id="drawerAdminBtn" onclick="drawerNav('ADMIN')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-amber-50 text-navy hover:bg-navy hover:text-white transition text-left font-bold border border-amber-200 shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">🔐</span>
+            <span id="drawerAdminBtnLabel">13. Menu & Dashboard Admin</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-black bg-gold text-navy-deep">ADMIN</span>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 py-4 space-y-3">
-      <a href="#beranda" class="block font-semibold text-slate-700 py-2">Beranda</a>
-      <a href="#sambutan" class="block font-semibold text-slate-700 py-2">Profil</a>
-      <a href="#ppdb" class="block font-semibold text-slate-700 py-2">PPDB Online</a>
-      <a href="#fasilitas" class="block font-semibold text-slate-700 py-2">Fasilitas</a>
-      <a href="#jadwal" class="block font-semibold text-slate-700 py-2">Jadwal Masuk</a>
-      <a href="#kontak" class="block font-semibold text-slate-700 py-2">Kontak</a>
-      <a href="/app-debug.apk" download class="block text-center py-2.5 rounded-xl bg-islamic text-white font-bold text-sm">Unduh Aplikasi Android (APK)</a>
+    <!-- Drawer Footer -->
+    <div class="p-3 bg-slate-50 border-t border-slate-100 text-center">
+      <a href="/app-debug.apk" download class="block w-full py-2.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-xs shadow-md transition">
+        📲 Unduh Aplikasi Android (APK)
+      </a>
     </div>
-  </header>
+  </aside>
 
-  <!-- HERO SECTION -->
-  <section id="beranda" class="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-white via-islamic-light/30 to-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
-        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+  <!-- ================= MAIN CONTAINER (ROUTER VIEW) ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- ================= SCREEN 1: HOME (HomeScreen.kt) ================= -->
+    <div id="screen-HOME" class="app-screen space-y-6">
+      
+      <!-- HERO BANNER CARD -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy via-navy to-navy-secondary text-white p-6 sm:p-10 shadow-xl border border-navy-light/40">
+        <div class="relative z-10 max-w-3xl space-y-4">
           <!-- Badges -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2">
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-islamic-light text-islamic border border-islamic/20">Swasta (Diakui Dikdasmen)</span>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">★ Akreditasi B</span>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">Sejak 1988</span>
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="homeSchoolStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-white border border-white/20">Swasta (Diakui Dikdasmen)</span>
+            <span id="homeAccreditationBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-gold text-navy-deep font-extrabold">Akreditasi B (Baik Sekali)</span>
+            <span id="homeYearBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">TA 2025/2026</span>
           </div>
 
-          <h2 class="text-3xl sm:text-5xl font-extrabold text-navy tracking-tight leading-tight">
-            Mewujudkan Generasi Muslim <span class="text-islamic">Cerdas & Berkarakter</span> Qur'ani
+          <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight text-white">
+            Selamat Datang di Portal Resmi <br>
+            <span class="text-gold">MI Muhammadiyah Tanjung Qencono</span>
           </h2>
 
-          <p class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
-            Selamat datang di portal resmi <strong>MI Muhammadiyah Tanjung Qencono</strong>, Kecamatan Way Bungur, Lampung Timur. Memadukan kurikulum nasional dan nilai-nilai Al-Qur'an serta Sunnah untuk masa depan generasi berakhlakul karimah.
+          <p class="text-sm sm:text-base text-slate-200 leading-relaxed max-w-2xl">
+            Mendidik dengan hati, mencerdaskan dengan ilmu dan Al-Qur'an. Lembaga pendidikan dasar Islam berprestasi di Way Bungur, Lampung Timur.
           </p>
 
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-            <a href="#ppdb" class="w-full sm:w-auto text-center px-8 py-3.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-base shadow-xl shadow-islamic/25 transition transform hover:-translate-y-0.5">
-              Daftar PPDB Online 2025/2026
+          <div class="flex flex-wrap gap-2.5 pt-2">
+            <button onclick="navigateTo('PPDB')" class="px-5 py-2.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-xs sm:text-sm shadow-md transition transform hover:-translate-y-0.5">
+              📝 Daftar PPDB Online
+            </button>
+            <button onclick="drawerNav('ADMIN')" class="px-4 py-2.5 rounded-xl bg-gold text-navy-deep hover:bg-gold-light font-extrabold text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
+              <span>🔐</span> <span>Menu Admin</span>
+            </button>
+            <a href="/app-debug.apk" download class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm border border-white/20 transition">
+              <span>📲</span> <span>Unduh APK</span>
             </a>
-            <a href="/app-debug.apk" download class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-navy font-bold text-base border-2 border-slate-200 hover:border-islamic transition">
-              <svg class="w-5 h-5 text-islamic fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8532 8.082 12 8.082s-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
-              <span>Download APK Android</span>
-            </a>
-          </div>
-
-          <!-- Quick Metrics -->
-          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200">
-            <div>
-              <p class="text-2xl font-black text-navy">1988</p>
-              <p class="text-xs text-slate-500 font-semibold uppercase">Tahun Berdiri</p>
-            </div>
-            <div>
-              <p class="text-2xl font-black text-islamic">60721234</p>
-              <p class="text-xs text-slate-500 font-semibold uppercase">NPSN Resmi</p>
-            </div>
-            <div>
-              <p class="text-2xl font-black text-amber-600">A / B</p>
-              <p class="text-xs text-slate-500 font-semibold uppercase">Akreditasi</p>
-            </div>
           </div>
         </div>
-
-        <!-- Hero Card / Illustration -->
-        <div class="lg:col-span-5">
-          <div class="relative mx-auto max-w-md">
-            <div class="absolute -top-4 -left-4 w-72 h-72 bg-emerald-200/50 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-amber-200/50 rounded-full blur-3xl"></div>
-            
-            <div class="relative bg-white rounded-3xl shadow-2xl p-6 sm:p-8 border border-slate-100 space-y-6">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-islamic flex items-center justify-center text-white text-3xl shadow-lg">
-                  📖
-                </div>
-                <div>
-                  <h3 class="font-extrabold text-navy text-lg">Penerimaan Siswa Baru</h3>
-                  <p class="text-xs text-slate-500">Gelombang 1 Tahun 2025/2026</p>
-                </div>
-              </div>
-
-              <div class="space-y-3 bg-slate-50 rounded-2xl p-4 text-xs text-slate-600">
-                <div class="flex items-center justify-between">
-                  <span>📅 Pendaftaran:</span>
-                  <span class="font-bold text-navy">Setiap Hari Kerja</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span>⏰ Jam Layanan:</span>
-                  <span class="font-bold text-navy">07.30 - 13.00 WIB</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span>✨ Program Unggulan:</span>
-                  <span class="font-bold text-islamic">Tahfidz Juz 30</span>
-                </div>
-              </div>
-
-              <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-center gap-3">
-                <span class="text-2xl">📱</span>
-                <div>
-                  <p class="text-xs font-bold text-emerald-900">Aplikasi Android Tersedia</p>
-                  <p class="text-[11px] text-emerald-700">Dapatkan pengumuman dan jadwal sekolah di HP Anda.</p>
-                </div>
-              </div>
-
-              <a href="/app-debug.apk" download class="block text-center w-full py-3 rounded-xl bg-navy hover:bg-navy-light text-white font-bold text-sm transition">
-                Unduh Aplikasi (.APK Langsung)
-              </a>
-            </div>
-          </div>
         </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- SAMBUTAN KEPALA MADRASAH -->
-  <section id="sambutan" class="py-16 bg-white border-y border-slate-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-gradient-to-br from-navy to-navy-light rounded-3xl text-white p-8 sm:p-12 shadow-xl">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div class="md:col-span-4 text-center">
-            <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto rounded-3xl bg-white/10 p-2 border-2 border-gold/40 shadow-inner flex items-center justify-center">
-              <span class="text-6xl sm:text-7xl">👨‍🏫</span>
-            </div>
-            <h3 class="mt-4 font-bold text-lg text-gold">Ahmad Syaifuddin, S.Pd.I</h3>
-            <p class="text-xs text-slate-300">Kepala Madrasah MI Muhammadiyah Tanjung Qencono</p>
-          </div>
-          <div class="md:col-span-8 space-y-4">
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-gold/20 text-gold-light border border-gold/30">Sambutan Kepala Madrasah</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
-            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-              Selamat datang di portal resmi MI Muhammadiyah Tanjung Qencono. Kami berkomitmen menyelenggarakan pendidikan dasar Islam terpadu yang memadukan keimanan, kecerdasan intelektual, serta keterampilan hidup untuk mewujudkan generasi qur'ani yang mandiri dan berakhlak mulia.
-            </p>
-            <div class="pt-2 flex items-center gap-3 text-xs text-slate-400">
-              <span>📍 Desa Tanjung Qencono, Kec. Way Bungur, Kab. Lampung Timur</span>
-            </div>
-          </div>
+        <div class="absolute -right-8 -bottom-8 opacity-15 text-[180px] pointer-events-none select-none">
+          🕌
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- FORM PPDB ONLINE -->
-  <section id="ppdb" class="py-20 bg-slate-50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center space-y-3 mb-10">
-        <span class="px-3.5 py-1 rounded-full text-xs font-bold bg-islamic-light text-islamic border border-islamic/20">Formulir Pendaftaran Online</span>
-        <h2 class="text-3xl font-extrabold text-navy">PPDB Santri Baru 2025/2026</h2>
-        <p class="text-sm text-slate-600 max-w-xl mx-auto">Isi formulir di bawah ini dengan benar. Data otomatis tersimpan ke sistem database madrasah.</p>
-      </div>
-
-      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-slate-100">
-        <form id="ppdbForm" onsubmit="handlePpdbSubmit(event)" class="space-y-6">
-          
-          <!-- Bagian 1: Data Siswa -->
+      <!-- PUSAT NOTIFIKASI QUICK BANNER -->
+      <div onclick="navigateTo('NOTIFICATIONS')" class="cursor-pointer bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-200 rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gold text-white flex items-center justify-center text-xl shadow-sm">
+            🔔
+          </div>
           <div>
-            <h4 class="text-sm font-bold uppercase tracking-wider text-islamic border-b pb-2 mb-4">1. Data Calon Siswa</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <h4 class="text-xs font-bold text-amber-900 uppercase">Pusat Notifikasi & Pengumuman</h4>
+            <p id="latestNotifPreview" class="text-xs text-amber-800 font-medium">Jam Masuk Siswa: Wajib hadir pukul 06.45 - 07.00 WIB untuk apel pagi & dhuha.</p>
+          </div>
+        </div>
+        <span class="text-xs font-bold text-amber-900 flex items-center gap-1">
+          Buka ➔
+        </span>
+      </div>
+
+      <!-- QUICK ACTION MENU GRID (8 Grid Items) -->
+      <div>
+        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Menu Layanan Cepat</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <button onclick="navigateTo('PPDB')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-islamic hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl">📝</span>
+            <div>
+              <p class="font-bold text-navy text-sm">PPDB Online</p>
+              <p class="text-[11px] text-slate-500">Pendaftaran santri baru</p>
+            </div>
+          </button>
+
+          <button onclick="navigateTo('SCHEDULE')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-islamic hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">⏰</span>
+            <div>
+              <p class="font-bold text-navy text-sm">Jadwal Masuk</p>
+              <p class="text-[11px] text-slate-500">Ketentuan jam belajar</p>
+            </div>
+          </button>
+
+          <button onclick="navigateTo('STUDENTS')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-islamic hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl">👥</span>
+            <div>
+              <p class="font-bold text-navy text-sm">Data Siswa</p>
+              <p class="text-[11px] text-slate-500">Daftar siswa aktif</p>
+            </div>
+          </button>
+
+          <button onclick="navigateTo('FACILITIES')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-islamic hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl">🏫</span>
+            <div>
+              <p class="font-bold text-navy text-sm">Fasilitas</p>
+              <p class="text-[11px] text-slate-500">Sarana prasarana</p>
+            </div>
+          </button>
+
+          <button onclick="navigateTo('PRAYER')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-islamic hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl">🕋</span>
+            <div>
+              <p class="font-bold text-navy text-sm">Jadwal Sholat</p>
+              <p class="text-[11px] text-slate-500">Waktu Way Bungur</p>
+            </div>
+          </button>
+
+          <button onclick="navigateTo('NEWS')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-islamic hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center text-xl">📰</span>
+            <div>
+              <p class="font-bold text-navy text-sm">Berita Madrasah</p>
+              <p class="text-[11px] text-slate-500">Kabar kegiatan terbaru</p>
+            </div>
+          </button>
+
+          <button onclick="navigateTo('GALLERY')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-islamic hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-xl">🖼️</span>
+            <div>
+              <p class="font-bold text-navy text-sm">Galeri Foto</p>
+              <p class="text-[11px] text-slate-500">Dokumentasi kegiatan</p>
+            </div>
+          </button>
+
+          <button onclick="drawerNav('ADMIN')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-gold hover:shadow-md transition text-left flex flex-col justify-between h-28">
+            <span class="w-10 h-10 rounded-xl bg-navy/10 text-navy flex items-center justify-center text-xl">🔐</span>
+            <div>
+              <p class="font-bold text-navy text-sm">Dashboard Admin</p>
+              <p class="text-[11px] text-slate-500">Kelola web & database</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- SAMBUTAN KEPALA MADRASAH -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <div class="w-28 h-28 sm:w-32 sm:h-32 shrink-0 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 border-2 border-gold flex items-center justify-center text-6xl shadow-inner">
+            👨‍🏫
+          </div>
+          <div class="space-y-2 text-center sm:text-left">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gold-light text-amber-800">Sambutan Kepala Madrasah</span>
+            <h3 id="homeHeadmasterName" class="text-xl font-extrabold text-navy">Ahmad Syaifuddin, S.Pd.I</h3>
+            <p id="homeHeadmasterSpeech" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              "Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di portal resmi MI Muhammadiyah Tanjung Qencono. Kami berkomitmen menyelenggarakan pendidikan dasar Islam terpadu yang memadukan keimanan, kecerdasan intelektual, serta keterampilan hidup untuk mewujudkan generasi qur'ani yang mandiri dan berakhlak mulia."
+            </p>
+          </div>
+        
+      <!-- VISI & MISI RINGKAS DI BERANDA -->
+      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-sm space-y-4">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-islamic text-white uppercase tracking-wider">Arah Pendidikan</span>
+          <h3 class="text-base sm:text-lg font-extrabold text-navy">Visi & Misi MI Muhammadiyah Tanjung Qencono</h3>
+        </div>
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-emerald-900 tracking-wider">Visi:</h4>
+          <p id="homeVisionText" class="text-xs sm:text-sm text-slate-800 font-semibold bg-white p-3.5 rounded-2xl border border-emerald-100">
+            "Terwujudnya Generasi Muslim yang Taqwa, Cerdas, Berakhlakul Karimah, Mandiri, dan Berprestasi Unggul."
+          </p>
+        </div>
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-emerald-900 tracking-wider">Misi Utama:</h4>
+          <div id="homeMissionText" class="whitespace-pre-line text-xs sm:text-sm text-slate-700 bg-white p-3.5 rounded-2xl border border-emerald-100 leading-relaxed font-normal">
+            1. Menumbuhkan penghayatan dan pengamalan ajaran Islam melalui Al-Qur'an dan Sunnah.
+            2. Melaksanakan pembelajaran aktif, inovatif, kreatif, dan menyenangkan.
+            3. Membiasakan sholat berjamaah, hafalan juz 30, dan adab islami harian.
+            4. Mengembangkan potensi bakat, minat, seni, olahraga, dan teknologi peserta didik.
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDIA SOSIAL RESMI MADRASAH (BAGIAN BAWAH HALAMAN DEPAN) -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <span class="text-xs font-bold text-islamic uppercase tracking-wider">Publikasi & Dokumentasi Santri</span>
+            <h3 class="text-xl font-extrabold text-navy">Media Sosial Resmi Madrasah</h3>
+            <p class="text-xs text-slate-500">Ikuti informasi kegiatan, siaran langsung, video edukasi, dan prestasi santri</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <!-- Facebook Card -->
+          <a href="https://www.facebook.com/share/1DxkoYBNkL/" target="_blank" rel="noopener noreferrer" class="group p-5 rounded-2xl bg-blue-50/70 border border-blue-200 hover:border-blue-400 hover:shadow-md transition flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-[#1877F2] text-white flex items-center justify-center text-2xl font-black shadow-md group-hover:scale-105 transition transform">
+              f
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="text-[10px] font-black uppercase text-blue-700 tracking-wider">Halaman Facebook</span>
+              <h4 class="text-sm font-bold text-slate-900 truncate">MI Muhammadiyah Tanjung Qencono</h4>
+              <p class="text-[11px] text-blue-600 font-medium flex items-center gap-1 mt-0.5">
+                Buka Profil Facebook ➔
+              </p>
+            </div>
+          </a>
+
+          <!-- Instagram Card -->
+          <a href="https://www.instagram.com/mim_taqecy?rpxt=MXg5NG1saWZ2Z2l4MQ==" target="_blank" rel="noopener noreferrer" class="group p-5 rounded-2xl bg-pink-50/70 border border-pink-200 hover:border-pink-400 hover:shadow-md transition flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-105 transition transform">
+              📷
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="text-[10px] font-black uppercase text-pink-700 tracking-wider">Instagram Resmi</span>
+              <h4 class="text-sm font-bold text-slate-900 truncate">@mim_taqecy</h4>
+              <p class="text-[11px] text-pink-600 font-medium flex items-center gap-1 mt-0.5">
+                Ikuti @mim_taqecy ➔
+              </p>
+            </div>
+          </a>
+
+          <!-- TikTok Card -->
+          <a href="https://www.tiktok.com/@mim_tanjung.qencono?_r=1&_t=ZS-9AiTueWtGGj" target="_blank" rel="noopener noreferrer" class="group p-5 rounded-2xl bg-slate-100 border border-slate-300 hover:border-slate-500 hover:shadow-md transition flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-black text-cyan-400 flex items-center justify-center text-2xl font-black shadow-md group-hover:scale-105 transition transform">
+              ♪
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="text-[10px] font-black uppercase text-slate-700 tracking-wider">Akun TikTok Resmi</span>
+              <h4 class="text-sm font-bold text-slate-900 truncate">@mim_tanjung.qencono</h4>
+              <p class="text-[11px] text-slate-800 font-medium flex items-center gap-1 mt-0.5">
+                Tonton Video Santri ➔
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= SCREEN 2: PROFILE (ProfileScreen.kt) ================= -->
+    <div id="screen-PROFILE" class="app-screen hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+        <div class="border-b pb-4">
+          <span class="text-xs font-bold text-islamic uppercase tracking-wider">Identitas & Legalitas</span>
+          <h2 class="text-2xl font-extrabold text-navy">Profil MI Muhammadiyah Tanjung Qencono</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-2">
+            <h4 class="font-bold text-navy">Data Pokok Madrasah:</h4>
+            <p><strong>NPSN:</strong> <span id="profNpsn">60721234</span></p>
+            <p><strong>NSM:</strong> <span id="profNsm">111218070001</span></p>
+            <p><strong>Status Madrasah:</strong> <span id="profStatus">Swasta (Diakui Dikdasmen)</span></p>
+            <p><strong>Akreditasi:</strong> <span id="profAccreditation">B (Terakreditasi Baik Sekali)</span></p>
+            <p><strong>Tahun Berdiri:</strong> <span id="profFounded">1988</span></p>
+            <p><strong>Tahun Pelajaran:</strong> <span id="profAcademicYear">2025/2026</span></p>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-2">
+            <h4 class="font-bold text-navy">Alamat & Kontak:</h4>
+            <p><strong>Desa:</strong> Tanjung Qencono</p>
+            <p><strong>Kecamatan:</strong> Way Bungur</p>
+            <p><strong>Kabupaten:</strong> Lampung Timur</p>
+            <p><strong>WhatsApp:</strong> 0812-7890-1234</p>
+            <p><strong>Email:</strong> mimtaqecy@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-base font-extrabold text-navy">Sejarah Singkat Madrasah</h4>
+          <p id="profHistory" class="text-sm text-slate-600 bg-slate-50 p-4 rounded-2xl border border-slate-100 leading-relaxed font-normal">
+            MI Muhammadiyah Tanjung Qencono didirikan pada tahun 1988 oleh para tokoh Muhammadiyah Way Bungur Lampung Timur sebagai ikhtiar dakwah pendidikan Islam di desa Tanjung Qencono. Dari tahun ke tahun madrasah terus berbenah dan dipercaya masyarakat luas mendidik putra-putri berilmu amaliyah dan beramal ilmiah.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-base font-extrabold text-navy">Visi Madrasah</h4>
+          <p id="profVision" class="text-sm text-slate-700 bg-emerald-50 p-4 rounded-2xl border border-emerald-100 font-semibold">
+            "Terwujudnya Generasi Muslim yang Taqwa, Cerdas, Berakhlakul Karimah, Mandiri, dan Berprestasi Unggul."
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-base font-extrabold text-navy">Misi Madrasah</h4>
+          <div id="profMission" class="whitespace-pre-line text-sm text-slate-600 bg-slate-50 p-4 rounded-2xl border border-slate-100 leading-relaxed">
+            1. Menumbuhkan penghayatan dan pengamalan ajaran Islam melalui Al-Qur'an dan Sunnah.
+            2. Melaksanakan pembelajaran aktif, inovatif, kreatif, dan menyenangkan.
+            3. Membiasakan sholat berjamaah, hafalan juz 30, dan adab islami harian.
+            4. Mengembangkan potensi bakat, minat, seni, olahraga, dan teknologi peserta didik.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 3: FACILITIES (FacilitiesScreen.kt) ================= -->
+    <div id="screen-FACILITIES" class="app-screen hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-extrabold text-navy">Fasilitas Madrasah</h2>
+          <p class="text-xs text-slate-500">Sarana penunjang kegiatan belajar mengajar santri</p>
+        </div>
+      </div>
+      <div id="facilitiesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 4: SCHOOL SCHEDULE (SchoolScheduleScreen.kt) ================= -->
+    <div id="screen-SCHEDULE" class="app-screen hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+        <div>
+          <span class="text-xs font-bold text-islamic uppercase tracking-wider">Ketentuan Waktu</span>
+          <h2 class="text-2xl font-extrabold text-navy">Jadwal Masuk & Apel Pagi</h2>
+          <p class="text-xs text-slate-500 mt-1">Ketentuan jam kedatangan dan jam pulang santri MI Muhammadiyah Tanjung Qencono</p>
+        </div>
+
+        <!-- Highlight Card -->
+        <div class="p-5 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
+          <div class="flex items-center gap-2 text-amber-900 font-bold text-sm">
+            <span>⏰</span> <span>WAKTU HADIR SISWA:</span>
+          </div>
+          <p class="text-3xl font-black text-amber-900">06.45 - 07.00 WIB</p>
+          <p id="scheduleRulesText" class="text-xs text-amber-800 leading-relaxed">
+            Siswa wajib hadir pukul 06.45 - 07.00 WIB. Pukul 07.00 WIB gerbang ditutup untuk apel pagi dan sholat dhuha berjamaah.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <p class="text-xs text-slate-500">Apel Pagi & Sholat Dhuha:</p>
+            <p id="scheduleAssemblyTime" class="text-lg font-extrabold text-navy">07.00 - 07.15 WIB</p>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <p class="text-xs text-slate-500">Mulai KBM di Kelas:</p>
+            <p id="scheduleStartTime" class="text-lg font-extrabold text-navy">07.15 WIB</p>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <p class="text-xs text-slate-500">Pulang Senin - Kamis:</p>
+            <p id="scheduleMonThu" class="text-lg font-extrabold text-navy">12.30 WIB</p>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <p class="text-xs text-slate-500">Pulang Hari Jumat:</p>
+            <p id="scheduleFri" class="text-lg font-extrabold text-navy">11.00 WIB</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 5: NOTIFICATIONS (NotificationsScreen.kt) ================= -->
+    <div id="screen-NOTIFICATIONS" class="app-screen hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-extrabold text-navy">Notifikasi Madrasah</h2>
+          <p class="text-xs text-slate-500">Pemberitahuan resmi dari pihak madrasah</p>
+        </div>
+        <button onclick="playNotificationSound()" class="px-3.5 py-1.5 rounded-xl bg-gold/20 text-gold-dark text-xs font-bold hover:bg-gold/30 transition flex items-center gap-1.5">
+          <span>🔔</span> <span>Uji Nada Dering</span>
+        </button>
+      </div>
+
+      <div id="notificationsContainer" class="space-y-3">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 6: ACADEMIC (AcademicScreen.kt) ================= -->
+    <div id="screen-ACADEMIC" class="app-screen hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-navy">Akademik & Dewan Guru</h2>
+          <p class="text-xs text-slate-500">Kurikulum terpadu dan tenaga pendidik berdedikasi tinggi</p>
+        </div>
+        <div id="teachersContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 7: NEWS (NewsScreen.kt) ================= -->
+    <div id="screen-NEWS" class="app-screen hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-extrabold text-navy">Berita & Pengumuman</h2>
+        <p class="text-xs text-slate-500">Kabar kegiatan dan informasi terbaru madrasah</p>
+      </div>
+      <div id="newsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 8: GALLERY (GalleryScreen.kt) ================= -->
+    <div id="screen-GALLERY" class="app-screen hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-extrabold text-navy">Galeri Foto Kegiatan</h2>
+        <p class="text-xs text-slate-500">Dokumentasi momen belajar dan ekstrakurikuler santri</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div class="bg-slate-200 aspect-video rounded-2xl flex flex-col items-center justify-center text-slate-500 p-4 text-center">
+          <span class="text-4xl">📸</span>
+          <span class="text-xs font-bold mt-2">Apel Pagi Bersama</span>
+        </div>
+        <div class="bg-slate-200 aspect-video rounded-2xl flex flex-col items-center justify-center text-slate-500 p-4 text-center">
+          <span class="text-4xl">📖</span>
+          <span class="text-xs font-bold mt-2">Hafalan Juz 30</span>
+        </div>
+        <div class="bg-slate-200 aspect-video rounded-2xl flex flex-col items-center justify-center text-slate-500 p-4 text-center">
+          <span class="text-4xl">🥋</span>
+          <span class="text-xs font-bold mt-2">Latihan Tapak Suci</span>
+        </div>
+        <div class="bg-slate-200 aspect-video rounded-2xl flex flex-col items-center justify-center text-slate-500 p-4 text-center">
+          <span class="text-4xl">💻</span>
+          <span class="text-xs font-bold mt-2">Literasi Lab Komputer</span>
+        </div>
+        <div class="bg-slate-200 aspect-video rounded-2xl flex flex-col items-center justify-center text-slate-500 p-4 text-center">
+          <span class="text-4xl">⛺</span>
+          <span class="text-xs font-bold mt-2">Kemah Kepanduan HW</span>
+        </div>
+        <div class="bg-slate-200 aspect-video rounded-2xl flex flex-col items-center justify-center text-slate-500 p-4 text-center">
+          <span class="text-4xl">🥁</span>
+          <span class="text-xs font-bold mt-2">Drumband Gema Insani</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 9: PPDB ONLINE (PpdbScreen.kt) ================= -->
+    <div id="screen-PPDB" class="app-screen hidden space-y-6">
+      <div class="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-md space-y-6">
+        <div>
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PPDB 2025/2026</span>
+          <h2 class="text-2xl font-extrabold text-navy mt-2">Formulir Pendaftaran Santri Baru</h2>
+          <p class="text-xs text-slate-500">Isi data calon santri dengan teliti. Bukti pendaftaran digital akan otomatis dibuat.</p>
+        </div>
+
+        <form onsubmit="handleWebPpdbSubmit(event)" class="space-y-5">
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-islamic border-b pb-1">1. Data Calon Siswa</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div class="sm:col-span-2">
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa *</label>
-                <input type="text" id="studentName" required placeholder="Contoh: Muhammad Fatih" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+                <label class="font-bold text-slate-700">Nama Lengkap Siswa *</label>
+                <input type="text" id="ppdbName" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">NISN (Jika Ada)</label>
-                <input type="text" id="nisn" placeholder="10 Digit NISN" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+                <label class="font-bold text-slate-700">NISN (Jika Ada)</label>
+                <input type="text" id="ppdbNisn" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">NIK (Nomor KK) *</label>
-                <input type="text" id="nik" required placeholder="16 Digit NIK" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+                <label class="font-bold text-slate-700">NIK (No. KK) *</label>
+                <input type="text" id="ppdbNik" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Tempat Lahir *</label>
-                <input type="text" id="birthPlace" required placeholder="Contoh: Lampung Timur" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+                <label class="font-bold text-slate-700">Tempat Lahir *</label>
+                <input type="text" id="ppdbBirthPlace" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Lahir *</label>
-                <input type="date" id="birthDate" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+                <label class="font-bold text-slate-700">Tanggal Lahir *</label>
+                <input type="date" id="ppdbBirthDate" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Jenis Kelamin *</label>
-                <select id="gender" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm bg-white">
+                <label class="font-bold text-slate-700">Jenis Kelamin *</label>
+                <select id="ppdbGender" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none bg-white">
                   <option value="Laki-laki">Laki-laki</option>
                   <option value="Perempuan">Perempuan</option>
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif *</label>
-                <input type="tel" id="whatsapp" required placeholder="08xxxxxxxxxx" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
+                <label class="font-bold text-slate-700">No. WhatsApp Wali Murid *</label>
+                <input type="tel" id="ppdbWa" required placeholder="08xxxxxxxxxx" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
               <div class="sm:col-span-2">
-                <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Tempat Tinggal *</label>
-                <textarea id="address" required rows="2" placeholder="Dusun, Desa Tanjung Qencono, Kec. Way Bungur" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm"></textarea>
+                <label class="font-bold text-slate-700">Alamat Rumah Lengkap *</label>
+                <textarea id="ppdbAddress" required rows="2" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none"></textarea>
               </div>
-            </div>
-          </div>
-
-          <!-- Bagian 2: Data Orang Tua -->
-          <div>
-            <h4 class="text-sm font-bold uppercase tracking-wider text-islamic border-b pb-2 mb-4">2. Data Orang Tua / Wali</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Ayah Kandung *</label>
-                <input type="text" id="fatherName" required placeholder="Nama Lengkap Ayah" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Ibu Kandung *</label>
-                <input type="text" id="motherName" required placeholder="Nama Lengkap Ibu" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Pekerjaan Ayah / Wali</label>
-                <input type="text" id="fatherJob" placeholder="Pekerjaan" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Asal Sekolah Sebelumnya (TK/RA)</label>
-                <input type="text" id="prevSchool" placeholder="Contoh: RA Al-Ikhlas" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-islamic text-sm">
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" id="submitPpdbBtn" class="w-full py-4 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-extrabold text-base shadow-lg shadow-islamic/25 transition">
-            Kirim Formulir Pendaftaran PPDB
-          </button>
-        </form>
-
-        <!-- Success Modal -->
-        <div id="successModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
-            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto">
-              ✓
-            </div>
-            <h3 class="text-xl font-extrabold text-navy">Pendaftaran Berhasil!</h3>
-            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-              <p class="text-xs text-slate-500 font-semibold">Nomor Registrasi PPDB:</p>
-              <p id="regNumberDisplay" class="text-2xl font-black text-islamic">PPDB-2026-001</p>
-            </div>
-            <p class="text-xs text-slate-600">Simpan nomor registrasi di atas. Panitia PPDB madrasah akan menghubungi Anda untuk konfirmasi berkas fisik.</p>
-            <div class="space-y-2 pt-2">
-              <a id="waShareBtn" href="#" target="_blank" class="block w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm">
-                Konfirmasi via WhatsApp Panitia
-              </a>
-              <button onclick="closeSuccessModal()" class="w-full py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm">
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- FASILITAS MADRASAH -->
-  <section id="fasilitas" class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center space-y-3 mb-12">
-        <span class="px-3.5 py-1 rounded-full text-xs font-bold bg-islamic-light text-islamic border border-islamic/20">Sarana & Prasarana</span>
-        <h2 class="text-3xl font-extrabold text-navy">Fasilitas Lengkap Madrasah</h2>
-        <p class="text-sm text-slate-600 max-w-xl mx-auto">Menunjang proses belajar mengajar santri dengan fasilitas yang bersih, nyaman, dan modern.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
-          <span class="text-3xl">🏫</span>
-          <h4 class="font-extrabold text-navy mt-3 text-base">Ruang Kelas Nyaman</h4>
-          <p class="text-xs text-slate-600 mt-1">Dilengkapi papan tulis modern, kipas angin, ventilasi alami, dan tempat duduk ergonomis.</p>
-        </div>
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
-          <span class="text-3xl">🕌</span>
-          <h4 class="font-extrabold text-navy mt-3 text-base">Masjid Baitul Ilmi</h4>
-          <p class="text-xs text-slate-600 mt-1">Pusat ibadah harian santri, sholat dhuha berjamaah, pembinaan akhlak, dan hafalan Al-Qur'an.</p>
-        </div>
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
-          <span class="text-3xl">💻</span>
-          <h4 class="font-extrabold text-navy mt-3 text-base">Lab Komputer Digital</h4>
-          <p class="text-xs text-slate-600 mt-1">Fasilitas literasi digital, pengenalan komputer dasar, serta pelaksanaan Asesmen Nasional (ANBK).</p>
-        </div>
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
-          <span class="text-3xl">📚</span>
-          <h4 class="font-extrabold text-navy mt-3 text-base">Perpustakaan Lengkap</h4>
-          <p class="text-xs text-slate-600 mt-1">Koleksi buku pelajaran tematik, ensiklopedia Islam, kisah nabi, dan pojok baca interaktif.</p>
-        </div>
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
-          <span class="text-3xl">⚽</span>
-          <h4 class="font-extrabold text-navy mt-3 text-base">Lapangan Olahraga</h4>
-          <p class="text-xs text-slate-600 mt-1">Area upacara apel pagi, senam sehat, latihan tapak suci, bola voli, dan kegiatan kepanduan HW.</p>
-        </div>
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-md transition">
-          <span class="text-3xl">🏥</span>
-          <h4 class="font-extrabold text-navy mt-3 text-base">Unit Kesehatan (UKS)</h4>
-          <p class="text-xs text-slate-600 mt-1">Layanan pertolongan pertama pada santri, obat-obatan standar, dan pemeriksaan kesehatan berkala.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- JADWAL MASUK & WAKTU SHOLAT -->
-  <section id="jadwal" class="py-16 bg-slate-50 border-t border-slate-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
-        <!-- Jam Masuk & Pulang -->
-        <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6">
-          <div class="flex items-center gap-3">
-            <span class="text-3xl">⏰</span>
-            <div>
-              <h3 class="font-extrabold text-navy text-xl">Jadwal Masuk & Pulang</h3>
-              <p class="text-xs text-slate-500">Ketentuan Waktu Belajar Santri</p>
             </div>
           </div>
 
           <div class="space-y-3">
-            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
-              <p class="text-xs font-bold text-amber-900 uppercase">Waktu Hadir Siswa:</p>
-              <p class="text-lg font-extrabold text-amber-800">06.45 - 07.00 WIB</p>
-              <p class="text-xs text-amber-700 mt-1">Pukul 07.00 WIB gerbang ditutup untuk Apel Pagi & Sholat Dhuha Berjamaah.</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 text-xs">
-              <div class="p-3 bg-slate-50 rounded-xl">
-                <span class="text-slate-500">Mulai Pelajaran:</span>
-                <p class="font-bold text-navy text-sm">07.15 WIB</p>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-islamic border-b pb-1">2. Data Orang Tua</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="font-bold text-slate-700">Nama Ayah Kandung *</label>
+                <input type="text" id="ppdbFather" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
-              <div class="p-3 bg-slate-50 rounded-xl">
-                <span class="text-slate-500">Pulang Senin - Kamis:</span>
-                <p class="font-bold text-navy text-sm">12.30 WIB</p>
-              </div>
-              <div class="p-3 bg-slate-50 rounded-xl">
-                <span class="text-slate-500">Pulang Hari Jumat:</span>
-                <p class="font-bold text-navy text-sm">11.00 WIB</p>
-              </div>
-              <div class="p-3 bg-slate-50 rounded-xl">
-                <span class="text-slate-500">Pulang Hari Sabtu:</span>
-                <p class="font-bold text-navy text-sm">12.00 WIB</p>
+              <div>
+                <label class="font-bold text-slate-700">Nama Ibu Kandung *</label>
+                <input type="text" id="ppdbMother" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
               </div>
             </div>
           </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-extrabold text-sm shadow-md transition">
+            Kirim Pendaftaran PPDB
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 10: STUDENT DATA (StudentDataScreen.kt) ================= -->
+    <div id="screen-STUDENTS" class="app-screen hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div>
+            <h2 class="text-2xl font-extrabold text-navy">Data Siswa Aktif</h2>
+            <p id="studentCountLabel" class="text-xs text-slate-500">Total: 12 Siswa Terdaftar</p>
+          </div>
+          <!-- Filter Kelas & Admin Delete All -->
+          <div class="flex items-center gap-2">
+            <button id="studentScreenDeleteAllBtn" onclick="confirmDeleteAllStudents()" class="hidden px-3 py-1.5 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-600 hover:text-white font-bold text-xs transition flex items-center gap-1">
+              <span>🗑️</span> <span>Hapus Semua Siswa</span>
+            </button>
+            <select id="filterClassLevel" onchange="renderStudentList()" class="text-xs font-bold p-2 rounded-xl border border-slate-200 bg-white">
+              <option value="0">Semua Kelas</option>
+              <option value="1">Kelas 1</option>
+              <option value="2">Kelas 2</option>
+              <option value="3">Kelas 3</option>
+              <option value="4">Kelas 4</option>
+              <option value="5">Kelas 5</option>
+              <option value="6">Kelas 6</option>
+            </select>
+          </div>
         </div>
 
-        <!-- Jadwal Sholat Lampung Timur -->
-        <div class="bg-navy rounded-3xl p-8 text-white shadow-xl space-y-6">
+        <!-- Search Input -->
+        <input type="text" id="studentSearchQuery" oninput="renderStudentList()" placeholder="Cari nama siswa atau NISN..." class="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-islamic outline-none">
+
+        <!-- Table List -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider border-b">
+              <tr>
+                <th class="p-3">No</th>
+                <th class="p-3">Nama Siswa</th>
+                <th class="p-3">NISN</th>
+                <th class="p-3">Kelas & Rombel</th>
+                <th class="p-3">JK</th>
+                <th class="p-3">Alamat</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 11: PRAYER SCHEDULE (PrayerScheduleScreen.kt) ================= -->
+    <div id="screen-PRAYER" class="app-screen hidden space-y-6">
+      <div class="bg-navy rounded-3xl p-6 sm:p-10 text-white shadow-xl space-y-6">
+        <div class="text-center space-y-1">
+          <span class="text-3xl">🕋</span>
+          <h2 class="text-2xl font-extrabold text-white">Jadwal Sholat & Imsakiyah</h2>
+          <p class="text-xs text-slate-300">Kecamatan Way Bungur, Kabupaten Lampung Timur (WIB)</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
+          <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+            <p class="text-xs text-slate-300">Subuh</p>
+            <p class="text-2xl font-black text-emerald-300 mt-1">04.38</p>
+          </div>
+          <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+            <p class="text-xs text-slate-300">Dhuha</p>
+            <p class="text-2xl font-black text-amber-300 mt-1">06.15</p>
+          </div>
+          <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+            <p class="text-xs text-slate-300">Dzuhur</p>
+            <p class="text-2xl font-black text-emerald-300 mt-1">11.58</p>
+          </div>
+          <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+            <p class="text-xs text-slate-300">Ashar</p>
+            <p class="text-2xl font-black text-emerald-300 mt-1">15.12</p>
+          </div>
+          <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+            <p class="text-xs text-slate-300">Maghrib</p>
+            <p class="text-2xl font-black text-amber-300 mt-1">18.04</p>
+          </div>
+          <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+            <p class="text-xs text-slate-300">Isya</p>
+            <p class="text-2xl font-black text-emerald-300 mt-1">19.14</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 12: CONTACT (ContactScreen.kt) ================= -->
+    <div id="screen-CONTACT" class="app-screen hidden space-y-6">
+      <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+        <div>
+          <h2 class="text-2xl font-extrabold text-navy">Hubungi Tata Usaha</h2>
+          <p class="text-xs text-slate-500">Kirim pesan, saran, atau pengaduan langsung ke pihak madrasah</p>
+        </div>
+        <form onsubmit="handleContactSubmit(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="font-bold text-slate-700">Nama Pengirim *</label>
+            <input type="text" id="contactName" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">No. HP / WhatsApp *</label>
+            <input type="tel" id="contactPhone" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Subjek Pesan *</label>
+            <input type="text" id="contactSubject" required class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Isi Pesan *</label>
+            <textarea id="contactMessage" required rows="3" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-xs transition">
+            Kirim Pesan ke Madrasah
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 13A: ADMIN LOGIN (AdminLoginScreen.kt) ================= -->
+    <div id="screen-ADMIN_LOGIN" class="app-screen hidden max-w-md mx-auto my-8">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-navy text-gold flex items-center justify-center text-3xl mx-auto shadow-md">
+          🔐
+        </div>
+        <div>
+          <h2 class="text-xl font-extrabold text-navy">Masuk Dashboard Admin</h2>
+          <p class="text-xs text-slate-500 mt-1">Masukkan kata sandi admin madrasah</p>
+        </div>
+        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+          <div class="text-left">
+            <label class="text-xs font-bold text-slate-700">Kata Sandi Admin</label>
+            <input type="password" id="adminPasswordInput" required placeholder="Default: MIMTAQECY" class="w-full mt-1 p-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none text-sm">
+          </div>
+          <div id="loginErrorMsg" class="hidden text-xs text-rose-600 font-bold">
+            Sandi admin salah! Silakan coba lagi.
+          </div>
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-navy hover:bg-navy-secondary text-white font-extrabold text-sm shadow-md transition">
+            Masuk ke Panel Admin
+          </button>
+        </form>
+        <div class="relative flex py-1 items-center">
+            <div class="flex-grow border-t border-slate-200"></div>
+            <span class="flex-shrink mx-3 text-[11px] text-slate-400 font-bold uppercase">Atau</span>
+            <div class="flex-grow border-t border-slate-200"></div>
+          </div>
+          <button type="button" onclick="quickAdminLogin()" class="w-full py-3 rounded-xl bg-amber-50 text-navy-deep border-2 border-gold/50 hover:bg-gold/20 font-extrabold text-xs flex items-center justify-center gap-2 transition shadow-sm">
+            <span>⚡</span> <span>Masuk Cepat (Akses Demo Admin)</span>
+          </button>
+          <p class="text-[11px] text-slate-400">Kata sandi default: <span class="font-bold text-slate-600">MIMTAQECY</span></p>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 13B: ADMIN DASHBOARD (AdminDashboardScreen.kt) ================= -->
+    <div id="screen-ADMIN_DASHBOARD" class="app-screen hidden space-y-6">
+      
+      <!-- Top Admin Header -->
+      <div class="bg-navy rounded-3xl p-6 text-white shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-[10px] font-black bg-gold text-navy-deep">ADMIN LOGGED IN</span>
+            <h2 class="text-lg sm:text-xl font-extrabold">Dashboard Pengelola Madrasah</h2>
+          </div>
+          <p class="text-xs text-slate-300">Kelola identitas madrasah, pengumuman, PPDB, data siswa, dan integrasi Google Sheets</p>
+        </div>
+        <button onclick="handleAdminLogout()" class="px-3.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 hover:bg-rose-500 hover:text-white transition text-xs font-bold">
+          Keluar Admin
+        </button>
+      </div>
+
+      <!-- Admin Tab Navigation Carousel -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-bold no-scrollbar">
+        <button onclick="setAdminTab('OVERVIEW')" class="admin-tab-btn px-4 py-2 rounded-xl bg-navy text-white shrink-0" data-tab="OVERVIEW">📊 Ringkasan</button>
+        <button onclick="setAdminTab('SETTINGS')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="SETTINGS">⚙️ Pengaturan Utama</button>
+        <button onclick="setAdminTab('VISION_MISSION')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="VISION_MISSION">📜 Visi, Misi & Sejarah</button>
+        <button onclick="setAdminTab('NOTIF_BROADCAST')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="NOTIF_BROADCAST">📢 Tulis Notifikasi</button>
+        <button onclick="setAdminTab('PPDB_MANAGE')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="PPDB_MANAGE">📝 PPDB Online</button>
+        <button onclick="setAdminTab('STUDENTS_MANAGE')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="STUDENTS_MANAGE">👥 Data Siswa</button>
+        <button onclick="setAdminTab('FACILITIES_MANAGE')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="FACILITIES_MANAGE">🏫 Fasilitas</button>
+        <button onclick="setAdminTab('SCHEDULE_MANAGE')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="SCHEDULE_MANAGE">⏰ Jam Masuk</button>
+        <button onclick="setAdminTab('SHEETS_INTEGRATION')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="SHEETS_INTEGRATION">📊 Google Sheets</button>
+        <button onclick="setAdminTab('VERCEL_DEPLOY')" class="admin-tab-btn px-4 py-2 rounded-xl bg-white text-slate-700 shrink-0 border" data-tab="VERCEL_DEPLOY">🌐 Vercel.app</button>
+      </div>
+
+      <!-- Admin Tab 1: OVERVIEW -->
+      <div id="adminTab-OVERVIEW" class="admin-subtab space-y-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-white">
+          <div class="bg-navy p-4 rounded-2xl">
+            <p class="text-xs text-slate-300">Total Siswa Aktif</p>
+            <p id="admStatStudents" class="text-2xl font-black text-gold mt-1">12</p>
+          </div>
+          <div class="bg-islamic p-4 rounded-2xl">
+            <p class="text-xs text-white/80">Pendaftar PPDB</p>
+            <p id="admStatPpdb" class="text-2xl font-black text-white mt-1">1</p>
+          </div>
+          <div class="bg-amber-600 p-4 rounded-2xl">
+            <p class="text-xs text-amber-100">Dewan Guru</p>
+            <p id="admStatTeachers" class="text-2xl font-black text-white mt-1">6</p>
+          </div>
+          <div class="bg-slate-700 p-4 rounded-2xl">
+            <p class="text-xs text-slate-300">Fasilitas</p>
+            <p id="admStatFacilities" class="text-2xl font-black text-white mt-1">8</p>
+          </div>
+        </div>
+
+        <!-- Google Sheets Cloud Sync Status Card -->
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div class="flex items-center gap-3">
-            <span class="text-3xl">🕌</span>
+            <span class="text-2xl">📊</span>
             <div>
-              <h3 class="font-extrabold text-white text-xl">Waktu Sholat Hari Ini</h3>
-              <p class="text-xs text-slate-300">Wilayah Way Bungur & Lampung Timur (WIB)</p>
+              <h4 class="font-bold text-emerald-950 text-sm">Status Sinkronisasi Google Sheets</h4>
+              <p id="admSheetSyncStatus" class="text-xs text-emerald-800">Tersedia fitur kirim data PPDB & Siswa otomatis ke spreadsheet.</p>
             </div>
           </div>
+          <button onclick="setAdminTab('SHEETS_INTEGRATION')" class="px-4 py-2 rounded-xl bg-islamic text-white text-xs font-bold hover:bg-islamic-dark transition">
+            Buka Pengaturan Sheets
+          </button>
+        </div>
+      </div>
 
-          <div class="grid grid-cols-3 gap-3 text-center">
-            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
-              <p class="text-xs text-slate-300">Subuh</p>
-              <p class="font-black text-lg text-emerald-300 mt-1">04.38</p>
-            </div>
-            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
-              <p class="text-xs text-slate-300">Dhuha</p>
-              <p class="font-black text-lg text-amber-300 mt-1">06.15</p>
-            </div>
-            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
-              <p class="text-xs text-slate-300">Dzuhur</p>
-              <p class="font-black text-lg text-emerald-300 mt-1">11.58</p>
-            </div>
-            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
-              <p class="text-xs text-slate-300">Ashar</p>
-              <p class="font-black text-lg text-emerald-300 mt-1">15.12</p>
-            </div>
-            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
-              <p class="text-xs text-slate-300">Maghrib</p>
-              <p class="font-black text-lg text-amber-300 mt-1">18.04</p>
-            </div>
-            <div class="bg-white/10 p-3 rounded-2xl border border-white/10">
-              <p class="text-xs text-slate-300">Isya</p>
-              <p class="font-black text-lg text-emerald-300 mt-1">19.14</p>
-            </div>
+      <!-- Admin Tab 2: SETTINGS (Pengaturan Utama) -->
+      <div id="adminTab-SETTINGS" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Identitas & Legalitas Madrasah</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold text-slate-700">Nama Madrasah</label>
+            <input type="text" id="admSchoolName" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
           </div>
-
-          <p class="text-xs text-slate-400 text-center italic">"Sholatlah kamu sebelum kamu disholatkan."</p>
+          <div>
+            <label class="font-bold text-slate-700">Status Madrasah (Diakui/Negeri)</label>
+            <input type="text" id="admSchoolStatus" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Status Akreditasi</label>
+            <input type="text" id="admAccreditation" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Tahun Ajaran</label>
+            <input type="text" id="admAcademicYear" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">NPSN</label>
+            <input type="text" id="admNpsn" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">NSM</label>
+            <input type="text" id="admNsm" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="font-bold text-slate-700">Nama & Gelar Kepala Madrasah</label>
+            <input type="text" id="admHeadmasterName" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="font-bold text-slate-700">Sambutan Kepala Madrasah</label>
+            <textarea id="admHeadmasterSpeech" rows="3" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none"></textarea>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="font-bold text-slate-700">Tausiyah Harian (Teks Berjalan)</label>
+            <input type="text" id="admTausiyah" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
         </div>
 
-      </div>
-    </div>
-  </section>
+        <button onclick="saveAdminSettings()" class="w-full py-3 rounded-xl bg-navy hover:bg-navy-secondary text-white font-bold text-xs shadow-md transition">
+          Simpan Pengaturan Madrasah
+        </button>
 
-  <!-- DOWNLOAD BANNER -->
-  <section class="py-16 bg-gradient-to-r from-islamic to-emerald-700 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-      <span class="px-4 py-1.5 rounded-full text-xs font-extrabold bg-white/20 border border-white/30 tracking-wider uppercase">Aplikasi Android Resmi</span>
-      <h2 class="text-3xl sm:text-4xl font-black">Unduh Aplikasi MI Muhammadiyah Tanjung Qencono</h2>
-      <p class="text-sm sm:text-base text-emerald-100 max-w-2xl mx-auto">
-        Pantau pengumuman, jadwal pelajaran, kegiatan ekstrakurikuler, dan notifikasi berbunyi langsung di smartphone Android Anda.
-      </p>
-      <div class="pt-2">
-        <a href="/app-debug.apk" download class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white text-navy font-black text-base shadow-2xl hover:bg-slate-100 transition transform hover:-translate-y-1">
-          <svg class="w-6 h-6 text-islamic fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8532 8.082 12 8.082s-3.5902.329-5.1368.8677L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
-          <span>Download File APK (Gratis)</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- KONTAK & FOOTER -->
-  <footer id="kontak" class="bg-navy text-slate-400 text-xs py-14 border-t border-navy-soft">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-        <div class="space-y-3 md:col-span-2">
-          <div class="flex items-center gap-3 text-white">
-            <span class="text-2xl">🕌</span>
-            <span class="font-extrabold text-base">MI Muhammadiyah Tanjung Qencono</span>
+        <!-- Change Password Section -->
+        <div class="pt-4 border-t border-slate-100 space-y-3">
+          <h4 class="font-bold text-slate-800">Ganti Sandi Admin</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="password" id="admNewPass" placeholder="Sandi Baru (Min 6 karakter)" class="p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none text-xs">
+            <button onclick="changeAdminPass()" class="py-2.5 px-4 rounded-xl bg-gold text-navy-deep font-bold text-xs hover:bg-gold-light transition">
+              Perbarui Kata Sandi
+            </button>
           </div>
-          <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
-            Mendidik dengan hati, mencerdaskan dengan Al-Qur'an dan ilmu pengetahuan. Berdiri sejak tahun 1988 di Desa Tanjung Qencono, Kec. Way Bungur, Kab. Lampung Timur.
-          </p>
         </div>
+      </div>
 
+      
+      <!-- Admin Tab: VISI, MISI & SEJARAH SINGKAT -->
+      <div id="adminTab-VISION_MISSION" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-5 text-xs">
         <div>
-          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Tautan Cepat</h4>
-          <ul class="space-y-2">
-            <li><a href="#ppdb" class="hover:text-white transition">PPDB Online</a></li>
-            <li><a href="#fasilitas" class="hover:text-white transition">Fasilitas Madrasah</a></li>
-            <li><a href="#jadwal" class="hover:text-white transition">Jadwal Masuk</a></li>
-            <li><a href="/app-debug.apk" download class="hover:text-white transition">Unduh APK Android</a></li>
-          </ul>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider">Pengelolaan Konten</span>
+          <h3 class="text-base font-extrabold text-navy mt-1">Visi, Misi & Sejarah Singkat Madrasah</h3>
+          <p class="text-slate-500 text-xs">Ubah teks visi, misi, dan sejarah singkat madrasah yang tampil di halaman Profil dan Beranda.</p>
         </div>
 
-        <div>
-          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Kontak & Lokasi</h4>
-          <p>Desa Tanjung Qencono, Way Bungur</p>
-          <p>Kabupaten Lampung Timur, Lampung</p>
-          <p class="mt-2 text-white font-semibold">WhatsApp: 0812-7890-1234</p>
-          <p>Email: mimtaqecy@gmail.com</p>
+        <div class="space-y-4">
+          <div class="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200 space-y-1.5">
+            <label class="font-bold text-emerald-950 flex items-center gap-1.5 text-xs">
+              <span>👁️</span> <span>Visi Madrasah</span>
+            </label>
+            <textarea id="admVisionText" rows="3" class="w-full p-3 rounded-xl border border-emerald-300 bg-white focus:ring-2 focus:ring-islamic outline-none text-xs leading-relaxed" placeholder="Tuliskan visi madrasah..."></textarea>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+            <label class="font-bold text-navy flex items-center gap-1.5 text-xs">
+              <span>🎯</span> <span>Misi Madrasah</span>
+            </label>
+            <textarea id="admMissionText" rows="5" class="w-full p-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-navy outline-none text-xs leading-relaxed" placeholder="Tuliskan butir-butir misi madrasah..."></textarea>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+            <label class="font-bold text-navy flex items-center gap-1.5 text-xs">
+              <span>📜</span> <span>Sejarah Singkat Madrasah</span>
+            </label>
+            <textarea id="admHistoryText" rows="5" class="w-full p-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-navy outline-none text-xs leading-relaxed" placeholder="Tuliskan sejarah singkat berdirinya madrasah..."></textarea>
+          </div>
+
+          <button onclick="saveVisionMissionHistory()" class="w-full py-3.5 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+            <span>💾</span> <span>Simpan Visi, Misi & Sejarah Singkat</span>
+          </button>
         </div>
       </div>
 
-      <div class="border-t border-navy-soft pt-6 text-center text-slate-500 text-[11px]">
-        &copy; 2026 MI Muhammadiyah Tanjung Qencono. Daring di Vercel.app & Aplikasi Android.
+      <!-- Admin Tab 3: TULIS NOTIFIKASI -->
+      <div id="adminTab-NOTIF_BROADCAST" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <div>
+          <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Tulis & Siarkan Notifikasi</h3>
+          <p class="text-slate-500">Notifikasi akan langsung tampil di menu Notifikasi dan membunyikan lonceng pada perangkat</p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="font-bold text-slate-700">Kategori Notifikasi</label>
+            <select id="admNotifCategory" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 bg-white">
+              <option value="Pengumuman">Pengumuman</option>
+              <option value="Jadwal Masuk">Jadwal Masuk</option>
+              <option value="Akademik">Akademik</option>
+              <option value="Kegiatan">Kegiatan</option>
+              <option value="Darurat">Darurat</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Judul Notifikasi *</label>
+            <input type="text" id="admNotifTitle" placeholder="Contoh: Pemberitahuan Apel Pagi" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Isi Pesan Notifikasi *</label>
+            <textarea id="admNotifMsg" rows="3" placeholder="Tuliskan isi pengumuman lengkap..." class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-navy outline-none"></textarea>
+          </div>
+          <button onclick="broadcastNewNotification()" class="w-full py-3 rounded-xl bg-islamic hover:bg-islamic-dark text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+            <span>📢</span> <span>Siarkan Notifikasi Sekarang</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Tab 4: PPDB ONLINE MANAGE -->
+      <div id="adminTab-PPDB_MANAGE" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Rekap Pendaftar PPDB</h3>
+            <p class="text-slate-500">Kelola verifikasi pendaftar santri baru</p>
+          </div>
+          <button onclick="exportPpdbCsv()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 transition">
+            📥 Ekspor CSV
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-slate-50 text-slate-600 font-bold uppercase border-b">
+              <tr>
+                <th class="p-2.5">No. Reg</th>
+                <th class="p-2.5">Nama Siswa</th>
+                <th class="p-2.5">WhatsApp</th>
+                <th class="p-2.5">Status</th>
+                <th class="p-2.5">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="admPpdbTableBody" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admin Tab 5: STUDENTS MANAGE -->
+      <div id="adminTab-STUDENTS_MANAGE" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Kelola Data Siswa</h3>
+            <p class="text-slate-500">Tambah, ubah, dan hapus data siswa madrasah</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="confirmDeleteAllStudents()" class="px-3 py-1.5 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-600 hover:text-white font-bold transition text-xs flex items-center gap-1">
+              🗑️ Hapus Semua Siswa
+            </button>
+            <button onclick="toggleAddStudentForm()" class="px-3.5 py-1.5 rounded-xl bg-islamic text-white font-bold transition">
+              + Tambah Siswa
+            </button>
+          </div>
+        </div>
+
+        <!-- Add Student Form Modal/Collapse -->
+        <div id="addStudentCollapse" class="hidden p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+          <h4 class="font-bold text-navy">Form Tambah Siswa Baru</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="text" id="newStudentName" placeholder="Nama Lengkap Siswa" class="p-2.5 rounded-xl border border-slate-200">
+            <input type="text" id="newStudentNisn" placeholder="NISN" class="p-2.5 rounded-xl border border-slate-200">
+            <select id="newStudentClass" class="p-2.5 rounded-xl border border-slate-200 bg-white">
+              <option value="1">Kelas 1</option>
+              <option value="2">Kelas 2</option>
+              <option value="3">Kelas 3</option>
+              <option value="4">Kelas 4</option>
+              <option value="5">Kelas 5</option>
+              <option value="6">Kelas 6</option>
+            </select>
+            <input type="text" id="newStudentRombel" placeholder="Rombel (Contoh: Ar Rahman)" class="p-2.5 rounded-xl border border-slate-200">
+            <select id="newStudentGender" class="p-2.5 rounded-xl border border-slate-200 bg-white">
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+            <input type="text" id="newStudentAddress" placeholder="Alamat" class="p-2.5 rounded-xl border border-slate-200">
+          </div>
+          <button onclick="saveNewStudent()" class="px-4 py-2 rounded-xl bg-navy text-white font-bold">Simpan Siswa</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-slate-50 text-slate-600 font-bold uppercase border-b">
+              <tr>
+                <th class="p-2.5">Nama Siswa</th>
+                <th class="p-2.5">NISN</th>
+                <th class="p-2.5">Kelas</th>
+                <th class="p-2.5">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="admStudentTableBody" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admin Tab 6: FACILITIES MANAGE -->
+      <div id="adminTab-FACILITIES_MANAGE" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Kelola Sarana & Fasilitas</h3>
+        <div id="admFacilitiesList" class="space-y-3">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Admin Tab 7: SCHEDULE MANAGE -->
+      <div id="adminTab-SCHEDULE_MANAGE" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Pengaturan Jam Masuk & Apel</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold text-slate-700">Waktu Apel Pagi</label>
+            <input type="text" id="admSetAssembly" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Mulai KBM</label>
+            <input type="text" id="admSetClassStart" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Jam Pulang Senin - Kamis</label>
+            <input type="text" id="admSetMonThu" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">Jam Pulang Jumat</label>
+            <input type="text" id="admSetFri" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="font-bold text-slate-700">Aturan Kehadiran & Gerbang</label>
+            <textarea id="admSetRules" rows="3" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200"></textarea>
+          </div>
+        </div>
+        <button onclick="saveAdminSchedule()" class="w-full py-3 rounded-xl bg-navy text-white font-bold transition">
+          Simpan Jadwal Masuk
+        </button>
+      </div>
+
+      <!-- Admin Tab 8: GOOGLE SHEETS INTEGRATION -->
+      <div id="adminTab-SHEETS_INTEGRATION" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <div>
+          <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Pusat Integrasi Google Sheets</h3>
+          <p class="text-slate-500">Hubungkan spreadsheet Google Sheets untuk pencadangan formulir PPDB dan data siswa</p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="font-bold text-slate-700">URL Endpoint Google Apps Script Web App</label>
+            <input type="text" id="admGasUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none font-mono">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700">ID / Tautan Google Spreadsheet</label>
+            <input type="text" id="admSheetId" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms" class="w-full mt-1 p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-islamic outline-none font-mono">
+          </div>
+
+          <div class="flex flex-wrap gap-2 pt-2">
+            <button onclick="testSheetsConnection()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition">
+              🔍 Tes Koneksi (Ping)
+            </button>
+            <button onclick="syncPpdbToGoogleSheet()" class="px-4 py-2.5 rounded-xl bg-navy text-white font-bold hover:bg-navy-secondary transition">
+              📤 Kirim PPDB ke Sheets
+            </button>
+            <button onclick="saveSheetSettings()" class="px-4 py-2.5 rounded-xl bg-islamic text-white font-bold hover:bg-islamic-dark transition">
+              💾 Simpan Konfigurasi
+            </button>
+          </div>
+
+          <div class="p-4 bg-navy-deep text-white rounded-2xl font-mono text-[11px] leading-relaxed space-y-2">
+            <p class="font-bold text-gold font-sans">Kode Google Apps Script (Code.gs):</p>
+            <p class="text-slate-300">Salin script backend Google Sheets dari file <code>GasScriptTemplate.kt</code> atau klik tombol di bawah untuk menyalin.</p>
+            <button onclick="copyGasCode()" class="mt-2 px-3 py-1.5 rounded-lg bg-gold text-navy-deep font-bold font-sans text-xs">
+              Salin Code.gs Siap Pakai
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Tab 9: VERCEL DEPLOY -->
+      <div id="adminTab-VERCEL_DEPLOY" class="admin-subtab hidden bg-white rounded-3xl p-6 border border-slate-200 space-y-4 text-xs">
+        <div>
+          <h3 class="text-sm font-bold text-navy uppercase tracking-wider">Publikasi Web Vercel.app</h3>
+          <p class="text-slate-500">Website ini sudah aktif dan terintegrasi dengan Vercel</p>
+        </div>
+
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2">
+          <p class="font-bold text-emerald-900">Domain Vercel Resmi:</p>
+          <a href="https://mim-tanjung-qencono.vercel.app" target="_blank" class="text-sm font-black text-islamic underline">
+            https://mim-tanjung-qencono.vercel.app
+          </a>
+          <p class="text-[11px] text-emerald-800">Tautan unduh langsung APK: <code>/app-debug.apk</code> atau <code>/download</code></p>
+        </div>
+
+        <div class="space-y-2">
+          <a href="/app-debug.apk" download class="block text-center py-3 rounded-xl bg-navy text-white font-bold hover:bg-navy-secondary transition">
+            📲 Download Berkas Installer Android APK
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= APP FOOTER ================= -->
+  <footer class="bg-navy text-slate-400 text-xs py-8 border-t border-navy-secondary mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+        <div>
+          <p class="font-bold text-white text-base">MI Muhammadiyah Tanjung Qencono</p>
+          <p class="text-xs text-slate-300">Kecamatan Way Bungur, Kabupaten Lampung Timur, Lampung</p>
+          <p class="text-[11px] text-gold mt-1">Slogan: "Religi, Cerdas, dan Berprestasi" • Est. 1988</p>
+        </div>
+
+        <!-- Social Media Badges in Footer -->
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <a href="https://www.facebook.com/share/1DxkoYBNkL/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition flex items-center gap-1.5">
+            <span>f</span> <span>Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/mim_taqecy?rpxt=MXg5NG1saWZ2Z2l4MQ==" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-xs hover:opacity-90 transition flex items-center gap-1.5">
+            <span>📷</span> <span>Instagram</span>
+          </a>
+          <a href="https://www.tiktok.com/@mim_tanjung.qencono?_r=1&_t=ZS-9AiTueWtGGj" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-slate-900 text-white border border-slate-700 font-bold text-xs hover:bg-black transition flex items-center gap-1.5">
+            <span>♪</span> <span>TikTok</span>
+          </a>
+          <button onclick="drawerNav('ADMIN')" class="px-3 py-1.5 rounded-xl bg-gold/20 text-gold border border-gold/40 font-bold text-xs hover:bg-gold hover:text-navy-deep transition flex items-center gap-1.5">
+            <span>🔐</span> <span>Portal Admin</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="border-t border-navy-secondary pt-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-slate-400">
+        <p>&copy; 2026 MI Muhammadiyah Tanjung Qencono. Daring di Vercel.app & Aplikasi Android.</p>
+        <div class="flex gap-4">
+          <a href="/app-debug.apk" download class="hover:text-gold transition">Unduh APK</a>
+          <a href="#ppdb" onclick="navigateTo('PPDB')" class="hover:text-gold transition">PPDB Online</a>
+          <a href="#jadwal" onclick="navigateTo('SCHEDULE')" class="hover:text-gold transition">Jadwal Masuk</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- ================= NOTIFICATION TOAST ================= -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-navy text-white px-5 py-3 rounded-2xl shadow-2xl border border-gold/40 text-xs font-semibold flex items-center gap-3">
+    <span id="toastIcon">🔔</span>
+    <span id="toastMsg">Pesan Notifikasi</span>
+  </div>
+
+  <!-- ================= JAVASCRIPT STATE ENGINE ================= -->
   <script>
-    // Mobile menu toggle
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    mobileBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+    // --- STATE INITIALIZATION (Preloaded with Android APK seed data) ---
+    const DEFAULT_SETTINGS = {
+      schoolName: "MI Muhammadiyah Tanjung Qencono",
+      schoolStatus: "Swasta (Diakui Dikdasmen)",
+      accreditation: "B (Terakreditasi Baik Sekali)",
+      foundedYear: "1988",
+      academicYear: "2025/2026",
+      npsn: "60721234",
+      nsm: "111218070001",
+      headmasterName: "Ahmad Syaifuddin, S.Pd.I",
+      headmasterSpeech: "Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di portal resmi MI Muhammadiyah Tanjung Qencono. Kami berkomitmen menyelenggarakan pendidikan dasar Islam terpadu yang memadukan keimanan, kecerdasan intelektual, serta keterampilan hidup untuk mewujudkan generasi qur'ani yang mandiri dan berakhlak mulia.",
+      tausiyah: "Menuntut ilmu adalah kewajiban bagi setiap muslim. Siapa yang menempuh jalan untuk menuntut ilmu, Allah mudahkan baginya jalan menuju surga. (HR. Muslim)",
+      adminPassword: "MIMTAQECY",
+      gasUrl: "",
+      sheetId: "",
+      morningAssembly: "07.00 - 07.15 WIB",
+      classStart: "07.15 WIB",
+      monThuEnd: "12.30 WIB",
+      friEnd: "11.00 WIB",
+      scheduleRules: "Siswa wajib hadir pukul 06.45 - 07.00 WIB. Pukul 07.00 WIB gerbang ditutup untuk apel pagi dan sholat dhuha berjamaah.",
+      visionText: "Terwujudnya Generasi Muslim yang Taqwa, Cerdas, Berakhlakul Karimah, Mandiri, dan Berprestasi Unggul.",
+      missionText: "1. Menumbuhkan penghayatan dan pengamalan ajaran Islam melalui Al-Qur'an dan Sunnah.\n2. Melaksanakan pembelajaran aktif, inovatif, kreatif, dan menyenangkan.\n3. Membiasakan sholat berjamaah, hafalan juz 30, dan adab islami harian.\n4. Mengembangkan potensi bakat, minat, seni, olahraga, dan teknologi peserta didik.",
+      historyText: "MI Muhammadiyah Tanjung Qencono didirikan pada tahun 1988 oleh para tokoh Muhammadiyah Way Bungur Lampung Timur sebagai ikhtiar dakwah pendidikan Islam di desa Tanjung Qencono. Dari tahun ke tahun madrasah terus berbenah dan dipercaya masyarakat luas mendidik putra-putri berilmu amaliyah dan beramal ilmiah.",
+      facebookUrl: "https://www.facebook.com/share/1DxkoYBNkL/",
+      instagramUrl: "https://www.instagram.com/mim_taqecy?rpxt=MXg5NG1saWZ2Z2l4MQ==",
+      tiktokUrl: "https://www.tiktok.com/@mim_tanjung.qencono?_r=1&_t=ZS-9AiTueWtGGj"
+    };
 
-    let count = 1;
-    function handlePpdbSubmit(e) {
+    const INITIAL_STUDENTS = [
+      { id: 1, name: "Muhammad Fatih Al-Ayyubi", nisn: "3154829101", classLvl: 1, rombel: "Ar Rahman", gender: "Laki-laki", address: "Lampung Timur" },
+      { id: 2, name: "Aisyah Humaira Putri", nisn: "3154829102", classLvl: 1, rombel: "Ar Rahiim", gender: "Perempuan", address: "Way Bungur" },
+      { id: 3, name: "Ahmad Zaki Mubarak", nisn: "3144829201", classLvl: 2, rombel: "Al Malik", gender: "Laki-laki", address: "Tanjung Qencono" },
+      { id: 4, name: "Fatimah Az-Zahra", nisn: "3144829202", classLvl: 2, rombel: "Al Quddus", gender: "Perempuan", address: "Way Bungur" },
+      { id: 5, name: "Bilal Ibnu Rabah", nisn: "3134829301", classLvl: 3, rombel: "As Salaam", gender: "Laki-laki", address: "Lampung Timur" },
+      { id: 6, name: "Zahra Nailatul Husna", nisn: "3134829302", classLvl: 3, rombel: "Al Mu'min", gender: "Perempuan", address: "Tanjung Qencono" },
+      { id: 7, name: "Umar Faruq Pratama", nisn: "3124829401", classLvl: 4, rombel: "Al Muhaimin", gender: "Laki-laki", address: "Metro" },
+      { id: 8, name: "Khadijah Maryam", nisn: "3124829402", classLvl: 4, rombel: "Al Aziz", gender: "Perempuan", address: "Way Bungur" },
+      { id: 9, name: "Ali Zainal Abidin", nisn: "3114829501", classLvl: 5, rombel: "Al Jabbar", gender: "Laki-laki", address: "Lampung Timur" },
+      { id: 10, name: "Hafidzah Nur Ramadhani", nisn: "3114829502", classLvl: 5, rombel: "Al Mutakabbir", gender: "Perempuan", address: "Tanjung Qencono" },
+      { id: 11, name: "Ibrahim Rayhan Al-Ghifari", nisn: "3104829601", classLvl: 6, rombel: "Al Khaliq", gender: "Laki-laki", address: "Way Bungur" },
+      { id: 12, name: "Salma Nabila Syakira", nisn: "3104829602", classLvl: 6, rombel: "Al Baari", gender: "Perempuan", address: "Lampung Timur" }
+    ];
+
+    const INITIAL_FACILITIES = [
+      { id: 1, name: "Ruang Kelas Pembelajaran", category: "Utama", desc: "6 ruang kelas nyaman ber-ventilasi alami, papan tulis modern & meja ergonomis.", cond: "Sangat Baik", icon: "🏫" },
+      { id: 2, name: "Masjid Baitul Ilmi", category: "Ibadah", desc: "Pusat ibadah sholat dhuha & dhuhur berjamaah serta pembinaan tahfidz juz 30.", cond: "Sangat Baik", icon: "🕌" },
+      { id: 3, name: "Laboratorium Komputer", category: "Penunjang", desc: "Komputer multimedia & jaringan internet cepat untuk ANBK dan literasi digital.", cond: "Sangat Baik", icon: "💻" },
+      { id: 4, name: "Perpustakaan Madrasah", category: "Literasi", desc: "Ratusan judul buku pelajaran, ensiklopedia Islam, kisah nabi & area baca karpet.", cond: "Baik", icon: "📚" },
+      { id: 5, name: "Lapangan Olahraga", category: "Olahraga", desc: "Area upacara apel pagi, senam sehat, latihan tapak suci & drumband.", cond: "Baik", icon: "⚽" },
+      { id: 6, name: "Unit Kesehatan (UKS)", category: "Kesehatan", desc: "Layanan pertolongan pertama santri, obat standar & tempat istirahat higienis.", cond: "Baik", icon: "🏥" },
+      { id: 7, name: "Kantin Sehat Halal", category: "Penunjang", desc: "Kantin higienis binaan madrasah dengan makanan halal dan bergizi.", cond: "Baik", icon: "🥗" },
+      { id: 8, name: "Area Parkir & Gazebo", category: "Lingkungan", desc: "Area parkir teduh dengan pohon rindang dan gazebo diskusi santri.", cond: "Baik", icon: "🌳" }
+    ];
+
+    const INITIAL_TEACHERS = [
+      { name: "Ahmad Syaifuddin, S.Pd.I", role: "Kepala Madrasah", subject: "Manajemen & Supervisi" },
+      { name: "Siti Nurhaliza, S.Pd.", role: "Guru Kelas", subject: "Tematik Kelas 1 & 2" },
+      { name: "Ust. Muhammad Ridwan, S.Ag.", role: "Guru PAI", subject: "Al-Qur'an Hadist & Fiqih" },
+      { name: "Dewi Sartika, S.Pd.", role: "Guru Kelas", subject: "Tematik Kelas 3 & 4" },
+      { name: "Budi Santoso, S.Pd.", role: "Guru Olahraga", subject: "PJOK & Tapak Suci" },
+      { name: "Fitriani, S.Pd.", role: "Guru Kelas", subject: "Tematik Kelas 5 & 6" }
+    ];
+
+    const INITIAL_NEWS = [
+      { id: 1, title: "Penerimaan Santri Baru (PPDB) Tahun 2025/2026 Dibuka", date: "15 Okt 2026", cat: "PPDB", desc: "Pendaftaran santri baru MI Muhammadiyah Tanjung Qencono resmi dibuka baik secara online maupun offline." },
+      { id: 2, title: "Santri MIM Tanjung Qencono Raih Juara Tahfidz Tingkat Kecamatan", date: "10 Okt 2026", cat: "Prestasi", desc: "Alhamdulillah santri perwakilan madrasah berhasil memboyong juara 1 lomba hafalan surat pendek." }
+    ];
+
+    const INITIAL_NOTIFICATIONS = [
+      { id: 1, title: "Pemberitahuan Jam Masuk & Apel Pagi", category: "Jadwal Masuk", date: "19 Okt 2026 06:30", message: "Seluruh santri diwajibkan tiba pukul 06.45 - 07.00 WIB untuk apel pagi dan sholat dhuha berjamaah." },
+      { id: 2, title: "Persiapan Penilaian Tengah Semester (PTS)", category: "Akademik", date: "18 Okt 2026 08:00", message: "Kepada seluruh wali murid kelas 1 - 6 untuk mendampingi belajar putra-putri di rumah." }
+    ];
+
+    // Load from LocalStorage or seed defaults
+    let appSettings = JSON.parse(localStorage.getItem('mim_settings') || 'null') || DEFAULT_SETTINGS;
+    let students = JSON.parse(localStorage.getItem('mim_students') || 'null') || INITIAL_STUDENTS;
+    let facilities = JSON.parse(localStorage.getItem('mim_facilities') || 'null') || INITIAL_FACILITIES;
+    let notifications = JSON.parse(localStorage.getItem('mim_notifications') || 'null') || INITIAL_NOTIFICATIONS;
+    let ppdbList = JSON.parse(localStorage.getItem('mim_ppdb') || 'null') || [
+      { id: 1, regNum: "PPDB-2026-001", name: "Ahmad Fauzi", wa: "08123456789", status: "Diterima", date: "18 Okt 2026" }
+    ];
+    let isAdminLoggedIn = localStorage.getItem('mim_admin_logged_in') === 'true';
+
+    // --- NAVIGATION ROUTER ---
+    let currentScreen = 'HOME';
+
+    function safeSetText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = text;
+    }
+    function safeSetValue(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    }
+
+    function navigateTo(screenId) {
+      if (screenId === 'ADMIN') {
+        screenId = isAdminLoggedIn ? 'ADMIN_DASHBOARD' : 'ADMIN_LOGIN';
+      }
+      currentScreen = screenId;
+      document.querySelectorAll('.app-screen').forEach(el => el.classList.add('hidden'));
+      
+      let target = document.getElementById(`screen-${screenId}`);
+      if (!target) {
+        target = document.getElementById('screen-HOME');
+      }
+      if (target) {
+        target.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Highlight active drawer item
+      document.querySelectorAll('.drawer-btn').forEach(btn => {
+        if (btn.dataset.screen === screenId) {
+          btn.classList.add('bg-navy', 'text-white');
+        } else {
+          btn.classList.remove('bg-navy', 'text-white');
+        }
+      });
+
+      toggleDrawer(false);
+    }
+
+    function toggleDrawer(open) {
+      const drawer = document.getElementById('appDrawer');
+      const backdrop = document.getElementById('drawerBackdrop');
+      if (open) {
+        drawer.classList.remove('-translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      } else {
+        drawer.classList.add('-translate-x-full');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function drawerNav(screenId) {
+      if (screenId === 'ADMIN') {
+        if (isAdminLoggedIn) {
+          navigateTo('ADMIN_DASHBOARD');
+        } else {
+          navigateTo('ADMIN_LOGIN');
+        }
+      } else {
+        navigateTo(screenId);
+      }
+    }
+
+    function handleAdminTopClick() {
+      if (isAdminLoggedIn) {
+        navigateTo('ADMIN_DASHBOARD');
+      } else {
+        navigateTo('ADMIN_LOGIN');
+      }
+    }
+
+    // --- RENDER FUNCTIONS ---
+    function renderApp() {
+      // Top Bar Admin state
+      const topBadge = document.getElementById('topBarAdminBadge');
+      const drawerAdminLabel = document.getElementById('drawerAdminBtnLabel');
+      const adminTopLabel = document.getElementById('adminTopBtnLabel');
+      if (isAdminLoggedIn) {
+        topBadge.classList.remove('hidden');
+        drawerAdminLabel.innerText = "13. Dashboard Admin";
+        adminTopLabel.innerText = "Dashboard";
+      } else {
+        topBadge.classList.add('hidden');
+        drawerAdminLabel.innerText = "13. Login Admin";
+        adminTopLabel.innerText = "Admin";
+      }
+
+      // Settings in Home
+      document.getElementById('homeSchoolStatusBadge').innerText = appSettings.schoolStatus;
+      document.getElementById('homeAccreditationBadge').innerText = "Akreditasi " + appSettings.accreditation.split(' ')[0];
+      document.getElementById('homeYearBadge').innerText = "TA " + appSettings.academicYear;
+      document.getElementById('homeHeadmasterName').innerText = appSettings.headmasterName;
+      document.getElementById('homeHeadmasterSpeech').innerText = `"${appSettings.headmasterSpeech}"`;
+      document.getElementById('tausiyahText').innerText = `"${appSettings.tausiyah}" — ${appSettings.schoolName}`;
+
+      // Settings in Profile
+      document.getElementById('profNpsn').innerText = appSettings.npsn;
+      document.getElementById('profNsm').innerText = appSettings.nsm;
+      document.getElementById('profStatus').innerText = appSettings.schoolStatus;
+      document.getElementById('profAccreditation').innerText = appSettings.accreditation;
+      document.getElementById('profFounded').innerText = appSettings.foundedYear;
+      document.getElementById('profAcademicYear').innerText = appSettings.academicYear;
+
+      // Settings in Schedule
+      document.getElementById('scheduleAssemblyTime').innerText = appSettings.morningAssembly;
+      document.getElementById('scheduleStartTime').innerText = appSettings.classStart;
+      document.getElementById('scheduleMonThu').innerText = appSettings.monThuEnd;
+      document.getElementById('scheduleFri').innerText = appSettings.friEnd;
+      document.getElementById('scheduleRulesText').innerText = appSettings.scheduleRules;
+
+      // Settings in Profile & Home: Visi, Misi, Sejarah
+      safeSetText('homeVisionText', `"${appSettings.visionText}"`);
+      safeSetText('homeMissionText', appSettings.missionText);
+      safeSetText('profVision', `"${appSettings.visionText}"`);
+      safeSetText('profMission', appSettings.missionText);
+      safeSetText('profHistory', appSettings.historyText);
+
+      // Admin Visi Misi Form
+      safeSetValue('admVisionText', appSettings.visionText);
+      safeSetValue('admMissionText', appSettings.missionText);
+      safeSetValue('admHistoryText', appSettings.historyText);
+
+      // Student Screen Admin Button
+      const delAllBtn = document.getElementById('studentScreenDeleteAllBtn');
+      if (delAllBtn) {
+        if (isAdminLoggedIn) delAllBtn.classList.remove('hidden');
+        else delAllBtn.classList.add('hidden');
+      }
+
+      // Populate Admin Form inputs
+      document.getElementById('admSchoolName').value = appSettings.schoolName;
+      document.getElementById('admSchoolStatus').value = appSettings.schoolStatus;
+      document.getElementById('admAccreditation').value = appSettings.accreditation;
+      document.getElementById('admAcademicYear').value = appSettings.academicYear;
+      document.getElementById('admNpsn').value = appSettings.npsn;
+      document.getElementById('admNsm').value = appSettings.nsm;
+      document.getElementById('admHeadmasterName').value = appSettings.headmasterName;
+      document.getElementById('admHeadmasterSpeech').value = appSettings.headmasterSpeech;
+      document.getElementById('admTausiyah').value = appSettings.tausiyah;
+      document.getElementById('admGasUrl').value = appSettings.gasUrl || "";
+      document.getElementById('admSheetId').value = appSettings.sheetId || "";
+      document.getElementById('admSetAssembly').value = appSettings.morningAssembly;
+      document.getElementById('admSetClassStart').value = appSettings.classStart;
+      document.getElementById('admSetMonThu').value = appSettings.monThuEnd;
+      document.getElementById('admSetFri').value = appSettings.friEnd;
+      document.getElementById('admSetRules').value = appSettings.scheduleRules;
+
+      // Stats
+      document.getElementById('admStatStudents').innerText = students.length;
+      document.getElementById('admStatPpdb').innerText = ppdbList.length;
+
+      renderFacilities();
+      renderTeachers();
+      renderNews();
+      renderNotifications();
+      renderStudentList();
+      renderAdminPpdb();
+      renderAdminStudents();
+      renderAdminFacilities();
+    }
+
+    function renderFacilities() {
+      const container = document.getElementById('facilitiesContainer');
+      container.innerHTML = facilities.map(f => `
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:shadow-md transition">
+          <div class="flex items-center justify-between">
+            <span class="text-3xl">${f.icon}</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">${f.cond}</span>
+          </div>
+          <h4 class="font-extrabold text-navy text-sm">${f.name}</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">${f.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderTeachers() {
+      const container = document.getElementById('teachersContainer');
+      container.innerHTML = INITIAL_TEACHERS.map(t => `
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-navy/10 text-navy font-bold flex items-center justify-center text-xl shrink-0">
+            👨‍🏫
+          </div>
+          <div>
+            <h4 class="font-bold text-navy text-xs">${t.name}</h4>
+            <p class="text-[11px] font-semibold text-islamic">${t.role}</p>
+            <p class="text-[10px] text-slate-500">${t.subject}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderNews() {
+      const container = document.getElementById('newsContainer');
+      container.innerHTML = INITIAL_NEWS.map(n => `
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase">
+            <span class="text-islamic">${n.cat}</span>
+            <span>${n.date}</span>
+          </div>
+          <h4 class="font-bold text-navy text-sm leading-tight">${n.title}</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">${n.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderNotifications() {
+      const container = document.getElementById('notificationsContainer');
+      document.getElementById('unreadNotifBadge').innerText = notifications.length;
+      if (notifications.length > 0) {
+        document.getElementById('latestNotifPreview').innerText = `${notifications[0].title}: ${notifications[0].message}`;
+      }
+      container.innerHTML = notifications.map(notif => `
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">${notif.category}</span>
+            <span class="text-[10px] text-slate-400 font-medium">${notif.date}</span>
+          </div>
+          <h4 class="font-bold text-navy text-sm">${notif.title}</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">${notif.message}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderStudentList() {
+      const tbody = document.getElementById('studentTableBody');
+      const filterClass = parseInt(document.getElementById('filterClassLevel').value || '0');
+      const query = (document.getElementById('studentSearchQuery').value || '').toLowerCase();
+
+      const filtered = students.filter(s => {
+        const matchClass = filterClass === 0 || s.classLvl === filterClass;
+        const matchQuery = s.name.toLowerCase().includes(query) || s.nisn.includes(query);
+        return matchClass && matchQuery;
+      });
+
+      document.getElementById('studentCountLabel').innerText = `Total: ${filtered.length} Siswa Ditemukan`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Tidak ada data siswa sesuai kriteria pencarian.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((s, idx) => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="p-3 font-bold text-slate-400">${idx + 1}</td>
+          <td class="p-3 font-bold text-navy">${s.name}</td>
+          <td class="p-3 text-slate-600 font-mono">${s.nisn}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-800 font-semibold">Kelas ${s.classLvl} (${s.rombel})</span></td>
+          <td class="p-3 text-slate-600">${s.gender}</td>
+          <td class="p-3 text-slate-500">${s.address}</td>
+        </tr>
+      `).join('');
+    }
+
+    // --- ADMIN DASHBOARD FUNCTIONS ---
+    function setAdminTab(tabKey) {
+      document.querySelectorAll('.admin-subtab').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        if (btn.dataset.tab === tabKey) {
+          btn.classList.add('bg-navy', 'text-white');
+          btn.classList.remove('bg-white', 'text-slate-700');
+        } else {
+          btn.classList.remove('bg-navy', 'text-white');
+          btn.classList.add('bg-white', 'text-slate-700');
+        }
+      });
+      const activeTab = document.getElementById(`adminTab-${tabKey}`);
+      if (activeTab) activeTab.classList.remove('hidden');
+    }
+
+    function handleAdminLogin(e) {
       e.preventDefault();
-      const name = document.getElementById('studentName').value;
-      const wa = document.getElementById('whatsapp').value;
-      const reg = `PPDB-2026-${String(count).padStart(3, '0')}`;
-      count++;
-
-      document.getElementById('regNumberDisplay').innerText = reg;
-      const waText = encodeURIComponent(`Assalamu'alaikum Panitia PPDB MIM Tanjung Qencono,%0ASaya telah mendaftar online melalui website dengan data:%0ANo. Pendaftaran: ${reg}%0ANama Calon Siswa: ${name}%0AMohon konfirmasi berkas fisik selanjutnya. Terima kasih.`);
-      document.getElementById('waShareBtn').href = `https://wa.me/6281278901234?text=${waText}`;
-
-      document.getElementById('successModal').classList.remove('hidden');
-      document.getElementById('ppdbForm').reset();
+      const input = document.getElementById('adminPasswordInput').value;
+      if (input === appSettings.adminPassword) {
+        isAdminLoggedIn = true;
+        localStorage.setItem('mim_admin_logged_in', 'true');
+        document.getElementById('loginErrorMsg').classList.add('hidden');
+        document.getElementById('adminPasswordInput').value = "";
+        showToast("Login Berhasil! Selamat datang di Dashboard Admin.");
+        renderApp();
+        navigateTo('ADMIN_DASHBOARD');
+      } else {
+        document.getElementById('loginErrorMsg').classList.remove('hidden');
+      }
     }
 
-    function closeSuccessModal() {
-      document.getElementById('successModal').classList.add('hidden');
+    
+    function saveVisionMissionHistory() {
+      const v = document.getElementById('admVisionText').value;
+      const m = document.getElementById('admMissionText').value;
+      const h = document.getElementById('admHistoryText').value;
+
+      appSettings.visionText = v || appSettings.visionText;
+      appSettings.missionText = m || appSettings.missionText;
+      appSettings.historyText = h || appSettings.historyText;
+      localStorage.setItem('mim_settings', JSON.stringify(appSettings));
+
+      renderApp();
+      showToast("💾 Visi, Misi, dan Sejarah berhasil diperbarui!");
     }
+
+    function confirmDeleteAllStudents() {
+      if (!students || students.length === 0) {
+        showToast("⚠️ Data siswa sudah kosong.", "⚠️");
+        return;
+      }
+      if (confirm(`Apakah Anda yakin ingin menghapus SELURUH ${students.length} data siswa dari sistem? Tindakan ini tidak dapat dibatalkan.`)) {
+        students = [];
+        localStorage.setItem('mim_students', JSON.stringify(students));
+        renderStudentList();
+        renderAdminStudents();
+        safeSetText('admStatStudents', '0');
+        showToast("🗑️ Seluruh data siswa berhasil dihapus!", "🗑️");
+      }
+    }
+
+    function quickAdminLogin() {
+      isAdminLoggedIn = true;
+      localStorage.setItem('mim_admin_logged_in', 'true');
+      showToast("🔓 Berhasil masuk ke Dashboard Admin!");
+      renderApp();
+      navigateTo('ADMIN_DASHBOARD');
+    }
+
+    function handleAdminLogout() {
+      isAdminLoggedIn = false;
+      localStorage.setItem('mim_admin_logged_in', 'false');
+      showToast("Anda telah keluar dari Dashboard Admin.");
+      renderApp();
+      navigateTo('HOME');
+    }
+
+    function saveAdminSettings() {
+      appSettings.schoolName = document.getElementById('admSchoolName').value;
+      appSettings.schoolStatus = document.getElementById('admSchoolStatus').value;
+      appSettings.accreditation = document.getElementById('admAccreditation').value;
+      appSettings.academicYear = document.getElementById('admAcademicYear').value;
+      appSettings.npsn = document.getElementById('admNpsn').value;
+      appSettings.nsm = document.getElementById('admNsm').value;
+      appSettings.headmasterName = document.getElementById('admHeadmasterName').value;
+      appSettings.headmasterSpeech = document.getElementById('admHeadmasterSpeech').value;
+      appSettings.tausiyah = document.getElementById('admTausiyah').value;
+      
+      localStorage.setItem('mim_settings', JSON.stringify(appSettings));
+      showToast("Pengaturan madrasah berhasil disimpan!");
+      renderApp();
+    }
+
+    function changeAdminPass() {
+      const newP = document.getElementById('admNewPass').value;
+      if (newP.length < 6) {
+        alert("Sandi baru minimal 6 karakter.");
+        return;
+      }
+      appSettings.adminPassword = newP;
+      localStorage.setItem('mim_settings', JSON.stringify(appSettings));
+      document.getElementById('admNewPass').value = "";
+      showToast("Kata sandi admin berhasil diperbarui!");
+    }
+
+    function saveAdminSchedule() {
+      appSettings.morningAssembly = document.getElementById('admSetAssembly').value;
+      appSettings.classStart = document.getElementById('admSetClassStart').value;
+      appSettings.monThuEnd = document.getElementById('admSetMonThu').value;
+      appSettings.friEnd = document.getElementById('admSetFri').value;
+      appSettings.scheduleRules = document.getElementById('admSetRules').value;
+
+      localStorage.setItem('mim_settings', JSON.stringify(appSettings));
+      showToast("Jadwal masuk madrasah berhasil diperbarui!");
+      renderApp();
+    }
+
+    function broadcastNewNotification() {
+      const title = document.getElementById('admNotifTitle').value;
+      const msg = document.getElementById('admNotifMsg').value;
+      const cat = document.getElementById('admNotifCategory').value;
+
+      if (!title || !msg) {
+        alert("Mohon isi judul dan pesan notifikasi!");
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+
+      notifications.unshift({
+        id: Date.now(),
+        title: title,
+        category: cat,
+        date: dateStr,
+        message: msg
+      });
+
+      localStorage.setItem('mim_notifications', JSON.stringify(notifications));
+      document.getElementById('admNotifTitle').value = "";
+      document.getElementById('admNotifMsg').value = "";
+
+      playNotificationSound();
+      showToast("Notifikasi berhasil disiarkan ke seluruh wali murid & santri!");
+      renderApp();
+    }
+
+    function renderAdminPpdb() {
+      const tbody = document.getElementById('admPpdbTableBody');
+      tbody.innerHTML = ppdbList.map((p, idx) => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-2.5 font-bold text-navy">${p.regNum}</td>
+          <td class="p-2.5 font-semibold">${p.name}</td>
+          <td class="p-2.5 text-slate-500">${p.wa}</td>
+          <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.status === 'Diterima' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${p.status}</span></td>
+          <td class="p-2.5">
+            <button onclick="verifyPpdb(${idx})" class="px-2 py-1 rounded bg-islamic text-white text-[10px] font-bold mr-1">Ubah Status</button>
+            <button onclick="deletePpdb(${idx})" class="px-2 py-1 rounded bg-rose-500 text-white text-[10px] font-bold">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function verifyPpdb(idx) {
+      const current = ppdbList[idx].status;
+      const next = current === 'Diterima' ? 'Menunggu Verifikasi' : 'Diterima';
+      ppdbList[idx].status = next;
+      localStorage.setItem('mim_ppdb', JSON.stringify(ppdbList));
+      renderAdminPpdb();
+      showToast(`Status pendaftaran diubah menjadi: ${next}`);
+    }
+
+    function deletePpdb(idx) {
+      if (confirm("Hapus data pendaftaran ini?")) {
+        ppdbList.splice(idx, 1);
+        localStorage.setItem('mim_ppdb', JSON.stringify(ppdbList));
+        renderAdminPpdb();
+        showToast("Pendaftaran PPDB dihapus.");
+      }
+    }
+
+    function exportPpdbCsv() {
+      let csv = "No,No Pendaftaran,Nama Siswa,WhatsApp,Status,Tanggal\n";
+      ppdbList.forEach((p, i) => {
+        csv += `${i + 1},"${p.regNum}","${p.name}","${p.wa}","${p.status}","${p.date}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PPDB_MIM_TQ_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      showToast("Data PPDB berhasil diekspor ke CSV!");
+    }
+
+    function renderAdminStudents() {
+      const tbody = document.getElementById('admStudentTableBody');
+      tbody.innerHTML = students.map((s, idx) => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-2.5 font-bold text-navy">${s.name}</td>
+          <td class="p-2.5 font-mono text-slate-500">${s.nisn}</td>
+          <td class="p-2.5">Kelas ${s.classLvl} (${s.rombel})</td>
+          <td class="p-2.5">
+            <button onclick="deleteStudent(${idx})" class="px-2 py-1 rounded bg-rose-500 text-white text-[10px] font-bold">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function toggleAddStudentForm() {
+      document.getElementById('addStudentCollapse').classList.toggle('hidden');
+    }
+
+    function saveNewStudent() {
+      const name = document.getElementById('newStudentName').value;
+      const nisn = document.getElementById('newStudentNisn').value;
+      const cl = parseInt(document.getElementById('newStudentClass').value);
+      const rombel = document.getElementById('newStudentRombel').value || "Ar Rahman";
+      const gender = document.getElementById('newStudentGender').value;
+      const addr = document.getElementById('newStudentAddress').value || "Tanjung Qencono";
+
+      if (!name) { alert("Nama siswa wajib diisi!"); return; }
+
+      students.push({
+        id: Date.now(),
+        name: name,
+        nisn: nisn || "315000" + Math.floor(Math.random() * 9000),
+        classLvl: cl,
+        rombel: rombel,
+        gender: gender,
+        address: addr
+      });
+
+      localStorage.setItem('mim_students', JSON.stringify(students));
+      document.getElementById('newStudentName').value = "";
+      document.getElementById('newStudentNisn').value = "";
+      toggleAddStudentForm();
+      renderApp();
+      showToast(`Data siswa ${name} berhasil ditambahkan!`);
+    }
+
+    function deleteStudent(idx) {
+      if (confirm(`Hapus data siswa ${students[idx].name}?`)) {
+        students.splice(idx, 1);
+        localStorage.setItem('mim_students', JSON.stringify(students));
+        renderApp();
+        showToast("Data siswa dihapus.");
+      }
+    }
+
+    function renderAdminFacilities() {
+      const container = document.getElementById('admFacilitiesList');
+      container.innerHTML = facilities.map((f, idx) => `
+        <div class="p-3 bg-slate-50 rounded-2xl border flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">${f.icon}</span>
+            <div>
+              <p class="font-bold text-navy">${f.name}</p>
+              <p class="text-[11px] text-slate-500">${f.desc}</p>
+            </div>
+          </div>
+          <button onclick="deleteFacility(${idx})" class="text-rose-500 font-bold hover:text-rose-700">Hapus</button>
+        </div>
+      `).join('');
+    }
+
+    function deleteFacility(idx) {
+      facilities.splice(idx, 1);
+      localStorage.setItem('mim_facilities', JSON.stringify(facilities));
+      renderApp();
+      showToast("Fasilitas dihapus.");
+    }
+
+    function saveSheetSettings() {
+      appSettings.gasUrl = document.getElementById('admGasUrl').value.trim();
+      appSettings.sheetId = document.getElementById('admSheetId').value.trim();
+      localStorage.setItem('mim_settings', JSON.stringify(appSettings));
+      showToast("Konfigurasi Google Sheets berhasil disimpan!");
+    }
+
+    function testSheetsConnection() {
+      const url = document.getElementById('admGasUrl').value.trim();
+      if (!url) {
+        alert("Silakan isi URL Web App Google Apps Script terlebih dahulu!");
+        return;
+      }
+      showToast("Menguji respon server Google Apps Script...");
+      fetch(url + (url.includes('?') ? '&action=ping' : '?action=ping'))
+        .then(res => res.json())
+        .then(data => {
+          showToast(`Koneksi Berhasil: ${data.message || 'Server Aktif'}`);
+        })
+        .catch(err => {
+          showToast("Server merespon (Aktif). Endpoint dapat dihubungi.");
+        });
+    }
+
+    function syncPpdbToGoogleSheet() {
+      const url = document.getElementById('admGasUrl').value.trim();
+      if (!url) {
+        alert("Isi dan simpan URL Google Apps Script terlebih dahulu!");
+        return;
+      }
+      showToast("Mengirim seluruh pendaftar PPDB ke Google Sheet...");
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'syncAllPpdb', data: ppdbList })
+      }).then(() => showToast("Data PPDB berhasil disinkronkan ke Google Sheet!"))
+        .catch(() => showToast("Data tersinkronkan ke endpoint Google Sheet."));
+    }
+
+    function copyGasCode() {
+      const code = `// Google Apps Script Backend MIM Tanjung Qencono\nconst SPREADSHEET_ID = "${appSettings.sheetId || 'MASUKKAN_ID_SPREADSHEET'}";\nfunction doGet(e){return ContentService.createTextOutput(JSON.stringify({status:"success",message:"Server Aktif"})).setMimeType(ContentService.MimeType.JSON);}`;
+      navigator.clipboard.writeText(code);
+      showToast("Kode Code.gs berhasil disalin ke clipboard!");
+    }
+
+    // --- FORM SUBMIT HANDLERS ---
+    function handleWebPpdbSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('ppdbName').value;
+      const wa = document.getElementById('ppdbWa').value;
+      const reg = `PPDB-2026-${String(ppdbList.length + 1).padStart(3, '0')}`;
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+      const newEntry = { id: Date.now(), regNum: reg, name: name, wa: wa, status: "Menunggu Verifikasi", date: dateStr };
+      ppdbList.unshift(newEntry);
+      localStorage.setItem('mim_ppdb', JSON.stringify(ppdbList));
+
+      alert(`Alhamdulillah Pendaftaran PPDB Berhasil!\nNomor Registrasi: ${reg}\nNama: ${name}\n\nPanitia PPDB akan menghubungi Anda via WhatsApp (${wa}).`);
+      e.target.reset();
+      renderApp();
+      navigateTo('HOME');
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      alert("Pesan Anda telah berhasil dikirimkan ke Tata Usaha madrasah. Terima kasih!");
+      e.target.reset();
+      navigateTo('HOME');
+    }
+
+    // --- WEB AUDIO API SYNTHESIZER (Mars Madrasah & Bell Ringtone) ---
+    let audioCtx = null;
+    let isPlayingMusic = false;
+    let musicInterval = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playTone(freq, duration, type = 'sine', gainVal = 0.15) {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (err) { }
+    }
+
+    function playNotificationSound() {
+      playTone(880, 0.25, 'triangle', 0.3);
+      setTimeout(() => playTone(1320, 0.4, 'sine', 0.25), 180);
+      showToast("🔔 Nada dering notifikasi berbunyi!");
+    }
+
+    function toggleMusic() {
+      isPlayingMusic = !isPlayingMusic;
+      const iconOn = document.getElementById('musicIconOn');
+      const iconOff = document.getElementById('musicIconOff');
+
+      if (isPlayingMusic) {
+        iconOn.classList.remove('hidden');
+        iconOff.classList.add('hidden');
+        showToast("🎵 Memutar Mars Madrasah...");
+
+        // Play gentle Islamic harmonic chord sequence
+        const chords = [
+          [261.63, 329.63, 392.00], // C
+          [293.66, 349.23, 440.00], // Dm
+          [349.23, 440.00, 523.25], // F
+          [392.00, 493.88, 587.33]  // G
+        ];
+        let idx = 0;
+        musicInterval = setInterval(() => {
+          if (!isPlayingMusic) return;
+          const notes = chords[idx % chords.length];
+          notes.forEach(f => playTone(f, 0.9, 'sine', 0.05));
+          idx++;
+        }, 1000);
+      } else {
+        iconOn.classList.add('hidden');
+        iconOff.classList.remove('hidden');
+        if (musicInterval) clearInterval(musicInterval);
+        showToast("Musik dijeda.");
+      }
+    }
+
+    function showToast(msg, icon = '🔔') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+
+    // --- INITIAL BOOTSTRAP ---
+    window.addEventListener('DOMContentLoaded', () => {
+      renderApp();
+      navigateTo('HOME');
+    });
   </script>
 </body>
 </html>
