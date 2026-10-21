@@ -1,0 +1,104 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.matches('^[a-zA-Z0-9_\\-]+$') && id.size() <= 100;
+    }
+
+    function isValidSchoolSettings(data) {
+      return data.schoolName is string && data.schoolName.size() <= 200 &&
+             data.accreditation is string && data.accreditation.size() <= 20;
+    }
+
+    function isValidStudent(data) {
+      return data.fullName is string && data.fullName.size() >= 1 && data.fullName.size() <= 200 &&
+             data.classLevel is int && data.classLevel >= 1 && data.classLevel <= 6 &&
+             data.rombel is string && data.rombel.size() <= 50;
+    }
+
+    function isValidPpdb(data) {
+      return data.regNumber is string && data.regNumber.size() >= 1 && data.regNumber.size() <= 50 &&
+             data.studentName is string && data.studentName.size() >= 1 && data.studentName.size() <= 200 &&
+             data.status is string && data.status.size() <= 30;
+    }
+
+    function isValidFacility(data) {
+      return data.title is string && data.title.size() >= 1 && data.title.size() <= 200 &&
+             data.category is string && data.category.size() <= 100;
+    }
+
+    function isValidSchedule(data) {
+      return data.day is string && data.day.size() >= 1 && data.day.size() <= 50 &&
+             data.morningEntry is string && data.morningEntry.size() <= 50;
+    }
+
+    function isValidNotification(data) {
+      return data.title is string && data.title.size() >= 1 && data.title.size() <= 200 &&
+             data.content is string && data.content.size() <= 5000;
+    }
+
+    // School Settings (General info, Visi, Misi, Kontak, Sosmed)
+    match /school_settings/{settingId} {
+      allow get: if true;
+      allow list: if true;
+      allow create, update: if isSignedIn() && isValidId(settingId) && isValidSchoolSettings(incoming());
+      allow delete: if isSignedIn() && isValidId(settingId);
+    }
+
+    // Student Master Data
+    match /students/{studentId} {
+      allow get: if true;
+      allow list: if true;
+      allow create, update: if isSignedIn() && isValidId(studentId) && isValidStudent(incoming());
+      allow delete: if isSignedIn() && isValidId(studentId);
+    }
+
+    // PPDB Online Registration
+    match /ppdb/{ppdbId} {
+      allow create: if isValidId(ppdbId) && isValidPpdb(incoming());
+      allow get: if isSignedIn() && isValidId(ppdbId);
+      allow list: if isSignedIn();
+      allow update: if isSignedIn() && isValidId(ppdbId);
+      allow delete: if isSignedIn() && isValidId(ppdbId);
+    }
+
+    // Facilities
+    match /facilities/{facilityId} {
+      allow get: if true;
+      allow list: if true;
+      allow create, update: if isSignedIn() && isValidId(facilityId) && isValidFacility(incoming());
+      allow delete: if isSignedIn() && isValidId(facilityId);
+    }
+
+    // Daily Schedules
+    match /schedules/{scheduleId} {
+      allow get: if true;
+      allow list: if true;
+      allow create, update: if isSignedIn() && isValidId(scheduleId) && isValidSchedule(incoming());
+      allow delete: if isSignedIn() && isValidId(scheduleId);
+    }
+
+    // Notifications / Announcements
+    match /notifications/{notificationId} {
+      allow get: if true;
+      allow list: if true;
+      allow create, update: if isSignedIn() && isValidId(notificationId) && isValidNotification(incoming());
+      allow delete: if isSignedIn() && isValidId(notificationId);
+    }
+
+    // Admin Users
+    match /users/{userId} {
+      allow get, list, create, update, delete: if isSignedIn() && request.auth.uid == userId;
+    }
+  }
+}

@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import android.content.Intent
 import android.net.Uri
+import com.example.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -147,6 +148,7 @@ fun AdminDashboardScreen(viewModel: MadrasahViewModel) {
                 AdminTab.MUSIC -> AdminMusicSection(viewModel)
                 AdminTab.LOGS -> AdminLogsSection(viewModel)
                 AdminTab.GAS_INTEGRATION -> AdminGasIntegrationSection(viewModel)
+                AdminTab.CLOUD_SYNC -> AdminCloudSyncSection(viewModel)
                 AdminTab.VISION_MISSION -> AdminVisionMissionSection(viewModel)
                 AdminTab.VERCEL_WEB -> AdminVercelSection(viewModel)
             }
@@ -261,6 +263,66 @@ fun AdminOverviewSection(viewModel: MadrasahViewModel) {
                         Icon(Icons.Default.Sync, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(6.dp))
                         Text("Validasi & Segarkan Cache Offline", fontSize = 12.sp)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // FIREBASE CLOUD LIVE SYNC CARD
+            Card(
+                modifier = Modifier.fillMaxWidth().testTag("admin_firestore_status_card"),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = IslamicGreen.copy(alpha = 0.12f))
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.CloudDone, contentDescription = null, tint = IslamicGreen, modifier = Modifier.size(22.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Sinkronisasi Cloud (Firebase)", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = IslamicGreen)
+                        }
+                        Box(
+                            modifier = Modifier
+                                .background(IslamicGreen, RoundedCornerShape(4.dp))
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text("MULTI-DEVICE", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "Data tersimpan otomatis tersinkron ke semua perangkat (Device 1 & Device 2) secara real-time.",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = { viewModel.forceCloudSync() },
+                            colors = ButtonDefaults.buttonColors(containerColor = IslamicGreen),
+                            shape = RoundedCornerShape(8.dp),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(Icons.Default.Sync, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Tarik Cloud", fontSize = 11.sp)
+                        }
+                        OutlinedButton(
+                            onClick = { viewModel.navigateAdminTab(AdminTab.CLOUD_SYNC) },
+                            shape = RoundedCornerShape(8.dp),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(Icons.Default.Settings, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Kelola Cloud", fontSize = 11.sp)
+                        }
                     }
                 }
             }
@@ -721,6 +783,15 @@ fun AdminStudentsSection(viewModel: MadrasahViewModel) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text("Hapus Semua", fontSize = 11.sp, color = MaterialTheme.colorScheme.error)
                     }
+                }
+                Button(
+                    onClick = { viewModel.pushAllStudentsToCloud() },
+                    colors = ButtonDefaults.buttonColors(containerColor = IslamicGreen),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
+                ) {
+                    Icon(Icons.Default.CloudSync, contentDescription = "Sync Cloud", modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Sync Cloud", fontSize = 11.sp)
                 }
                 OutlinedButton(
                     onClick = { viewModel.syncAllStudentsToSheet() },
@@ -2278,6 +2349,194 @@ fun AdminLogsSection(viewModel: MadrasahViewModel) {
                         }
                         Text(log.timestamp, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
+                }
+            }
+        }
+    }
+}
+
+// CLOUD SYNC (FIREBASE MULTI-DEVICE)
+@Composable
+fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
+    val context = LocalContext.current
+    val isSyncing by viewModel.isCloudSyncing.collectAsState()
+    val syncStatus by viewModel.cloudSyncStatus.collectAsState()
+    val currentUser by viewModel.currentAuthUser.collectAsState()
+    val studentCount by viewModel.studentCount.collectAsState()
+
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        item {
+            SectionHeader(
+                title = "Sinkronisasi Cloud (Multi-Device)",
+                subtitle = "Sinkronisasi otomatis antar HP/device agar data yang disimpan di Device 1 langsung muncul di Device 2",
+                icon = Icons.Default.CloudSync
+            )
+
+            // Status Card
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = IslamicGreen.copy(alpha = 0.12f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                Icons.Default.CloudDone,
+                                contentDescription = null,
+                                tint = IslamicGreen,
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = "Firebase Firestore Cloud Aktif",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    color = IslamicGreen
+                                )
+                                Text(
+                                    text = "Database ID: ${context.getString(R.string.firestore_database_id).take(22)}...",
+                                    fontSize = 11.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .background(IslamicGreen, RoundedCornerShape(6.dp))
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Text("LIVE SYNC", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = syncStatus ?: "Terhubung dan siap sinkronisasi",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    if (isSyncing) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = IslamicGreen)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Sedang memproses data Cloud...", fontSize = 12.sp, color = IslamicGreen)
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Google Sign-In Card
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Text("Akun Admin Terautentikasi (Google Sign-In)", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Spacer(modifier = Modifier.height(6.dp))
+                    if (currentUser != null) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.AccountCircle, contentDescription = null, tint = IslamicGreen, modifier = Modifier.size(22.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(currentUser?.displayName ?: "Admin Madrasah", fontWeight = FontWeight.Medium, fontSize = 13.sp)
+                                Text(currentUser?.email ?: "", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            OutlinedButton(
+                                onClick = { viewModel.signOutFromGoogle() },
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Text("Keluar", fontSize = 11.sp)
+                            }
+                        }
+                    } else {
+                        Text(
+                            "Masuk dengan Akun Google untuk otorisasi penuh pembaruan data cloud antar perangkat madrasah.",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            onClick = { viewModel.signInWithGoogle() },
+                            colors = ButtonDefaults.buttonColors(containerColor = NavyPrimary),
+                            modifier = Modifier.fillMaxWidth().testTag("google_signin_button")
+                        ) {
+                            Icon(Icons.Default.Login, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Masuk dengan Google (Sign In with Google)")
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Multi-Device Action Buttons
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Text("Tindakan Sinkronisasi Perangkat:", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(
+                        onClick = { viewModel.pushAllStudentsToCloud(); viewModel.pushSettingsToCloud() },
+                        enabled = !isSyncing,
+                        colors = ButtonDefaults.buttonColors(containerColor = IslamicGreen),
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("push_all_to_cloud_btn")
+                    ) {
+                        Icon(Icons.Default.CloudUpload, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Kirim Seluruh Data Lokal ke Cloud ($studentCount Siswa)")
+                    }
+
+                    OutlinedButton(
+                        onClick = { viewModel.forceCloudSync() },
+                        enabled = !isSyncing,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("pull_from_cloud_btn")
+                    ) {
+                        Icon(Icons.Default.CloudDownload, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Tarik / Sinkronkan Data Terbaru dari Cloud")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Multi-Device Explanation Card
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Info, contentDescription = null, tint = NavyPrimary, modifier = Modifier.size(20.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Cara Kerja Sinkronisasi Antar Device:", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        "1. Device 1 (HP Admin) menyimpan data siswa, visi, misi, atau pengaturan madrasah.\n" +
+                        "2. Data secara instan dikirim dan disimpan di Cloud Firestore.\n" +
+                        "3. Device 2 (HP Guru/Staf lain) yang membuka aplikasi akan langsung menerima pembaruan secara real-time melalui snapshot listener tanpa perlu memasukkan data ulang!\n" +
+                        "4. Jika Device 2 baru diinstal, cukup buka tab ini dan tekan 'Tarik / Sinkronkan Data Terbaru dari Cloud'.",
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }

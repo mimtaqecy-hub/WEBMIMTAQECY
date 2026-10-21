@@ -1,0 +1,132 @@
+{
+  "entities": {
+    "SchoolSettings": {
+      "title": "SchoolSettings",
+      "description": "General settings, identity, vision, mission, and social media for MIM Tanjung Qencono",
+      "type": "object",
+      "properties": {
+        "schoolName": { "type": "string" },
+        "npsn": { "type": "string" },
+        "nsm": { "type": "string" },
+        "accreditation": { "type": "string" },
+        "principalName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "visionText": { "type": "string" },
+        "missionText": { "type": "string" },
+        "goalsText": { "type": "string" },
+        "historyText": { "type": "string" },
+        "facebookUrl": { "type": "string" },
+        "instagramUrl": { "type": "string" },
+        "tiktokUrl": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["schoolName", "accreditation"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student record of MIM Tanjung Qencono",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "nisn": { "type": "string" },
+        "birthPlace": { "type": "string" },
+        "birthDate": { "type": "string" },
+        "classLevel": { "type": "integer" },
+        "rombel": { "type": "string" },
+        "gender": { "type": "string" },
+        "address": { "type": "string" },
+        "isPublished": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["fullName", "classLevel", "rombel"]
+    },
+    "PpdbApplicant": {
+      "title": "PpdbApplicant",
+      "description": "New student registration record",
+      "type": "object",
+      "properties": {
+        "regNumber": { "type": "string" },
+        "studentName": { "type": "string" },
+        "nisn": { "type": "string" },
+        "nik": { "type": "string" },
+        "birthPlace": { "type": "string" },
+        "birthDate": { "type": "string" },
+        "gender": { "type": "string" },
+        "address": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "prevSchool": { "type": "string" },
+        "fatherName": { "type": "string" },
+        "motherName": { "type": "string" },
+        "status": { "type": "string" },
+        "regDate": { "type": "string" },
+        "adminNotes": { "type": "string" }
+      },
+      "required": ["regNumber", "studentName", "status"]
+    },
+    "Facility": {
+      "title": "Facility",
+      "description": "Madrasah facility details",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "condition": { "type": "string" }
+      },
+      "required": ["title", "category"]
+    },
+    "Schedule": {
+      "title": "Schedule",
+      "description": "School entry and day schedule",
+      "type": "object",
+      "properties": {
+        "day": { "type": "string" },
+        "morningEntry": { "type": "string" },
+        "afternoonEntry": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["day", "morningEntry"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Madrasah announcement or notification",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "date": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["title", "content", "date"]
+    }
+  },
+  "firestore": {
+    "/school_settings/{settingId}": {
+      "schema": "SchoolSettings",
+      "description": "School settings including vision, mission, and contact info"
+    },
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Madrasah student master list"
+    },
+    "/ppdb/{ppdbId}": {
+      "schema": "PpdbApplicant",
+      "description": "PPDB new student registrations"
+    },
+    "/facilities/{facilityId}": {
+      "schema": "Facility",
+      "description": "School facilities"
+    },
+    "/schedules/{scheduleId}": {
+      "schema": "Schedule",
+      "description": "Daily school schedules"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "School announcements and notifications"
+    }
+  }
+}

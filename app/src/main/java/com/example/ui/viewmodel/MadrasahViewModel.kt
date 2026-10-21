@@ -56,6 +56,7 @@ enum class AdminTab(val title: String) {
     MUSIC("Musik Latar"),
     LOGS("Aktivitas Admin"),
     GAS_INTEGRATION("Integrasi Google Sheets"),
+    CLOUD_SYNC("Sinkronisasi Cloud"),
     VISION_MISSION("Visi, Misi & Sejarah"),
     VERCEL_WEB("Website Vercel.app")
 }
@@ -64,6 +65,12 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
 
     private val db = AppDatabase.getDatabase(application, viewModelScope)
     val repository = MadrasahRepository(db)
+
+    // Cloud Firestore Sync Manager
+    val firestoreSync = com.example.data.remote.FirestoreSyncManager(application, db, viewModelScope)
+    val isCloudSyncing: StateFlow<Boolean> = firestoreSync.isCloudSyncing
+    val cloudSyncStatus: StateFlow<String?> = firestoreSync.cloudSyncStatus
+    val currentAuthUser: StateFlow<com.google.firebase.auth.FirebaseUser?> = firestoreSync.currentAuthUser
 
     // Navigation & Global UI State
     private val _currentScreen = MutableStateFlow(AppScreen.HOME)
@@ -430,7 +437,8 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
     fun updateSchoolSettings(settings: SchoolSettingsEntity) {
         viewModelScope.launch {
             repository.updateSettings(settings)
-            _snackbarMessage.emit("Pengaturan madrasah berhasil disimpan ke database!")
+            firestoreSync.pushSchoolSettings(settings)
+            _snackbarMessage.emit("Pengaturan madrasah berhasil disimpan & disinkronkan ke Cloud!")
         }
     }
 
@@ -503,6 +511,11 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
             _lastSubmittedPpdb.value = saved
             _snackbarMessage.emit("Pendaftaran PPDB Berhasil! Nomor: $regNum")
 
+            // Auto-sync to Cloud Firestore
+            launch {
+                firestoreSync.submitPpdb(saved)
+            }
+
             // Auto-sync to Google Sheet if configured
             val currentSettings = settings.value
             if (currentSettings != null && currentSettings.gasWebAppUrl.isNotBlank() && currentSettings.autoSyncPpdbToSheet) {
@@ -537,29 +550,34 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
     // Student CRUD
     fun addStudent(student: StudentEntity) {
         viewModelScope.launch {
-            repository.insertStudent(student)
-            _snackbarMessage.emit("Data siswa ${student.fullName} berhasil ditambahkan.")
+            val id = repository.insertStudent(student)
+            val saved = student.copy(id = id)
+            firestoreSync.pushStudent(saved)
+            _snackbarMessage.emit("Data siswa ${student.fullName} berhasil ditambahkan & disinkronkan ke Cloud.")
         }
     }
 
     fun updateStudent(student: StudentEntity) {
         viewModelScope.launch {
             repository.updateStudent(student)
-            _snackbarMessage.emit("Data siswa ${student.fullName} berhasil diubah.")
+            firestoreSync.pushStudent(student)
+            _snackbarMessage.emit("Data siswa ${student.fullName} berhasil diubah & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteStudent(student: StudentEntity) {
         viewModelScope.launch {
             repository.deleteStudent(student)
-            _snackbarMessage.emit("Data siswa ${student.fullName} berhasil dihapus.")
+            firestoreSync.deleteStudent(student)
+            _snackbarMessage.emit("Data siswa ${student.fullName} berhasil dihapus & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteAllStudents() {
         viewModelScope.launch {
             repository.clearAllStudents()
-            _snackbarMessage.emit("Seluruh data siswa berhasil dihapus dari database.")
+            firestoreSync.deleteAllStudents()
+            _snackbarMessage.emit("Seluruh data siswa berhasil dihapus dari database lokal & Cloud.")
         }
     }
 
@@ -572,7 +590,8 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
                     historyText = history
                 )
                 repository.updateSettings(updated)
-                _snackbarMessage.emit("Visi, Misi, dan Sejarah Madrasah berhasil diperbarui!")
+                firestoreSync.pushSchoolSettings(updated)
+                _snackbarMessage.emit("Visi, Misi, dan Sejarah Madrasah berhasil diperbarui & disinkronkan ke Cloud!")
             }
         }
     }
@@ -586,7 +605,8 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
                     val list = CsvHelper.parseStudentsFromInputStream(stream, fileName)
                     if (list.isNotEmpty()) {
                         repository.insertAllStudents(list)
-                        _snackbarMessage.emit("Berhasil mengunggah ${list.size} siswa dari ${fileName ?: "file Excel"}.")
+                        firestoreSync.pushAllStudents(list)
+                        _snackbarMessage.emit("Berhasil mengunggah ${list.size} siswa dari ${fileName ?: "file"} & disinkronkan ke Cloud.")
                         repository.logAction("Unggah Data Siswa", "Impor ${list.size} siswa dari ${fileName ?: "file"}")
                     } else {
                         _snackbarMessage.emit("Format file tidak sesuai template atau data kosong.")
@@ -605,7 +625,8 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
             val list = CsvHelper.parseStudentsCsv(csvText)
             if (list.isNotEmpty()) {
                 repository.insertAllStudents(list)
-                _snackbarMessage.emit("Berhasil mengimpor ${list.size} siswa dari CSV.")
+                firestoreSync.pushAllStudents(list)
+                _snackbarMessage.emit("Berhasil mengimpor ${list.size} siswa dari CSV & disinkronkan ke Cloud.")
             } else {
                 _snackbarMessage.emit("Format CSV tidak valid atau data kosong.")
             }
@@ -1053,6 +1074,60 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
             val updated = current.copy(vercelWebUrl = url.trim())
             repository.updateSettings(updated)
             _snackbarMessage.emit("Tautan website Vercel berhasil disimpan!")
+        }
+    }
+
+    // Cloud Firestore Sync Actions
+    fun pushAllStudentsToCloud() {
+        viewModelScope.launch {
+            val list = allStudents.value
+            val res = firestoreSync.pushAllStudents(list)
+            if (res.isSuccess) {
+                _snackbarMessage.emit("Berhasil menyinkronkan ${list.size} siswa ke Cloud Firestore!")
+            } else {
+                _snackbarMessage.emit("Gagal sinkron siswa: ${res.exceptionOrNull()?.localizedMessage}")
+            }
+        }
+    }
+
+    fun pushSettingsToCloud() {
+        viewModelScope.launch {
+            val curr = settings.value ?: SchoolSettingsEntity()
+            val res = firestoreSync.pushSchoolSettings(curr)
+            if (res.isSuccess) {
+                _snackbarMessage.emit("Pengaturan madrasah berhasil diunggah ke Cloud Firestore!")
+            } else {
+                _snackbarMessage.emit("Gagal unggah pengaturan: ${res.exceptionOrNull()?.localizedMessage}")
+            }
+        }
+    }
+
+    fun forceCloudSync() {
+        viewModelScope.launch {
+            val res = firestoreSync.forcePullFromCloud()
+            if (res.isSuccess) {
+                _snackbarMessage.emit(res.getOrNull() ?: "Sinkronisasi Cloud berhasil!")
+            } else {
+                _snackbarMessage.emit("Gagal mengambil data dari Cloud: ${res.exceptionOrNull()?.localizedMessage}")
+            }
+        }
+    }
+
+    fun signInWithGoogle() {
+        viewModelScope.launch {
+            val res = firestoreSync.signInWithGoogle()
+            if (res.isSuccess) {
+                _snackbarMessage.emit("Berhasil masuk dengan Google: ${res.getOrNull()?.displayName}")
+            } else {
+                _snackbarMessage.emit("Login Google dibatalkan atau gagal: ${res.exceptionOrNull()?.localizedMessage}")
+            }
+        }
+    }
+
+    fun signOutFromGoogle() {
+        firestoreSync.signOut()
+        viewModelScope.launch {
+            _snackbarMessage.emit("Sesi Google telah keluar.")
         }
     }
 }
