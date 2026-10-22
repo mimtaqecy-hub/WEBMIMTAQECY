@@ -43,7 +43,10 @@ data class SchoolSettingsEntity(
     val schoolScheduleRules: String = "Siswa wajib hadir pukul 06.45 - 07.00 WIB. Pukul 07.00 WIB gerbang ditutup untuk apel pagi dan sholat dhuha berjamaah.",
     val customAudioUri: String = "",
     val customAudioName: String = "Mars Madrasah (Default)",
-    val dailyTausiyah: String = "Menuntut ilmu adalah kewajiban bagi setiap muslim. Siapa yang menempuh jalan untuk menuntut ilmu, Allah mudahkan baginya jalan menuju surga. (HR. Muslim)"
+    val dailyTausiyah: String = "Menuntut ilmu adalah kewajiban bagi setiap muslim. Siapa yang menempuh jalan untuk menuntut ilmu, Allah mudahkan baginya jalan menuju surga. (HR. Muslim)",
+    val facebookUrl: String = "https://www.facebook.com/share/1DxkoYBNkL/",
+    val instagramUrl: String = "https://www.instagram.com/mim_taqecy?rpxt=MXg5NG1saWZ2Z2l4MQ==",
+    val tiktokUrl: String = "https://www.tiktok.com/@mim_tanjung.qencono?_r=1&_t=ZS-9AiTueWtGGj"
 )
 
 @Entity(tableName = "students")

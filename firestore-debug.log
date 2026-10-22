@@ -1,4 +1,4 @@
-Oct 21, 2026 1:32:09 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+Oct 22, 2026 1:52:46 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
 INFO: Started WebSocket server on ws://127.0.0.1:9150
 
 API endpoint: http://127.0.0.1:8085
@@ -16,35 +16,31 @@ If you are running a Firestore in Datastore Mode project, run:
 Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
 Dev App Server is now running.
 
-Oct 21, 2026 1:32:10 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:47 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:11 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:48 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:13 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:49 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:14 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:50 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:15 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:51 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:16 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:17 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:18 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:19 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:19 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:27 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:27 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:51 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Oct 21, 2026 1:32:28 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:51 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:28 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Oct 22, 2026 1:52:52 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Oct 22, 2026 1:52:52 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Oct 22, 2026 1:52:52 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Oct 22, 2026 1:52:53 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Oct 21, 2026 1:32:29 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Oct 22, 2026 1:52:53 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+Oct 22, 2026 1:52:53 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 false for 'create' @ L53, false for 'update' @ L53
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -75,11 +71,11 @@ false for 'create' @ L53, false for 'update' @ L53
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Oct 21, 2026 1:32:29 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Oct 22, 2026 1:52:53 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-false for 'create' @ L59, false for 'update' @ L59
+false for 'create' @ L53, false for 'update' @ L53
 com.google.cloud.datastore.core.exception.DatastoreException: 
-false for 'create' @ L59, false for 'update' @ L59
+false for 'create' @ L53, false for 'update' @ L53
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:152)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:349)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:326)
@@ -106,11 +102,11 @@ false for 'create' @ L59, false for 'update' @ L59
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Oct 21, 2026 1:32:29 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Oct 22, 2026 1:52:53 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-false for 'create' @ L59, false for 'update' @ L59
+false for 'create' @ L60, false for 'update' @ L60
 com.google.cloud.datastore.core.exception.DatastoreException: 
-false for 'create' @ L59, false for 'update' @ L59
+false for 'create' @ L60, false for 'update' @ L60
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:152)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:349)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:326)
@@ -137,19 +133,11 @@ false for 'create' @ L59, false for 'update' @ L59
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Oct 21, 2026 1:32:43 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:47 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:47 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Oct 21, 2026 1:32:47 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected HTTP/2 connection.
-Oct 21, 2026 1:32:48 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Oct 22, 2026 1:52:53 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-false for 'create' @ L54, false for 'update' @ L54
+false for 'create' @ L60, false for 'update' @ L60
 com.google.cloud.datastore.core.exception.DatastoreException: 
-false for 'create' @ L54, false for 'update' @ L54
+false for 'create' @ L60, false for 'update' @ L60
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:152)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:349)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:326)
@@ -176,11 +164,11 @@ false for 'create' @ L54, false for 'update' @ L54
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Oct 21, 2026 1:32:48 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Oct 22, 2026 1:52:53 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-false for 'create' @ L62, false for 'update' @ L62
+false for 'create' @ L60, false for 'update' @ L60
 com.google.cloud.datastore.core.exception.DatastoreException: 
-false for 'create' @ L62, false for 'update' @ L62
+false for 'create' @ L60, false for 'update' @ L60
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:152)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:349)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:326)
@@ -207,11 +195,11 @@ false for 'create' @ L62, false for 'update' @ L62
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Oct 21, 2026 1:32:48 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Oct 22, 2026 1:52:53 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-false for 'create' @ L62, false for 'update' @ L62
+false for 'create' @ L60, false for 'update' @ L60
 com.google.cloud.datastore.core.exception.DatastoreException: 
-false for 'create' @ L62, false for 'update' @ L62
+false for 'create' @ L60, false for 'update' @ L60
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:152)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:349)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:326)
@@ -238,3 +226,5 @@ false for 'create' @ L62, false for 'update' @ L62
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
+*** shutting down gRPC server since JVM is shutting down
+*** server shut down

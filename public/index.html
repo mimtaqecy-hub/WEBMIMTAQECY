@@ -2007,10 +2007,57 @@
       }, 3500);
     }
 
+    // --- FIREBASE FIRESTORE MULTI-DEVICE CLOUD SYNC ---
+    const FIRESTORE_API = "https://firestore.googleapis.com/v1/projects/gen-lang-client-0399778967/databases/ai-studio-android-mimtanju-99dcefb1-f0c7-4e1a-b96a-2c87a730887e/documents";
+
+    async function syncWithFirestoreCloud() {
+      try {
+        const sRes = await fetch(`${FIRESTORE_API}/school_settings/general`);
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          if (sData && sData.fields) {
+            const f = sData.fields;
+            if (f.schoolName?.stringValue) appSettings.schoolName = f.schoolName.stringValue;
+            if (f.accreditation?.stringValue) appSettings.accreditation = f.accreditation.stringValue;
+            if (f.visionText?.stringValue) appSettings.vision = f.visionText.stringValue;
+            if (f.missionText?.stringValue) appSettings.mission = f.missionText.stringValue;
+            if (f.historyText?.stringValue) appSettings.history = f.historyText.stringValue;
+            if (f.facebookUrl?.stringValue) appSettings.facebook = f.facebookUrl.stringValue;
+            if (f.instagramUrl?.stringValue) appSettings.instagram = f.instagramUrl.stringValue;
+            if (f.tiktokUrl?.stringValue) appSettings.tiktok = f.tiktokUrl.stringValue;
+            localStorage.setItem('mim_settings', JSON.stringify(appSettings));
+          }
+        }
+
+        const stdRes = await fetch(`${FIRESTORE_API}/students`);
+        if (stdRes.ok) {
+          const stdData = await stdRes.json();
+          if (stdData && stdData.documents && stdData.documents.length > 0) {
+            students = stdData.documents.map((doc, idx) => {
+              const f = doc.fields || {};
+              return {
+                id: idx + 1,
+                name: f.fullName?.stringValue || "Siswa",
+                nisn: f.nisn?.stringValue || "",
+                classLvl: parseInt(f.classLevel?.integerValue || "1"),
+                rombel: f.rombel?.stringValue || "Ar Rahman",
+                gender: f.gender?.stringValue || "Laki-laki"
+              };
+            });
+            localStorage.setItem('mim_students', JSON.stringify(students));
+          }
+        }
+        renderApp();
+      } catch (err) {
+        console.log("Firestore Cloud Sync:", err);
+      }
+    }
+
     // --- INITIAL BOOTSTRAP ---
     window.addEventListener('DOMContentLoaded', () => {
       renderApp();
       navigateTo('HOME');
+      syncWithFirestoreCloud();
     });
   </script>
 </body>

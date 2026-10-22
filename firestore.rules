@@ -17,7 +17,7 @@ service cloud.firestore {
 
     function isValidSchoolSettings(data) {
       return data.schoolName is string && data.schoolName.size() <= 200 &&
-             data.accreditation is string && data.accreditation.size() <= 20;
+             data.accreditation is string && data.accreditation.size() <= 40;
     }
 
     function isValidStudent(data) {
@@ -47,18 +47,16 @@ service cloud.firestore {
              data.content is string && data.content.size() <= 5000;
     }
 
-    // School Settings (General info, Visi, Misi, Kontak, Sosmed)
+    // School Settings (General info, Visi, Misi, Kontak, Sosmed, Jadwal Masuk)
     match /school_settings/{settingId} {
-      allow get: if true;
-      allow list: if true;
+      allow get, list: if true;
       allow create, update: if isSignedIn() && isValidId(settingId) && isValidSchoolSettings(incoming());
       allow delete: if isSignedIn() && isValidId(settingId);
     }
 
     // Student Master Data
     match /students/{studentId} {
-      allow get: if true;
-      allow list: if true;
+      allow get, list: if true;
       allow create, update: if isSignedIn() && isValidId(studentId) && isValidStudent(incoming());
       allow delete: if isSignedIn() && isValidId(studentId);
     }
@@ -68,32 +66,89 @@ service cloud.firestore {
       allow create: if isValidId(ppdbId) && isValidPpdb(incoming());
       allow get: if isSignedIn() && isValidId(ppdbId);
       allow list: if isSignedIn();
-      allow update: if isSignedIn() && isValidId(ppdbId);
-      allow delete: if isSignedIn() && isValidId(ppdbId);
+      allow update, delete: if isSignedIn() && isValidId(ppdbId);
+    }
+
+    // Teachers & Staff
+    match /teachers/{teacherId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(teacherId);
     }
 
     // Facilities
     match /facilities/{facilityId} {
-      allow get: if true;
-      allow list: if true;
+      allow get, list: if true;
       allow create, update: if isSignedIn() && isValidId(facilityId) && isValidFacility(incoming());
       allow delete: if isSignedIn() && isValidId(facilityId);
     }
 
-    // Daily Schedules
+    // Daily Entry Schedules
     match /schedules/{scheduleId} {
-      allow get: if true;
-      allow list: if true;
+      allow get, list: if true;
       allow create, update: if isSignedIn() && isValidId(scheduleId) && isValidSchedule(incoming());
       allow delete: if isSignedIn() && isValidId(scheduleId);
     }
 
+    // Class Lesson Schedules
+    match /class_schedules/{scheduleId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(scheduleId);
+    }
+
     // Notifications / Announcements
     match /notifications/{notificationId} {
-      allow get: if true;
-      allow list: if true;
+      allow get, list: if true;
       allow create, update: if isSignedIn() && isValidId(notificationId) && isValidNotification(incoming());
       allow delete: if isSignedIn() && isValidId(notificationId);
+    }
+
+    // News & Articles
+    match /news/{newsId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(newsId);
+    }
+
+    // Photo Gallery
+    match /gallery/{galleryId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(galleryId);
+    }
+
+    // Extracurriculars
+    match /extracurriculars/{extraId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(extraId);
+    }
+
+    // Featured Programs
+    match /featured_programs/{programId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(programId);
+    }
+
+    // Agendas / Events
+    match /agendas/{agendaId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(agendaId);
+    }
+
+    // Testimonials
+    match /testimonials/{testimonialId} {
+      allow get, list: if true;
+      allow create: if isValidId(testimonialId);
+      allow update, delete: if isSignedIn() && isValidId(testimonialId);
+    }
+
+    // RPP Modules
+    match /rpp/{rppId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(rppId);
+    }
+
+    // Official Documents
+    match /documents/{docId} {
+      allow get, list: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(docId);
     }
 
     // Admin Users

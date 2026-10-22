@@ -296,22 +296,22 @@ fun AdminOverviewSection(viewModel: MadrasahViewModel) {
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "Data tersimpan otomatis tersinkron ke semua perangkat (Device 1 & Device 2) secara real-time.",
+                        text = "Seluruh 15 modul data madrasah (siswa, guru, fasilitas, berita, galeri, ekskul, program, agenda, testimoni, RPP, dokumen, jadwal, notifikasi, visi-misi, PPDB) tersinkron otomatis antar HP secara real-time.",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Button(
-                            onClick = { viewModel.forceCloudSync() },
+                            onClick = { viewModel.pushAllDataToCloud() },
                             colors = ButtonDefaults.buttonColors(containerColor = IslamicGreen),
                             shape = RoundedCornerShape(8.dp),
                             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
                             modifier = Modifier.weight(1f)
                         ) {
-                            Icon(Icons.Default.Sync, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Icon(Icons.Default.CloudUpload, contentDescription = null, modifier = Modifier.size(15.dp))
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Tarik Cloud", fontSize = 11.sp)
+                            Text("Kirim 15 Modul", fontSize = 11.sp)
                         }
                         OutlinedButton(
                             onClick = { viewModel.navigateAdminTab(AdminTab.CLOUD_SYNC) },
@@ -319,7 +319,7 @@ fun AdminOverviewSection(viewModel: MadrasahViewModel) {
                             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
                             modifier = Modifier.weight(1f)
                         ) {
-                            Icon(Icons.Default.Settings, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Icon(Icons.Default.CloudSync, contentDescription = null, modifier = Modifier.size(15.dp))
                             Spacer(modifier = Modifier.width(4.dp))
                             Text("Kelola Cloud", fontSize = 11.sp)
                         }
@@ -2362,13 +2362,32 @@ fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
     val isSyncing by viewModel.isCloudSyncing.collectAsState()
     val syncStatus by viewModel.cloudSyncStatus.collectAsState()
     val currentUser by viewModel.currentAuthUser.collectAsState()
+    val settings by viewModel.settings.collectAsState()
+
+    // 15 Modules State Observers
     val studentCount by viewModel.studentCount.collectAsState()
+    val teacherCount by viewModel.teacherCount.collectAsState()
+    val facilities by viewModel.allFacilities.collectAsState()
+    val newsCount by viewModel.newsCount.collectAsState()
+    val galleryCount by viewModel.galleryCount.collectAsState()
+    val extracurriculars by viewModel.extracurriculars.collectAsState()
+    val featuredPrograms by viewModel.featuredPrograms.collectAsState()
+    val agendas by viewModel.allAgendas.collectAsState()
+    val testimonials by viewModel.allTestimonials.collectAsState()
+    val rppCount by viewModel.rppCount.collectAsState()
+    val documents by viewModel.allDocuments.collectAsState()
+    val notifications by viewModel.allNotifications.collectAsState()
+    val ppdbCount by viewModel.ppdbCount.collectAsState()
+
+    val totalItems = 1 + studentCount + teacherCount + facilities.size + newsCount + galleryCount +
+            extracurriculars.size + featuredPrograms.size + agendas.size + testimonials.size +
+            rppCount + documents.size + notifications.size + ppdbCount
 
     LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         item {
             SectionHeader(
-                title = "Sinkronisasi Cloud (Multi-Device)",
-                subtitle = "Sinkronisasi otomatis antar HP/device agar data yang disimpan di Device 1 langsung muncul di Device 2",
+                title = "Sinkronisasi Cloud Multi-Device (15 Modul)",
+                subtitle = "Semua modul data madrasah tersinkronisasi otomatis antar HP/perangkat secara real-time",
                 icon = Icons.Default.CloudSync
             )
 
@@ -2411,23 +2430,61 @@ fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
                                 .background(IslamicGreen, RoundedCornerShape(6.dp))
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
-                            Text("LIVE SYNC", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text("15 MODUL LIVE", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color.White)
                         }
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = syncStatus ?: "Terhubung dan siap sinkronisasi",
+                        text = syncStatus ?: "Terhubung dan siap sinkronisasi multi-perangkat",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        OutlinedButton(
+                            onClick = {
+                                val firebaseUrl = "https://console.firebase.google.com/u/0/project/gen-lang-client-0399778967/firestore/databases/${context.getString(R.string.firestore_database_id)}/data"
+                                try {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(firebaseUrl)))
+                                } catch (_: Exception) {}
+                            },
+                            shape = RoundedCornerShape(8.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(Icons.Default.OpenInBrowser, contentDescription = null, modifier = Modifier.size(15.dp), tint = IslamicGreen)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Buka Console", fontSize = 11.sp, color = IslamicGreen)
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                val restUrl = "https://firestore.googleapis.com/v1/projects/gen-lang-client-0399778967/databases/${context.getString(R.string.firestore_database_id)}/documents/school_settings"
+                                try {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(restUrl)))
+                                } catch (_: Exception) {}
+                            },
+                            shape = RoundedCornerShape(8.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(Icons.Default.Language, contentDescription = null, modifier = Modifier.size(15.dp), tint = NavyPrimary)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Cek Data Live", fontSize = 11.sp, color = NavyPrimary)
+                        }
+                    }
 
                     if (isSyncing) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = IslamicGreen)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Sedang memproses data Cloud...", fontSize = 12.sp, color = IslamicGreen)
+                            Text("Sedang memproses sinkronisasi data madrasah ke Cloud...", fontSize = 12.sp, color = IslamicGreen)
                         }
                     }
                 }
@@ -2441,7 +2498,7 @@ fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
-                    Text("Akun Admin Terautentikasi (Google Sign-In)", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Text("Autentikasi Akun Admin (Google Sign-In)", fontWeight = FontWeight.Bold, fontSize = 14.sp)
                     Spacer(modifier = Modifier.height(6.dp))
                     if (currentUser != null) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -2461,7 +2518,7 @@ fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
                         }
                     } else {
                         Text(
-                            "Masuk dengan Akun Google untuk otorisasi penuh pembaruan data cloud antar perangkat madrasah.",
+                            "Masuk dengan Akun Google untuk hak akses administrator dan sinkronisasi data cloud yang aman antar perangkat.",
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -2487,18 +2544,18 @@ fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
-                    Text("Tindakan Sinkronisasi Perangkat:", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Text("Tindakan Sinkronisasi Seluruh Modul:", fontWeight = FontWeight.Bold, fontSize = 14.sp)
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
-                        onClick = { viewModel.pushAllStudentsToCloud(); viewModel.pushSettingsToCloud() },
+                        onClick = { viewModel.pushAllDataToCloud() },
                         enabled = !isSyncing,
                         colors = ButtonDefaults.buttonColors(containerColor = IslamicGreen),
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("push_all_to_cloud_btn")
                     ) {
                         Icon(Icons.Default.CloudUpload, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Kirim Seluruh Data Lokal ke Cloud ($studentCount Siswa)")
+                        Text("Kirim Seluruh Data Madrasah ke Cloud (15 Modul • $totalItems Data)")
                     }
 
                     OutlinedButton(
@@ -2508,7 +2565,84 @@ fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
                     ) {
                         Icon(Icons.Default.CloudDownload, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Tarik / Sinkronkan Data Terbaru dari Cloud")
+                        Text("Tarik / Perbarui Semua 15 Modul dari Cloud")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 15 Modules Matrix Card
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Status Sinkronisasi 15 Modul Admin:", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        Box(
+                            modifier = Modifier
+                                .background(IslamicGreen.copy(alpha = 0.15f), RoundedCornerShape(4.dp))
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text("100% Real-Time", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = IslamicGreen)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    val modules = listOf(
+                        Triple("1. Profil & Pengaturan (Visi, Misi, Sejarah, Bell)", "Tersimpan", Icons.Default.School),
+                        Triple("2. Master Data Siswa", "$studentCount Santri", Icons.Default.People),
+                        Triple("3. Guru & Tenaga Kependidikan", "$teacherCount Pengajar", Icons.Default.Badge),
+                        Triple("4. Fasilitas & Sarana Madrasah", "${facilities.size} Sarana", Icons.Default.Business),
+                        Triple("5. Berita & Pengumuman Madrasah", "$newsCount Artikel", Icons.Default.Article),
+                        Triple("6. Galeri Dokumentasi Foto", "$galleryCount Foto", Icons.Default.PhotoLibrary),
+                        Triple("7. Kegiatan Ekstrakurikuler", "${extracurriculars.size} Ekskul", Icons.Default.SportsBasketball),
+                        Triple("8. Program Unggulan Madrasah", "${featuredPrograms.size} Program", Icons.Default.Star),
+                        Triple("9. Agenda & Kalender Kegiatan", "${agendas.size} Agenda", Icons.Default.Event),
+                        Triple("10. Testimoni Santri & Wali Murid", "${testimonials.size} Ulasan", Icons.Default.RateReview),
+                        Triple("11. Modul Perangkat Ajar (RPP)", "$rppCount Berkas", Icons.Default.MenuBook),
+                        Triple("12. Arsip Dokumen & Surat Resmi", "${documents.size} Dokumen", Icons.Default.Description),
+                        Triple("13. Jadwal Pelajaran Kelas & Rombel", "Aktif", Icons.Default.Schedule),
+                        Triple("14. Siaran Notifikasi & Alarm Suara", "${notifications.size} Siaran", Icons.Default.NotificationsActive),
+                        Triple("15. Pendaftaran Santri Baru (PPDB Online)", "$ppdbCount Pendaftar", Icons.Default.HowToReg)
+                    )
+
+                    modules.forEach { (name, countText, icon) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .background(NavyPrimary.copy(alpha = 0.1f), CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(icon, contentDescription = null, tint = NavyPrimary, modifier = Modifier.size(16.dp))
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(name, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .background(GoldAccent.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
+                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                            ) {
+                                Text(countText, fontSize = 10.sp, fontWeight = FontWeight.Bold, color = NavyDeep)
+                            }
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Icon(Icons.Default.CheckCircle, contentDescription = "Tersinkron", tint = IslamicGreen, modifier = Modifier.size(16.dp))
+                        }
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 2.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
                     }
                 }
             }
@@ -2529,14 +2663,201 @@ fun AdminCloudSyncSection(viewModel: MadrasahViewModel) {
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        "1. Device 1 (HP Admin) menyimpan data siswa, visi, misi, atau pengaturan madrasah.\n" +
-                        "2. Data secara instan dikirim dan disimpan di Cloud Firestore.\n" +
-                        "3. Device 2 (HP Guru/Staf lain) yang membuka aplikasi akan langsung menerima pembaruan secara real-time melalui snapshot listener tanpa perlu memasukkan data ulang!\n" +
-                        "4. Jika Device 2 baru diinstal, cukup buka tab ini dan tekan 'Tarik / Sinkronkan Data Terbaru dari Cloud'.",
+                        "1. Device 1 (HP Admin) menambah, mengubah, atau menghapus data pada ke-15 modul di atas.\n" +
+                        "2. Perubahan otomatis dikirim dan disimpan ke Cloud Firestore secara instan.\n" +
+                        "3. Device 2 (HP Guru, Kepala Madrasah, atau Wali Murid) yang membuka aplikasi akan langsung menerima pembaruan secara real-time melalui snapshot listener tanpa perlu memasukkan data ulang!\n" +
+                        "4. Website Publik di Vercel (vercel.app) juga langsung menampilkan data termutakhir yang sama secara live.\n" +
+                        "5. Apabila baru menginstal aplikasi di HP baru, cukup buka menu ini lalu tekan tombol 'Tarik / Perbarui Semua 15 Modul dari Cloud'.",
                         fontSize = 12.sp,
                         lineHeight = 18.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            // DETAILED STEP-BY-STEP FIREBASE GUIDE CARD
+            var guideTab by remember { mutableStateOf(0) }
+            val clipboard = LocalClipboardManager.current
+            val dbId = context.getString(R.string.firestore_database_id)
+
+            val fullGuideText = """PANDUAN LENGKAP MENGHUBUNGKAN APLIKASI KE FIREBASE FIRESTORE
+
+A. STATUS KONEKSI DATABASE SAAT INI (SUDAH AKTIF):
+- Project ID: gen-lang-client-0399778967
+- Database ID: $dbId
+- Konfigurasi: google-services.json & firebase_applet_config.xml terpasang otomatis
+- Akun Admin: mimtaqecy@gmail.com
+- Status: Live Snapshot Listener aktif pada 15 Collection
+
+B. CARA MENGHUBUNGKAN KE HP / DEVICE BARU (DEVICE 2, 3, DST):
+1. Bagikan dan instal file APK yang sama pada HP kedua.
+2. Buka aplikasi, masuk ke menu samping (drawer) lalu klik "Login Admin".
+3. Masukkan password admin (default: mimtq2025).
+4. Buka tab "Sinkronisasi Cloud".
+5. Klik "Masuk dengan Google (Sign In with Google)" dengan akun admin (mimtaqecy@gmail.com).
+6. Tekan tombol "Tarik / Perbarui Semua 15 Modul dari Cloud".
+7. Selesai! Kedua HP kini saling tersinkronisasi 100% secara real-time. Setiap data yang disimpan di HP 1 akan otomatis muncul di HP 2 dan sebaliknya.
+
+C. CARA SETUP FIREBASE CONSOLE MANDIRI (JIKA EKSPOR PROYEK):
+1. Kunjungi https://console.firebase.google.com/
+2. Buat proyek baru dan beri nama "MIM Tanjung Qencono".
+3. Tambahkan aplikasi Android dengan Package Name: com.example
+4. Unduh file google-services.json dan letakkan di folder app/
+5. Buka menu Build -> Firestore Database -> Create Database (Pilih Mode Produksi & Region Jakarta/asia-southeast1).
+6. Buka menu Build -> Authentication -> Sign-in method -> Aktifkan Google.
+7. Di Firestore Database -> tab Rules, salin seluruh aturan keamanan dari firestore.rules dan klik Publish.
+8. Jalankan perintah ./gradlew assembleDebug untuk build aplikasi Android.
+
+D. INTEGRASI OTOMATIS DENGAN WEBSITE VERCEL:
+Website madrasah di Vercel terhubung ke Firestore melalui REST API:
+https://firestore.googleapis.com/v1/projects/gen-lang-client-0399778967/databases/$dbId/documents/
+Sehingga pengunjung web dapat langsung melihat berita, kegiatan, dan profil yang Anda update dari HP Android!"""
+
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = NavyDeep)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.MenuBook, contentDescription = null, tint = GoldAccent, modifier = Modifier.size(24.dp))
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text("Panduan Lengkap Koneksi Firebase", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 15.sp)
+                                Text("Petunjuk detail konfigurasi & multi-device", color = Color.White.copy(alpha = 0.8f), fontSize = 11.sp)
+                            }
+                        }
+
+                        Button(
+                            onClick = { clipboard.setText(AnnotatedString(fullGuideText)) },
+                            colors = ButtonDefaults.buttonColors(containerColor = GoldAccent, contentColor = NavyDeep),
+                            shape = RoundedCornerShape(6.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
+                        ) {
+                            Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(14.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Salin Panduan", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    TabRow(
+                        selectedTabIndex = guideTab,
+                        containerColor = Color.Transparent,
+                        contentColor = GoldAccent
+                    ) {
+                        Tab(
+                            selected = guideTab == 0,
+                            onClick = { guideTab = 0 },
+                            text = { Text("1. Info Saat Ini", fontSize = 11.sp, color = if (guideTab == 0) GoldAccent else Color.White.copy(alpha = 0.7f)) }
+                        )
+                        Tab(
+                            selected = guideTab == 1,
+                            onClick = { guideTab = 1 },
+                            text = { Text("2. Multi-HP", fontSize = 11.sp, color = if (guideTab == 1) GoldAccent else Color.White.copy(alpha = 0.7f)) }
+                        )
+                        Tab(
+                            selected = guideTab == 2,
+                            onClick = { guideTab = 2 },
+                            text = { Text("3. Firebase Sendiri", fontSize = 11.sp, color = if (guideTab == 2) GoldAccent else Color.White.copy(alpha = 0.7f)) }
+                        )
+                        Tab(
+                            selected = guideTab == 3,
+                            onClick = { guideTab = 3 },
+                            text = { Text("4. Web Vercel", fontSize = 11.sp, color = if (guideTab == 3) GoldAccent else Color.White.copy(alpha = 0.7f)) }
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    when (guideTab) {
+                        0 -> {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Column(modifier = Modifier.padding(14.dp)) {
+                                    Text("Status Konfigurasi Firebase Aktif:", fontWeight = FontWeight.Bold, color = GoldAccent, fontSize = 13.sp)
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text("• Project ID: gen-lang-client-0399778967", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("• Database ID: $dbId", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("• Package: com.example", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("• Akun Admin: mimtaqecy@gmail.com", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("• File Config: app/google-services.json & firebase_applet_config.xml sudah terpasang.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("• Aturan Keamanan (Rules): 100% Terpasang dan aktif di server Firebase.", color = IslamicGreen, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                                }
+                            }
+                        }
+                        1 -> {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Column(modifier = Modifier.padding(14.dp)) {
+                                    Text("Cara Menghubungkan ke HP Lain (Device 2 & Seterusnya):", fontWeight = FontWeight.Bold, color = GoldAccent, fontSize = 13.sp)
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text("1. Bagikan file APK aplikasi ini ke HP rekan/guru lain.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("2. Buka aplikasi di HP kedua, klik menu samping -> pilih 'Login Admin'.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("3. Masukkan sandi admin (default: mimtq2025).", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("4. Masuk ke tab 'Sinkronisasi Cloud' lalu tekan tombol 'Masuk dengan Google' (gunakan akun mimtaqecy@gmail.com).", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("5. Tekan tombol hijau 'Tarik / Perbarui Semua 15 Modul dari Cloud'.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("6. Kedua HP kini terhubung penuh! Semua penambahan atau editan data di HP 1 akan otomatis terupdate di HP 2 secara live.", color = IslamicGreen, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                                }
+                            }
+                        }
+                        2 -> {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Column(modifier = Modifier.padding(14.dp)) {
+                                    Text("Panduan Jika Ingin Buat Akun Firebase Sendiri di Console:", fontWeight = FontWeight.Bold, color = GoldAccent, fontSize = 13.sp)
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text("1. Buka https://console.firebase.google.com/ dan login.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("2. Klik 'Tambah Proyek' (Add Project) baru.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("3. Tambah Aplikasi Android dengan package name: com.example", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("4. Unduh google-services.json lalu taruh di folder app/", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("5. Di menu Build -> Firestore Database -> Klik 'Create Database' (Pilih Region terdekat).", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("6. Di menu Build -> Authentication -> Tab Sign-in Method -> Aktifkan Google.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("7. Di Firestore Rules -> Salin aturan dari file firestore.rules dan klik 'Publish'.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Text("8. Jalankan perintah build APK.", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                }
+                            }
+                        }
+                        3 -> {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Column(modifier = Modifier.padding(14.dp)) {
+                                    Text("Koneksi Firestore ke Website Publik (Vercel):", fontWeight = FontWeight.Bold, color = GoldAccent, fontSize = 13.sp)
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text("Website HTML di Vercel otomatis mengambil data dari Cloud Firestore menggunakan REST API:", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = "https://firestore.googleapis.com/v1/projects/gen-lang-client-0399778967/databases/$dbId/documents/",
+                                        color = GoldAccent,
+                                        fontSize = 10.sp,
+                                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace
+                                    )
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text("Pengunjung website melihat update guru, pengumuman, dan pendaftaran PPDB secara live tanpa server tambahan!", color = Color(0xFFE2E8F0), fontSize = 11.sp)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

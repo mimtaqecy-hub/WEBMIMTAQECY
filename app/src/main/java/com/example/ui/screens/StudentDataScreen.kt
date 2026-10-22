@@ -73,25 +73,42 @@ fun StudentDataScreen(viewModel: MadrasahViewModel) {
         )
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.forceCloudSync()
+    }
+
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(NavyPrimary)
-                    .padding(horizontal = 20.dp, vertical = 24.dp)
+                    .padding(horizontal = 20.dp, vertical = 20.dp)
             ) {
-                Column {
-                    Text(
-                        text = "Data Siswa Madrasah",
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                        color = Color.White
-                    )
-                    Text(
-                        text = "Daftar Peserta Didik MI Muhammadiyah Tanjung Qencono",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = GoldAccent
-                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Data Siswa Madrasah",
+                            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                            color = Color.White
+                        )
+                        Text(
+                            text = "Daftar Peserta Didik MI Muhammadiyah Tanjung Qencono",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = GoldAccent
+                        )
+                    }
+                    IconButton(
+                        onClick = { viewModel.forceCloudSync() },
+                        modifier = Modifier
+                            .background(Color.White.copy(alpha = 0.18f), RoundedCornerShape(8.dp))
+                    ) {
+                        Icon(Icons.Default.CloudSync, contentDescription = "Sinkronkan Cloud", tint = Color.White)
+                    }
                 }
             }
 

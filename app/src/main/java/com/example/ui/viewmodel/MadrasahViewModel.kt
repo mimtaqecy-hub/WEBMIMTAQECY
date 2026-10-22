@@ -535,15 +535,18 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
 
     fun updatePpdbStatus(ppdb: PpdbEntity, status: String, notes: String) {
         viewModelScope.launch {
+            val updated = ppdb.copy(status = status, adminNotes = notes)
             repository.updatePpdbStatus(ppdb, status, notes)
-            _snackbarMessage.emit("Status pendaftaran ${ppdb.regNumber} diperbarui menjadi '$status'")
+            firestoreSync.submitPpdb(updated)
+            _snackbarMessage.emit("Status pendaftaran ${ppdb.regNumber} diperbarui menjadi '$status' & disinkronkan ke Cloud.")
         }
     }
 
     fun deletePpdb(ppdb: PpdbEntity) {
         viewModelScope.launch {
             repository.deletePpdb(ppdb)
-            _snackbarMessage.emit("Berkas PPDB ${ppdb.regNumber} berhasil dihapus.")
+            firestoreSync.deletePpdb(ppdb)
+            _snackbarMessage.emit("Berkas PPDB ${ppdb.regNumber} berhasil dihapus dari lokal & Cloud.")
         }
     }
 
@@ -636,134 +639,160 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
     // Teacher CRUD
     fun addTeacher(teacher: TeacherEntity) {
         viewModelScope.launch {
-            repository.insertTeacher(teacher)
-            _snackbarMessage.emit("Guru/staf ${teacher.name} berhasil ditambahkan.")
+            val id = repository.insertTeacher(teacher)
+            val saved = teacher.copy(id = id)
+            firestoreSync.pushTeacher(saved)
+            _snackbarMessage.emit("Guru/staf ${teacher.name} berhasil ditambahkan & disinkronkan ke Cloud.")
         }
     }
 
     fun updateTeacher(teacher: TeacherEntity) {
         viewModelScope.launch {
             repository.updateTeacher(teacher)
-            _snackbarMessage.emit("Data ${teacher.name} berhasil diperbarui.")
+            firestoreSync.pushTeacher(teacher)
+            _snackbarMessage.emit("Data ${teacher.name} berhasil diperbarui & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteTeacher(teacher: TeacherEntity) {
         viewModelScope.launch {
             repository.deleteTeacher(teacher)
-            _snackbarMessage.emit("Data guru/staf berhasil dihapus.")
+            firestoreSync.deleteTeacher(teacher)
+            _snackbarMessage.emit("Data guru/staf berhasil dihapus dari lokal & Cloud.")
         }
     }
 
     // RPP CRUD
     fun addRpp(rpp: RppEntity) {
         viewModelScope.launch {
-            repository.insertRpp(rpp)
-            _snackbarMessage.emit("Perangkat RPP '${rpp.title}' berhasil disimpan.")
+            val id = repository.insertRpp(rpp)
+            val saved = rpp.copy(id = id)
+            firestoreSync.pushRpp(saved)
+            _snackbarMessage.emit("Perangkat RPP '${rpp.title}' berhasil disimpan & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteRpp(rpp: RppEntity) {
         viewModelScope.launch {
             repository.deleteRpp(rpp)
-            _snackbarMessage.emit("RPP berhasil dihapus.")
+            firestoreSync.deleteRpp(rpp)
+            _snackbarMessage.emit("RPP berhasil dihapus dari lokal & Cloud.")
         }
     }
 
     // Documents
     fun addDocument(doc: DocumentEntity) {
         viewModelScope.launch {
-            repository.insertDocument(doc)
-            _snackbarMessage.emit("Dokumen '${doc.title}' berhasil diarsipkan.")
+            val id = repository.insertDocument(doc)
+            val saved = doc.copy(id = id)
+            firestoreSync.pushDocument(saved)
+            _snackbarMessage.emit("Dokumen '${doc.title}' berhasil diarsipkan & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteDocument(doc: DocumentEntity) {
         viewModelScope.launch {
             repository.deleteDocument(doc)
-            _snackbarMessage.emit("Dokumen berhasil dihapus.")
+            firestoreSync.deleteDocument(doc)
+            _snackbarMessage.emit("Dokumen berhasil dihapus dari lokal & Cloud.")
         }
     }
 
     // News CRUD
     fun addNews(news: NewsEntity) {
         viewModelScope.launch {
-            repository.insertNews(news)
-            _snackbarMessage.emit("Berita '${news.title}' berhasil diterbitkan.")
+            val id = repository.insertNews(news)
+            val saved = news.copy(id = id)
+            firestoreSync.pushNews(saved)
+            _snackbarMessage.emit("Berita '${news.title}' berhasil diterbitkan & disinkronkan ke Cloud.")
         }
     }
 
     fun updateNews(news: NewsEntity) {
         viewModelScope.launch {
             repository.updateNews(news)
-            _snackbarMessage.emit("Berita berhasil diperbarui.")
+            firestoreSync.pushNews(news)
+            _snackbarMessage.emit("Berita berhasil diperbarui & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteNews(news: NewsEntity) {
         viewModelScope.launch {
             repository.deleteNews(news)
-            _snackbarMessage.emit("Berita berhasil dihapus.")
+            firestoreSync.deleteNews(news)
+            _snackbarMessage.emit("Berita berhasil dihapus dari lokal & Cloud.")
         }
     }
 
     // Gallery
     fun addGallery(item: GalleryEntity) {
         viewModelScope.launch {
-            repository.insertGallery(item)
-            _snackbarMessage.emit("Foto '${item.title}' ditambahkan ke galeri.")
+            val id = repository.insertGallery(item)
+            val saved = item.copy(id = id)
+            firestoreSync.pushGallery(saved)
+            _snackbarMessage.emit("Foto '${item.title}' ditambahkan ke galeri & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteGallery(item: GalleryEntity) {
         viewModelScope.launch {
             repository.deleteGallery(item)
-            _snackbarMessage.emit("Foto galeri dihapus.")
+            firestoreSync.deleteGallery(item)
+            _snackbarMessage.emit("Foto galeri dihapus dari lokal & Cloud.")
         }
     }
 
     // Extracurriculars
     fun addExtracurricular(extra: ExtracurricularEntity) {
         viewModelScope.launch {
-            repository.insertExtracurricular(extra)
-            _snackbarMessage.emit("Ekstrakurikuler '${extra.name}' ditambahkan.")
+            val id = repository.insertExtracurricular(extra)
+            val saved = extra.copy(id = id)
+            firestoreSync.pushExtracurricular(saved)
+            _snackbarMessage.emit("Ekstrakurikuler '${extra.name}' ditambahkan & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteExtracurricular(extra: ExtracurricularEntity) {
         viewModelScope.launch {
             repository.deleteExtracurricular(extra)
-            _snackbarMessage.emit("Ekstrakurikuler berhasil dihapus.")
+            firestoreSync.deleteExtracurricular(extra)
+            _snackbarMessage.emit("Ekstrakurikuler berhasil dihapus dari lokal & Cloud.")
         }
     }
 
     // Programs
     fun addProgram(prog: FeaturedProgramEntity) {
         viewModelScope.launch {
-            repository.insertProgram(prog)
-            _snackbarMessage.emit("Program '${prog.name}' ditambahkan.")
+            val id = repository.insertProgram(prog)
+            val saved = prog.copy(id = id)
+            firestoreSync.pushProgram(saved)
+            _snackbarMessage.emit("Program '${prog.name}' ditambahkan & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteProgram(prog: FeaturedProgramEntity) {
         viewModelScope.launch {
             repository.deleteProgram(prog)
-            _snackbarMessage.emit("Program berhasil dihapus.")
+            firestoreSync.deleteProgram(prog)
+            _snackbarMessage.emit("Program berhasil dihapus dari lokal & Cloud.")
         }
     }
 
     // Agendas
     fun addAgenda(agenda: AgendaEntity) {
         viewModelScope.launch {
-            repository.insertAgenda(agenda)
-            _snackbarMessage.emit("Agenda '${agenda.title}' berhasil dijadwalkan.")
+            val id = repository.insertAgenda(agenda)
+            val saved = agenda.copy(id = id)
+            firestoreSync.pushAgenda(saved)
+            _snackbarMessage.emit("Agenda '${agenda.title}' berhasil dijadwalkan & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteAgenda(agenda: AgendaEntity) {
         viewModelScope.launch {
             repository.deleteAgenda(agenda)
-            _snackbarMessage.emit("Agenda berhasil dihapus.")
+            firestoreSync.deleteAgenda(agenda)
+            _snackbarMessage.emit("Agenda berhasil dihapus dari lokal & Cloud.")
         }
     }
 
@@ -779,7 +808,8 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
                 isApproved = false,
                 date = dateStr
             )
-            repository.submitTestimonial(entity)
+            val id = repository.submitTestimonial(entity)
+            firestoreSync.pushTestimonial(entity.copy(id = id))
             _snackbarMessage.emit("Terima kasih! Testimoni Anda telah terkirim dan akan ditinjau oleh pihak madrasah.")
         }
     }
@@ -787,14 +817,17 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
     fun approveTestimonial(testi: TestimonialEntity, isApproved: Boolean) {
         viewModelScope.launch {
             repository.approveTestimonial(testi, isApproved)
-            _snackbarMessage.emit("Status testimoni dari ${testi.name} berhasil diubah.")
+            val updated = testi.copy(isApproved = isApproved)
+            firestoreSync.pushTestimonial(updated)
+            _snackbarMessage.emit("Status testimoni dari ${testi.name} berhasil diubah & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteTestimonial(testi: TestimonialEntity) {
         viewModelScope.launch {
             repository.deleteTestimonial(testi)
-            _snackbarMessage.emit("Testimoni dihapus.")
+            firestoreSync.deleteTestimonial(testi)
+            _snackbarMessage.emit("Testimoni dihapus dari lokal & Cloud.")
         }
     }
 
@@ -839,15 +872,18 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
     // Schedules
     fun addSchedule(schedule: ClassScheduleEntity) {
         viewModelScope.launch {
-            repository.insertSchedule(schedule)
-            _snackbarMessage.emit("Jadwal pelajaran ${schedule.subject} berhasil disimpan.")
+            val id = repository.insertSchedule(schedule)
+            val saved = schedule.copy(id = id)
+            firestoreSync.pushClassSchedule(saved)
+            _snackbarMessage.emit("Jadwal pelajaran ${schedule.subject} berhasil disimpan & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteSchedule(schedule: ClassScheduleEntity) {
         viewModelScope.launch {
             repository.deleteSchedule(schedule)
-            _snackbarMessage.emit("Jadwal pelajaran dihapus.")
+            firestoreSync.deleteClassSchedule(schedule)
+            _snackbarMessage.emit("Jadwal pelajaran dihapus dari lokal & Cloud.")
         }
     }
 
@@ -871,7 +907,9 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
                 targetAudience = targetAudience,
                 soundAlert = soundAlert
             )
-            repository.insertNotification(entity)
+            val id = repository.insertNotification(entity)
+            val saved = entity.copy(id = id)
+            firestoreSync.pushNotification(saved)
             com.example.util.NotificationHelper.showNotification(
                 context = getApplication(),
                 title = title,
@@ -879,7 +917,7 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
                 category = category,
                 soundAlert = soundAlert
             )
-            _snackbarMessage.emit("Notifikasi berhasil dikirim & disiarkan dengan nada dering!")
+            _snackbarMessage.emit("Notifikasi berhasil dikirim, disiarkan & disinkronkan ke Cloud!")
         }
     }
 
@@ -919,22 +957,26 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
     // Facilities Management
     fun addFacility(facility: FacilityEntity) {
         viewModelScope.launch {
-            repository.insertFacility(facility)
-            _snackbarMessage.emit("Fasilitas madrasah '${facility.name}' berhasil ditambahkan.")
+            val id = repository.insertFacility(facility)
+            val saved = facility.copy(id = id)
+            firestoreSync.pushFacility(saved)
+            _snackbarMessage.emit("Fasilitas madrasah '${facility.name}' berhasil ditambahkan & disinkronkan ke Cloud.")
         }
     }
 
     fun updateFacility(facility: FacilityEntity) {
         viewModelScope.launch {
             repository.updateFacility(facility)
-            _snackbarMessage.emit("Fasilitas madrasah berhasil diperbarui.")
+            firestoreSync.pushFacility(facility)
+            _snackbarMessage.emit("Fasilitas madrasah berhasil diperbarui & disinkronkan ke Cloud.")
         }
     }
 
     fun deleteFacility(facility: FacilityEntity) {
         viewModelScope.launch {
             repository.deleteFacility(facility)
-            _snackbarMessage.emit("Fasilitas madrasah dihapus.")
+            firestoreSync.deleteFacility(facility)
+            _snackbarMessage.emit("Fasilitas madrasah dihapus dari lokal & Cloud.")
         }
     }
 
@@ -1078,6 +1120,17 @@ class MadrasahViewModel(application: Application) : AndroidViewModel(application
     }
 
     // Cloud Firestore Sync Actions
+    fun pushAllDataToCloud() {
+        viewModelScope.launch {
+            val res = firestoreSync.pushAllDataToCloud()
+            if (res.isSuccess) {
+                _snackbarMessage.emit(res.getOrNull() ?: "Seluruh 15 modul data madrasah berhasil diunggah ke Cloud Firestore!")
+            } else {
+                _snackbarMessage.emit("Gagal unggah data madrasah ke Cloud: ${res.exceptionOrNull()?.localizedMessage}")
+            }
+        }
+    }
+
     fun pushAllStudentsToCloud() {
         viewModelScope.launch {
             val list = allStudents.value

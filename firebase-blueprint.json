@@ -9,8 +9,8 @@
         "npsn": { "type": "string" },
         "nsm": { "type": "string" },
         "accreditation": { "type": "string" },
-        "principalName": { "type": "string" },
-        "phone": { "type": "string" },
+        "headmasterName": { "type": "string" },
+        "phoneWa": { "type": "string" },
         "email": { "type": "string" },
         "address": { "type": "string" },
         "visionText": { "type": "string" },
@@ -41,6 +41,21 @@
         "updatedAt": { "type": "string" }
       },
       "required": ["fullName", "classLevel", "rombel"]
+    },
+    "Teacher": {
+      "title": "Teacher",
+      "description": "Teacher and staff profile",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "nip": { "type": "string" },
+        "role": { "type": "string" },
+        "subject": { "type": "string" },
+        "education": { "type": "string" },
+        "phone": { "type": "string" },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["name", "role"]
     },
     "PpdbApplicant": {
       "title": "PpdbApplicant",
@@ -78,18 +93,6 @@
       },
       "required": ["title", "category"]
     },
-    "Schedule": {
-      "title": "Schedule",
-      "description": "School entry and day schedule",
-      "type": "object",
-      "properties": {
-        "day": { "type": "string" },
-        "morningEntry": { "type": "string" },
-        "afternoonEntry": { "type": "string" },
-        "notes": { "type": "string" }
-      },
-      "required": ["day", "morningEntry"]
-    },
     "Notification": {
       "title": "Notification",
       "description": "Madrasah announcement or notification",
@@ -101,6 +104,118 @@
         "type": { "type": "string" }
       },
       "required": ["title", "content", "date"]
+    },
+    "News": {
+      "title": "News",
+      "description": "News and article publication",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "summary": { "type": "string" },
+        "content": { "type": "string" },
+        "author": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["title", "content"]
+    },
+    "Gallery": {
+      "title": "Gallery",
+      "description": "Activity and school event photo",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["title", "imageUrl"]
+    },
+    "Extracurricular": {
+      "title": "Extracurricular",
+      "description": "Student activity club",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "coach": { "type": "string" },
+        "schedule": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "FeaturedProgram": {
+      "title": "FeaturedProgram",
+      "description": "Flagship school program",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["title"]
+    },
+    "Agenda": {
+      "title": "Agenda",
+      "description": "School calendar event",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["title", "date"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Alumni and parent feedback",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "content": { "type": "string" },
+        "rating": { "type": "integer" }
+      },
+      "required": ["name", "content"]
+    },
+    "Rpp": {
+      "title": "Rpp",
+      "description": "Lesson plan document",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "classLevel": { "type": "integer" },
+        "link": { "type": "string" }
+      },
+      "required": ["title", "subject"]
+    },
+    "Document": {
+      "title": "Document",
+      "description": "Official school document",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "docNumber": { "type": "string" },
+        "category": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["title"]
+    },
+    "ClassSchedule": {
+      "title": "ClassSchedule",
+      "description": "Class timetable schedule",
+      "type": "object",
+      "properties": {
+        "classLevel": { "type": "integer" },
+        "rombel": { "type": "string" },
+        "day": { "type": "string" },
+        "timeSlot": { "type": "string" },
+        "subject": { "type": "string" },
+        "teacherName": { "type": "string" }
+      },
+      "required": ["classLevel", "rombel", "day", "subject"]
     }
   },
   "firestore": {
@@ -112,6 +227,10 @@
       "schema": "Student",
       "description": "Madrasah student master list"
     },
+    "/teachers/{teacherId}": {
+      "schema": "Teacher",
+      "description": "Teachers and staff list"
+    },
     "/ppdb/{ppdbId}": {
       "schema": "PpdbApplicant",
       "description": "PPDB new student registrations"
@@ -120,13 +239,45 @@
       "schema": "Facility",
       "description": "School facilities"
     },
-    "/schedules/{scheduleId}": {
-      "schema": "Schedule",
-      "description": "Daily school schedules"
-    },
     "/notifications/{notificationId}": {
       "schema": "Notification",
       "description": "School announcements and notifications"
+    },
+    "/news/{newsId}": {
+      "schema": "News",
+      "description": "School news and articles"
+    },
+    "/gallery/{galleryId}": {
+      "schema": "Gallery",
+      "description": "Photo gallery items"
+    },
+    "/extracurriculars/{extraId}": {
+      "schema": "Extracurricular",
+      "description": "Extracurricular activities"
+    },
+    "/featured_programs/{programId}": {
+      "schema": "FeaturedProgram",
+      "description": "Featured school programs"
+    },
+    "/agendas/{agendaId}": {
+      "schema": "Agenda",
+      "description": "Madrasah events and agenda"
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": "Testimonial",
+      "description": "Testimonials and reviews"
+    },
+    "/rpp/{rppId}": {
+      "schema": "Rpp",
+      "description": "Lesson plans and RPP"
+    },
+    "/documents/{docId}": {
+      "schema": "Document",
+      "description": "Madrasah official documents"
+    },
+    "/class_schedules/{scheduleId}": {
+      "schema": "ClassSchedule",
+      "description": "Classroom schedules"
     }
   }
 }
